@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService, FollowUp, ReleaseItem, CatalogValue, Person } from '../../core/services/api.service';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'app-follow-ups',
@@ -98,7 +99,7 @@ import { ApiService, FollowUp, ReleaseItem, CatalogValue, Person } from '../../c
             <tbody>
               <tr *ngFor="let f of processedFollowUps" [class.row-overdue]="isOverdue(f)">
                 <td><span class="action-id">#{{ f.id }}</span></td>
-                <td><span class="item-link">{{ f.release_item?.title }}</span></td>
+                <td><span class="item-link" [title]="f.release_item?.description || f.release_item?.title">{{ f.release_item?.title }}</span></td>
                 <td class="action-text">
                   <span class="blocker-pill" *ngIf="f.is_blocker">BLOCKER</span>
                   {{ f.action }}
@@ -198,8 +199,8 @@ import { ApiService, FollowUp, ReleaseItem, CatalogValue, Person } from '../../c
 
             <div class="form-row">
               <div class="form-group col">
-                <label>Target Completion Date</label>
-                <input type="date" class="form-control" [(ngModel)]="createForm.due_date">
+                <label>Target Completion Date (yyyy-mm-dd)</label>
+                <input type="text" class="form-control" [(ngModel)]="createForm.due_date" placeholder="yyyy-mm-dd">
               </div>
 
               <div class="form-group col checkbox-group">
@@ -243,8 +244,8 @@ import { ApiService, FollowUp, ReleaseItem, CatalogValue, Person } from '../../c
             </div>
 
             <div class="form-group">
-              <label>Target Completion Date</label>
-              <input type="date" class="form-control" [(ngModel)]="editForm.due_date">
+              <label>Target Completion Date (yyyy-mm-dd)</label>
+              <input type="text" class="form-control" [(ngModel)]="editForm.due_date" placeholder="yyyy-mm-dd">
             </div>
 
             <div class="form-group">
@@ -375,7 +376,10 @@ export class FollowUpsComponent implements OnInit {
     outcome: '',
   };
 
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.loadData();
@@ -400,7 +404,6 @@ export class FollowUpsComponent implements OnInit {
   get processedFollowUps(): FollowUp[] {
     let list = [...this.followUps];
 
-    // Filter by text search
     if (this.filterText.trim()) {
       const q = this.filterText.toLowerCase();
       list = list.filter(f =>
@@ -410,27 +413,22 @@ export class FollowUpsComponent implements OnInit {
       );
     }
 
-    // Filter by status
     if (this.filterStatus !== 'all') {
       list = list.filter(f => f.status?.code === this.filterStatus);
     }
 
-    // Filter by priority
     if (this.filterPriority !== 'all') {
       list = list.filter(f => f.priority?.code === this.filterPriority);
     }
 
-    // Filter by owner
     if (this.filterOwner !== 'all') {
       list = list.filter(f => f.owner?.display_name === this.filterOwner);
     }
 
-    // Filter by blocker
     if (this.filterBlockerOnly) {
       list = list.filter(f => f.is_blocker);
     }
 
-    // Column sorting
     list.sort((a, b) => {
       let valA: any = '';
       let valB: any = '';
@@ -530,6 +528,7 @@ export class FollowUpsComponent implements OnInit {
 
     this.apiService.createFollowUp(this.createForm).subscribe(() => {
       this.closeCreateModal();
+      this.toastService.success('New Action Point created successfully!');
       this.loadData();
     });
   }
@@ -554,6 +553,7 @@ export class FollowUpsComponent implements OnInit {
 
     this.apiService.updateFollowUp(this.selectedFollowUp.id, this.editForm).subscribe(() => {
       this.closeEditModal();
+      this.toastService.success('Action Item updated successfully!');
       this.loadData();
     });
   }

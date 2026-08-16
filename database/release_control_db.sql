@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-08-2026 a las 00:37:28
+-- Tiempo de generación: 16-08-2026 a las 20:03:20
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -80,7 +80,8 @@ INSERT INTO `audit_events` (`id`, `entity_type`, `entity_id`, `event_type`, `cha
 (6, 'release_item', 6, 'baseline_registered', '{\"initial_status\":\"in_progress\",\"code\":\"RPT-CP-TRANSFER\"}', '{\"source\":\"Reports_Release_Control_001.xlsx\"}', 1, 'Jhon', '2026-08-07 10:00:00.000000', '2026-08-15 12:00:00.000000'),
 (7, 'release_item', 7, 'baseline_registered', '{\"initial_status\":\"in_progress\",\"code\":\"RPT-CP-REPORT\"}', '{\"source\":\"Reports_Release_Control_001.xlsx\"}', 1, 'Jhon', '2026-08-07 10:00:00.000000', '2026-08-15 12:00:00.000000'),
 (8, 'release_item', 8, 'baseline_registered', '{\"initial_status\":\"in_progress\",\"code\":\"RPT-PE-BASE\"}', '{\"source\":\"Reports_Release_Control_001.xlsx\"}', 1, 'Jhon', '2026-08-07 10:00:00.000000', '2026-08-15 12:00:00.000000'),
-(9, 'release_item', 9, 'baseline_registered', '{\"initial_status\":\"in_progress\",\"code\":\"RPT-HOME-BASE\"}', '{\"source\":\"Reports_Release_Control_001.xlsx\"}', 1, 'Jhon', '2026-08-07 10:00:00.000000', '2026-08-15 12:00:00.000000');
+(9, 'release_item', 9, 'baseline_registered', '{\"initial_status\":\"in_progress\",\"code\":\"RPT-HOME-BASE\"}', '{\"source\":\"Reports_Release_Control_001.xlsx\"}', 1, 'Jhon', '2026-08-07 10:00:00.000000', '2026-08-15 12:00:00.000000'),
+(10, 'follow_up', 7, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"Confirm readiness and define the TATU promotion plan...\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-08-16 18:00:25.000000', '2026-08-16 18:00:25.000000');
 
 -- --------------------------------------------------------
 
@@ -144,7 +145,7 @@ INSERT INTO `catalog_values` (`id`, `category`, `code`, `label`, `description`, 
 (34, 'activation_status', 'unconfirmed', 'Unconfirmed', 'Production presence or client access needs confirmation.', 20, '#F97316', 1, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000'),
 (35, 'activation_status', 'inactive', 'Deployed - inactive', 'Confirmed in production but not enabled for clients.', 50, '#F59E0B', 1, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000'),
 (36, 'activation_status', 'limit', 'Limit', 'Enabled for a limited group of companies or plans.', 70, '#8B5CF6', 1, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000'),
-(37, 'activation_status', 'active', 'Active for Clients', 'Enabled for the intended client scope.', 40, '#10B981', 1, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000'),
+(37, 'activation_status', 'active', 'Active for Clients', 'Enabled for the intended client scope.', 40, '#97f7d7', 1, 1, '2026-08-15 12:00:00.000000', '2026-08-16 15:18:55.000000'),
 (38, 'follow_up_status', 'pending', 'Pending', 'Action has not started.', 10, '#F59E0B', 1, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000'),
 (39, 'follow_up_status', 'in_progress', 'In Progress', 'Action is actively being worked.', 20, '#3B82F6', 1, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000'),
 (40, 'follow_up_status', 'waiting', 'Waiting Dependency', 'Action depends on another person or event.', 30, '#8B5CF6', 1, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000'),
@@ -157,8 +158,8 @@ INSERT INTO `catalog_values` (`id`, `category`, `code`, `label`, `description`, 
 (47, 'evidence_type', 'url', 'Web Link', 'Web link or external documentation reference.', 50, '#10B981', 1, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000'),
 (48, 'evidence_type', 'local_file', 'Local Reference File', 'Local document, log file, or attachment reference.', 60, '#6B7280', 1, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000'),
 (49, 'activation_status', 'growth', 'Growth', 'Enabled for Growth Plan', 10, '#108981', 1, 1, '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(50, 'activation_status', 'bBasic', 'Business Basic', 'Enabled for Bussiness Basic Plan', 20, '#109981', 1, 1, '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000'),
-(51, 'activation_status', 'bPlus', 'Business Plus', 'Enabled for Bussiness Plus Plan', 30, '#10A981', 1, 1, '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000');
+(50, 'activation_status', 'bBasic', 'Business Basic', 'Enabled for Bussiness Basic Plan', 20, '#0de7bf', 1, 1, '0000-00-00 00:00:00.000000', '2026-08-16 15:19:21.000000'),
+(51, 'activation_status', 'bPlus', 'Business Plus V2', 'Enabled for Bussiness Plus Plan', 30, '#36ecbc', 1, 1, '0000-00-00 00:00:00.000000', '2026-08-16 15:19:46.000000');
 
 -- --------------------------------------------------------
 
@@ -284,7 +285,7 @@ INSERT INTO `follow_ups` (`id`, `release_item_id`, `action`, `status_id`, `prior
 (4, 4, 'Confirm QA result, release notes and promotion to SITA', 38, 21, 1, 7, '2026-08-21', 0, 'Action required for baseline advancement', NULL, NULL, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
 (5, 5, 'Complete TATU validation and record QA approval', 38, 21, 1, 5, '2026-08-21', 0, 'Action required for baseline advancement', NULL, NULL, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
 (6, 6, 'Finish merge and confirm deployment to TATU', 38, 21, 1, 2, '2026-08-21', 0, 'Action required for baseline advancement', NULL, NULL, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
-(7, 7, 'Confirm readiness and define the TATU promotion plan', 38, 22, 1, 2, '2026-08-21', 0, 'Action required for baseline advancement', NULL, NULL, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
+(7, 7, 'Confirm readiness and define the TATU promotion plan...', 38, 22, 1, 2, '2026-08-21', 0, 'Action required for baseline advancement', NULL, NULL, '2026-08-15 12:00:00.000000', '2026-08-16 18:00:25.000000', NULL),
 (8, 8, 'Confirm scope, target sprint and readiness criteria', 38, 22, 1, 2, '2026-08-21', 0, 'Action required for baseline advancement', NULL, NULL, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
 (9, 9, 'Confirm scope, target sprint and readiness criteria', 38, 22, 1, 2, '2026-08-21', 0, 'Action required for baseline advancement', NULL, NULL, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL);
 
@@ -348,12 +349,17 @@ CREATE TABLE `modules` (
 
 INSERT INTO `modules` (`id`, `project_id`, `name`, `code`, `description`, `status_id`, `owner_person_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 1, 'Cross-cutting UI', 'UI', 'Cross-cutting UI functional area.', 4, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
-(2, 1, 'Payrun History', 'PH', 'Payrun History functional area.', 4, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
+(2, 1, 'Payrun History', 'PH', 'Payrun History functional area.', 4, 1, '2026-08-15 12:00:00.000000', '2026-08-16 16:55:48.000000', NULL),
 (3, 1, 'ePay Report', 'EP', 'ePay Report functional area.', 4, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
 (4, 1, 'Summary Report', 'SR', 'Summary Report functional area.', 4, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
 (5, 1, 'Cheques & Payslips', 'CP', 'Cheques & Payslips functional area.', 4, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
 (6, 1, 'PayExplorer', 'PE', 'PayExplorer functional area.', 4, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
-(7, 1, 'Reports Homepage', 'HOME', 'Reports Homepage functional area.', 4, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL);
+(7, 1, 'Reports Homepage', 'HOME', 'Reports Homepage functional area.', 4, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
+(8, 2, 'EFT REJECTS', 'EFT REJECTS', 'EFT REJECTS', 4, NULL, '2026-08-16 16:44:58.000000', '2026-08-16 16:44:58.000000', NULL),
+(9, 2, 'EDI Processing', 'EDI_Processing', 'EDI_Processing', 4, NULL, '2026-08-16 16:45:26.000000', '2026-08-16 16:56:02.000000', NULL),
+(10, 2, 'EFT Processing', 'EFT_Processing', 'EFT Processing', 4, NULL, '2026-08-16 16:56:27.000000', '2026-08-16 16:56:34.000000', NULL),
+(11, 2, 'EFT Sync & Generation', 'EFT_Sync_Generation', 'EFT Sync & Generation', 4, NULL, '2026-08-16 16:57:21.000000', '2026-08-16 16:57:21.000000', NULL),
+(12, 2, 'eMailReminders', 'eMailReminders', 'eMailReminders', 4, NULL, '2026-08-16 16:58:02.000000', '2026-08-16 16:58:02.000000', NULL);
 
 -- --------------------------------------------------------
 
@@ -379,13 +385,17 @@ CREATE TABLE `people` (
 --
 
 INSERT INTO `people` (`id`, `display_name`, `email`, `role_title`, `team`, `is_active`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Jhon', 'jhon@company.local', 'Product Owner / BA', 'Business Analysis', 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
-(2, 'Ximena', 'ximena@company.local', 'Release Manager', 'Operations', 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
-(3, 'Ameet', 'ameet@company.local', 'Product Lead', 'Product Management', 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
-(4, 'Alexis', 'alexis@company.local', 'Frontend Developer', 'Engineering', 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
-(5, 'Ricardo', 'ricardo@company.local', 'QA Lead', 'Quality Assurance', 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
-(6, 'Kavitha', 'kavitha@company.local', 'Backend Developer', 'Engineering', 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
-(7, 'Paola', 'paola@company.local', 'QA Engineer', 'Quality Assurance', 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL);
+(1, 'Jhon', 'jhon.orellana@paymentevolution.com', 'Product Owner / BA', 'Business Analysis', 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
+(2, 'Ximena', 'ximena@paymentevolution.com', 'Release Manager', 'Operations', 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
+(3, 'Ameet', 'ameet@paymentevolution.com', 'Product Lead', 'Product Management', 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
+(4, 'Alexis', 'alexis@paymentevolution.com', 'Frontend Developer', 'Engineering', 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
+(5, 'Ricardo', 'ricardo@paymentevolution.com', 'QA Lead', 'Quality Assurance', 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
+(6, 'Kavitha', 'kavitha@paymentevolution.com', 'Backend Developer', 'Engineering', 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
+(7, 'Paola', 'paola@paymentevolution.com', 'QA Engineer', 'Quality Assurance', 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
+(8, 'Mario', 'mario@paymentevolution.com', 'Fullstack Developer', 'Engineering', 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
+(9, 'Brad', 'brad@paymentevolution.com', 'Frontend Developer', 'Engineering', 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
+(10, 'Kruger', 'kruger@paymentevolution.com', 'Frontend Developer', 'Engineering', 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
+(11, 'Valli', 'valli@paymentevolution.com', 'Backend Developer', 'Engineering', 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL);
 
 -- --------------------------------------------------------
 
@@ -431,7 +441,8 @@ CREATE TABLE `projects` (
 --
 
 INSERT INTO `projects` (`id`, `name`, `code`, `description`, `status_id`, `owner_person_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Reports', 'REPORTS', 'Reports module suite for payroll, payslips, ePay, and analytics.', 1, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL);
+(1, 'Reports', 'REPORTS', 'Reports module suite for payroll, payslips, ePay, and analytics.', 1, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
+(2, 'ADMINAPI', 'ADMNAPI', 'All features related to EFT and EDI files', 1, 1, '2026-08-16 16:43:35.000000', '2026-08-16 16:43:35.000000', NULL);
 
 -- --------------------------------------------------------
 
@@ -459,7 +470,11 @@ INSERT INTO `project_environments` (`id`, `project_id`, `environment_id`, `seque
 (1, 1, 1, 10, 1, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000'),
 (2, 1, 2, 20, 1, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000'),
 (3, 1, 3, 30, 1, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000'),
-(4, 1, 4, 40, 1, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000');
+(4, 1, 4, 40, 1, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000'),
+(5, 2, 1, 10, 1, 1, '2026-08-16 16:43:35.000000', '2026-08-16 16:43:35.000000'),
+(6, 2, 2, 20, 1, 1, '2026-08-16 16:43:35.000000', '2026-08-16 16:43:35.000000'),
+(7, 2, 3, 30, 1, 1, '2026-08-16 16:43:35.000000', '2026-08-16 16:43:35.000000'),
+(8, 2, 4, 40, 1, 1, '2026-08-16 16:43:35.000000', '2026-08-16 16:43:35.000000');
 
 -- --------------------------------------------------------
 
@@ -491,7 +506,8 @@ CREATE TABLE `releases` (
 --
 
 INSERT INTO `releases` (`id`, `project_id`, `name`, `code`, `scope`, `status_id`, `owner_person_id`, `target_date`, `started_at`, `completed_at`, `release_notes_url`, `notes`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 'Reports 2026.08 Release', 'REL-RPT-20260807', 'Coordinated release package for Reports baseline as of August 7, 2026.', 8, 1, '2026-08-31', NULL, NULL, 'https://jira.company.local/browse/RPT-RELEASE-202608', 'Baseline snapshot from meetings of August 7, 2026.', '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL);
+(1, 1, 'Reports 2026.08 Release', 'REL-RPT-20260807', 'Coordinated release package for Reports baseline as of August 7, 2026.', 8, 1, '2026-08-31', NULL, NULL, 'https://jira.company.local/browse/RPT-RELEASE-202608', 'Baseline snapshot from meetings of August 7, 2026.', '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
+(2, 1, 'Summary Report & ePay Report improvements', 'REL-Summary&ePay', 'Summary Report & ePay Report improvements, it includes interaction with AdminAPI', 8, NULL, '2023-08-31', NULL, NULL, NULL, NULL, '2026-08-16 16:20:38.000000', '2026-08-16 16:20:38.000000', NULL);
 
 -- --------------------------------------------------------
 
@@ -526,8 +542,8 @@ CREATE TABLE `release_items` (
 --
 
 INSERT INTO `release_items` (`id`, `project_id`, `release_id`, `module_id`, `title`, `description`, `item_type_id`, `status_id`, `priority_id`, `owner_person_id`, `jira_key`, `jira_url`, `next_action`, `target_date`, `closed_at`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 1, 1, 'Cross-cutting UI Improvements', 'Baseline item RPT-IMP-BASE', 17, 13, 21, 4, NULL, NULL, 'Confirm sprint assignment and promotion to TATU', '2026-08-31', NULL, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
-(2, 1, 1, 2, 'Payrun History – Base Release', 'Baseline item RPT-PH-BASE', 16, 13, 21, NULL, NULL, NULL, 'Confirm availability date, enabled plans and companies with Ameet', '2026-08-31', NULL, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
+(1, 1, 1, 1, 'Cross-cutting UI Improvements', 'Some improvements which are related to all reports', 17, 13, 21, 4, NULL, NULL, 'Confirm sprint assignment and promotion to TATU', '2026-08-31', NULL, '2026-08-15 12:00:00.000000', '2026-08-16 16:14:00.000000', NULL),
+(2, 1, 1, 2, 'Payrun History – Base Release', 'Baseline item RPT-PH-BASE', 16, 13, 21, 4, NULL, NULL, 'Confirm availability date, enabled plans and companies with Ameet', '2026-08-31', NULL, '2026-08-15 12:00:00.000000', '2026-08-16 17:25:41.000000', NULL),
 (3, 1, 1, 3, 'ePay Report – Base Release', 'Baseline item RPT-EP-BASE', 16, 13, 21, 6, NULL, NULL, 'Confirm production version and client availability with Ameet', '2026-08-31', NULL, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
 (4, 1, 1, 3, 'ePay Report – AdminAPI / Rejections / Dynamics Improvements', 'Baseline item RPT-EP-IMP', 17, 13, 21, 6, NULL, NULL, 'Confirm QA result, release notes and promotion to SITA', '2026-08-31', NULL, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
 (5, 1, 1, 4, 'Summary Report – Base Release', 'Baseline item RPT-SR-BASE', 16, 13, 21, 6, NULL, NULL, 'Complete TATU validation and record QA approval', '2026-08-31', NULL, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
@@ -760,13 +776,13 @@ ALTER TABLE `release_item_environment_states`
 -- AUTO_INCREMENT de la tabla `audit_events`
 --
 ALTER TABLE `audit_events`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `catalog_values`
 --
 ALTER TABLE `catalog_values`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT de la tabla `client_activations`
@@ -802,13 +818,13 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT de la tabla `modules`
 --
 ALTER TABLE `modules`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `people`
 --
 ALTER TABLE `people`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `personal_access_tokens`
@@ -820,19 +836,19 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT de la tabla `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `project_environments`
 --
 ALTER TABLE `project_environments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `releases`
 --
 ALTER TABLE `releases`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `release_items`

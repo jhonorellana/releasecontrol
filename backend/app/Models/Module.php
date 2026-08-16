@@ -13,6 +13,15 @@ class Module extends Model
 
     protected $fillable = ['project_id', 'name', 'code', 'description', 'status_id', 'owner_person_id'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($module) {
+            ReleaseItem::where('module_id', $module->id)->delete();
+        });
+    }
+
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
@@ -28,7 +37,7 @@ class Module extends Model
         return $this->belongsTo(Person::class, 'owner_person_id');
     }
 
-    public function releaseItems(): HasMany
+    public function items(): HasMany
     {
         return $this->hasMany(ReleaseItem::class);
     }

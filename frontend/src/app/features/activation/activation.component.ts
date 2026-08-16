@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService, ReleaseItem, CatalogValue, Person } from '../../core/services/api.service';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'app-activation',
@@ -59,8 +60,8 @@ import { ApiService, ReleaseItem, CatalogValue, Person } from '../../core/servic
             <tbody>
               <tr *ngFor="let item of processedItems">
                 <td>
-                  <div class="item-title">{{ item.title }}</div>
-                  <div class="item-sub">{{ item.module?.name }}</div>
+                  <div class="item-title" [title]="item.description || item.title">{{ item.title }}</div>
+                  <div class="item-sub" [title]="item.module?.description || item.module?.name">{{ item.module?.name }}</div>
                 </td>
                 <td>
                   <div class="status-indicator">
@@ -224,7 +225,10 @@ export class ActivationComponent implements OnInit {
     confirmed_by_person_id: null as number | null,
   };
 
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.loadData();
@@ -339,6 +343,7 @@ export class ActivationComponent implements OnInit {
 
     this.apiService.updateClientActivation(this.selectedItem.id, this.activationForm).subscribe(() => {
       this.closeModal();
+      this.toastService.success('Client activation status updated successfully!');
       this.loadData();
     });
   }

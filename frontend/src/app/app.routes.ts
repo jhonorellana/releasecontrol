@@ -4,6 +4,7 @@ import { MatrixComponent } from './features/matrix/matrix.component';
 import { ActivationComponent } from './features/activation/activation.component';
 import { FollowUpsComponent } from './features/follow-ups/follow-ups.component';
 import { HistoryComponent } from './features/history/history.component';
+import { SettingsComponent } from './features/settings/settings.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -12,5 +13,6 @@ export const routes: Routes = [
   { path: 'activation', component: ActivationComponent },
   { path: 'follow-ups', component: FollowUpsComponent },
   { path: 'history', component: HistoryComponent },
+  { path: 'settings', component: SettingsComponent },
   { path: '**', redirectTo: 'dashboard' }
 ];

@@ -13,6 +13,21 @@ class Project extends Model
 
     protected $fillable = ['name', 'code', 'description', 'status_id', 'owner_person_id'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($project) {
+            foreach ($project->modules as $module) {
+                $module->delete();
+            }
+            foreach ($project->releases as $release) {
+                $release->delete();
+            }
+            ReleaseItem::where('project_id', $project->id)->delete();
+        });
+    }
+
     public function status(): BelongsTo
     {
         return $this->belongsTo(CatalogValue::class, 'status_id');

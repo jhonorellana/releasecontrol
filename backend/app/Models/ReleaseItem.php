@@ -18,6 +18,17 @@ class ReleaseItem extends Model
         'jira_key', 'jira_url', 'next_action', 'target_date', 'closed_at'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($item) {
+            foreach ($item->followUps as $followUp) {
+                $followUp->delete();
+            }
+        });
+    }
+
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);

@@ -24,7 +24,7 @@ import { ApiService, AuditEvent } from '../../core/services/api.service';
             <div class="timeline-content">
               <div class="timeline-header">
                 <span class="event-type">{{ ev.event_type }}</span>
-                <span class="event-date">{{ ev.occurred_at | date:'medium' }}</span>
+                <span class="event-date">{{ ev.occurred_at | date:'yyyy-MM-dd HH:mm:ss' }}</span>
               </div>
               <div class="timeline-body">
                 <div class="event-actor">Actor: <strong>{{ ev.actor_name }}</strong></div>

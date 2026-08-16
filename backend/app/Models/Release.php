@@ -13,6 +13,17 @@ class Release extends Model
 
     protected $fillable = ['project_id', 'name', 'code', 'scope', 'status_id', 'owner_person_id', 'target_date', 'started_at', 'completed_at', 'release_notes_url', 'notes'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($release) {
+            foreach ($release->items as $item) {
+                $item->delete();
+            }
+        });
+    }
+
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
