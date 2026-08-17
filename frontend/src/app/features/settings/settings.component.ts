@@ -254,7 +254,7 @@ import { ToastService } from '../../core/services/toast.service';
           </div>
           <div class="modal-body">
             <div class="form-group">
-              <label>Title *</label>
+              <label>Title <span class="required-star">*</span></label>
               <input type="text" class="form-control" [(ngModel)]="unitForm.title">
             </div>
             <div class="form-group">
@@ -263,29 +263,29 @@ import { ToastService } from '../../core/services/toast.service';
             </div>
             <div class="form-row">
               <div class="form-group col">
-                <label>Module *</label>
+                <label>Module <span class="required-star">*</span></label>
                 <select class="form-control" [(ngModel)]="unitForm.module_id">
-                  <option *ngFor="let m of modulesList" [value]="m.id">{{ m.name }}</option>
+                  <option *ngFor="let m of modulesList" [ngValue]="m.id">{{ m.name }}</option>
                 </select>
               </div>
               <div class="form-group col">
-                <label>Release Package *</label>
+                <label>Release Package <span class="required-star">*</span></label>
                 <select class="form-control" [(ngModel)]="unitForm.release_id">
-                  <option *ngFor="let r of releases" [value]="r.id">{{ r.name }}</option>
+                  <option *ngFor="let r of releases" [ngValue]="r.id">{{ r.name }}</option>
                 </select>
               </div>
             </div>
             <div class="form-row">
               <div class="form-group col">
-                <label>Type *</label>
+                <label>Type <span class="required-star">*</span></label>
                 <select class="form-control" [(ngModel)]="unitForm.item_type_id">
-                  <option *ngFor="let t of catalogMap['release_item_type']" [value]="t.id">{{ t.label }}</option>
+                  <option *ngFor="let t of catalogMap['release_item_type']" [ngValue]="t.id">{{ t.label }}</option>
                 </select>
               </div>
               <div class="form-group col">
-                <label>Priority *</label>
+                <label>Priority <span class="required-star">*</span></label>
                 <select class="form-control" [(ngModel)]="unitForm.priority_id">
-                  <option *ngFor="let p of catalogMap['priority']" [value]="p.id">{{ p.label }}</option>
+                  <option *ngFor="let p of catalogMap['priority']" [ngValue]="p.id">{{ p.label }}</option>
                 </select>
               </div>
             </div>
@@ -293,8 +293,8 @@ import { ToastService } from '../../core/services/toast.service';
               <div class="form-group col">
                 <label>Owner (Developer)</label>
                 <select class="form-control" [(ngModel)]="unitForm.owner_person_id">
-                  <option [value]="null">Unassigned</option>
-                  <option *ngFor="let p of people" [value]="p.id">{{ p.display_name }}</option>
+                  <option [ngValue]="null">Unassigned</option>
+                  <option *ngFor="let p of people" [ngValue]="p.id">{{ p.display_name }}</option>
                 </select>
               </div>
               <div class="form-group col">
@@ -323,19 +323,19 @@ import { ToastService } from '../../core/services/toast.service';
           </div>
           <div class="modal-body">
             <div class="form-group">
-              <label>Project Name *</label>
+              <label>Project Name <span class="required-star">*</span></label>
               <input type="text" class="form-control" [(ngModel)]="projectForm.name" placeholder="e.g. Reports">
             </div>
 
             <div class="form-row">
               <div class="form-group col">
-                <label>Project Code *</label>
+                <label>Project Code <span class="required-star">*</span></label>
                 <input type="text" class="form-control" [(ngModel)]="projectForm.code" placeholder="e.g. REPORTS">
               </div>
               <div class="form-group col">
-                <label>Project Status *</label>
+                <label>Project Status <span class="required-star">*</span></label>
                 <select class="form-control" [(ngModel)]="projectForm.status_id">
-                  <option *ngFor="let s of catalogMap['project_status']" [value]="s.id">{{ s.label }}</option>
+                  <option *ngFor="let s of catalogMap['project_status']" [ngValue]="s.id">{{ s.label }}</option>
                 </select>
               </div>
             </div>
@@ -343,8 +343,8 @@ import { ToastService } from '../../core/services/toast.service';
             <div class="form-group">
               <label>Project Owner / PO</label>
               <select class="form-control" [(ngModel)]="projectForm.owner_person_id">
-                <option [value]="null">Unassigned</option>
-                <option *ngFor="let p of people" [value]="p.id">{{ p.display_name }} ({{ p.role_title }})</option>
+                <option [ngValue]="null">Unassigned</option>
+                <option *ngFor="let p of people" [ngValue]="p.id">{{ p.display_name }} ({{ p.role_title }})</option>
               </select>
             </div>
 
@@ -369,17 +369,17 @@ import { ToastService } from '../../core/services/toast.service';
           </div>
           <div class="modal-body">
             <div class="form-group">
-              <label>Project *</label>
+              <label>Project <span class="required-star">*</span></label>
               <select class="form-control" [(ngModel)]="moduleForm.project_id">
                 <option *ngFor="let p of projects" [ngValue]="p.id">{{ p.name }}</option>
               </select>
             </div>
             <div class="form-group">
-              <label>Module Name *</label>
+              <label>Module Name <span class="required-star">*</span></label>
               <input type="text" class="form-control" [(ngModel)]="moduleForm.name" placeholder="e.g. Payrun History">
             </div>
             <div class="form-group">
-              <label>Module Code *</label>
+              <label>Module Code <span class="required-star">*</span></label>
               <input type="text" class="form-control" [(ngModel)]="moduleForm.code" placeholder="e.g. PH">
             </div>
             <div class="form-group">
@@ -404,40 +404,40 @@ import { ToastService } from '../../core/services/toast.service';
           <div class="modal-body">
             <div class="form-row">
               <div class="form-group col">
-                <label>Project *</label>
+                <label>Project <span class="required-star">*</span></label>
                 <select class="form-control" [(ngModel)]="releaseForm.project_id">
-                  <option *ngFor="let p of projects" [value]="p.id">{{ p.name }}</option>
+                  <option *ngFor="let p of projects" [ngValue]="p.id">{{ p.name }}</option>
                 </select>
               </div>
               <div class="form-group col">
-                <label>Status *</label>
+                <label>Status <span class="required-star">*</span></label>
                 <select class="form-control" [(ngModel)]="releaseForm.status_id">
-                  <option *ngFor="let s of catalogMap['release_status']" [value]="s.id">{{ s.label }}</option>
+                  <option *ngFor="let s of catalogMap['release_status']" [ngValue]="s.id">{{ s.label }}</option>
                 </select>
               </div>
             </div>
 
             <div class="form-group">
-              <label>Release Name *</label>
+              <label>Release Name <span class="required-star">*</span></label>
               <input type="text" class="form-control" [(ngModel)]="releaseForm.name" placeholder="e.g. Reports 2026.08 Summary & ePay">
             </div>
 
             <div class="form-row">
               <div class="form-group col">
-                <label>Release Code *</label>
+                <label>Release Code <span class="required-star">*</span></label>
                 <input type="text" class="form-control" [(ngModel)]="releaseForm.code" placeholder="e.g. REL-RPT-202608">
               </div>
               <div class="form-group col">
                 <label>Target Date (yyyy-mm-dd)</label>
-                <input type="text" class="form-control" [(ngModel)]="releaseForm.target_date" placeholder="yyyy-mm-dd">
+                <input type="date" class="form-control" [(ngModel)]="releaseForm.target_date" placeholder="yyyy-mm-dd">
               </div>
             </div>
 
             <div class="form-group">
               <label>Owner (Release Lead)</label>
               <select class="form-control" [(ngModel)]="releaseForm.owner_person_id">
-                <option [value]="null">Unassigned</option>
-                <option *ngFor="let p of people" [value]="p.id">{{ p.display_name }} ({{ p.role_title }})</option>
+                <option [ngValue]="null">Unassigned</option>
+                <option *ngFor="let p of people" [ngValue]="p.id">{{ p.display_name }} ({{ p.role_title }})</option>
               </select>
             </div>
 
@@ -458,7 +458,7 @@ import { ToastService } from '../../core/services/toast.service';
           </div>
           <div class="modal-footer">
             <button class="btn btn-outline" (click)="showReleaseModal = false">Cancel</button>
-            <button class="btn btn-primary" (click)="saveRelease()">Save Release</button>
+            <button class="btn btn-primary" (click)="saveRelease()">Save Release Package</button>
           </div>
         </div>
       </div>
@@ -472,22 +472,18 @@ import { ToastService } from '../../core/services/toast.service';
           </div>
           <div class="modal-body">
             <div class="form-group">
-              <label>Category *</label>
+              <label>Category <span class="required-star">*</span></label>
               <select class="form-control" [(ngModel)]="catalogForm.category" [disabled]="!!editingCatalogId">
-                <option value="environment_state">Environment State</option>
-                <option value="activation_status">Client Activation Status</option>
-                <option value="priority">Priority</option>
-                <option value="follow_up_status">Follow-up Status</option>
-                <option value="release_item_type">Release Item Type</option>
+                <option *ngFor="let catKey of catalogCategories" [value]="catKey">{{ getCategoryLabel(catKey) }}</option>
               </select>
             </div>
             <div class="form-group">
-              <label>Code *</label>
-              <input type="text" class="form-control" [(ngModel)]="catalogForm.code" [disabled]="!!editingCatalogId">
+              <label>Code <span class="required-star">*</span></label>
+              <input type="text" class="form-control" [(ngModel)]="catalogForm.code" placeholder="e.g. ready_for_qa" [disabled]="!!editingCatalogId">
             </div>
             <div class="form-group">
-              <label>Label *</label>
-              <input type="text" class="form-control" [(ngModel)]="catalogForm.label">
+              <label>Label <span class="required-star">*</span></label>
+              <input type="text" class="form-control" [(ngModel)]="catalogForm.label" placeholder="e.g. Ready for QA">
             </div>
             <div class="form-group">
               <label>Hex Color</label>
@@ -500,7 +496,7 @@ import { ToastService } from '../../core/services/toast.service';
           </div>
           <div class="modal-footer">
             <button class="btn btn-outline" (click)="showCatalogModal = false">Cancel</button>
-            <button class="btn btn-primary" (click)="saveCatalog()">Save Catalog</button>
+            <button class="btn btn-primary" (click)="saveCatalog()">Save Catalog Value</button>
           </div>
         </div>
       </div>
@@ -509,17 +505,17 @@ import { ToastService } from '../../core/services/toast.service';
       <div class="modal-overlay" *ngIf="showPersonModal">
         <div class="modal-content">
           <div class="modal-header">
-            <h3>{{ editingPersonId ? 'Edit Team Member' : 'Add Team Member' }}</h3>
+            <h3>{{ editingPersonId ? 'Edit Team Member' : 'New Team Member' }}</h3>
             <button class="close-btn" (click)="showPersonModal = false">×</button>
           </div>
           <div class="modal-body">
             <div class="form-group">
-              <label>Display Name *</label>
-              <input type="text" class="form-control" [(ngModel)]="personForm.display_name">
+              <label>Display Name <span class="required-star">*</span></label>
+              <input type="text" class="form-control" [(ngModel)]="personForm.display_name" placeholder="e.g. Alexis (Frontend Dev)">
             </div>
             <div class="form-group">
               <label>Role Title</label>
-              <input type="text" class="form-control" [(ngModel)]="personForm.role_title" placeholder="e.g. Release Manager">
+              <input type="text" class="form-control" [(ngModel)]="personForm.role_title" placeholder="e.g. Frontend Developer">
             </div>
             <div class="form-group">
               <label>Team</label>
@@ -616,6 +612,7 @@ import { ToastService } from '../../core/services/toast.service';
 
     /* Projects list */
     .projects-list { display: flex; flex-direction: column; gap: 1.25rem; }
+    .required-star { color: #EF4444; font-weight: bold; margin-left: 0.15rem; }
     .project-block { background: rgba(15, 23, 42, 0.5); border: 1px solid var(--bg-surface-border); border-radius: var(--radius-md); padding: 1.25rem; }
     .project-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
     .project-title-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.25rem; }

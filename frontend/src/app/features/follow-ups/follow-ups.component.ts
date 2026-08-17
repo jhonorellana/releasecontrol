@@ -151,30 +151,30 @@ import { ToastService } from '../../core/services/toast.service';
           </div>
           <div class="modal-body">
             <div class="form-group">
-              <label>Release Unit *</label>
+              <label>Release Unit <span class="required-star">*</span></label>
               <select class="form-control" [(ngModel)]="createForm.release_item_id">
-                <option [value]="0" disabled selected>Select Target Release Unit</option>
-                <option *ngFor="let item of releaseItems" [value]="item.id">{{ item.title }} ({{ item.module?.name }})</option>
+                <option [ngValue]="0" disabled selected>Select Target Release Unit</option>
+                <option *ngFor="let item of releaseItems" [ngValue]="item.id">{{ item.title }} ({{ item.module?.name }})</option>
               </select>
             </div>
 
             <div class="form-group">
-              <label>Required Action *</label>
+              <label>Required Action <span class="required-star">*</span></label>
               <input type="text" class="form-control" [(ngModel)]="createForm.action" placeholder="Describe the required coordination action or task">
             </div>
 
             <div class="form-row">
               <div class="form-group col">
-                <label>Priority</label>
+                <label>Priority <span class="required-star">*</span></label>
                 <select class="form-control" [(ngModel)]="createForm.priority_id">
-                  <option *ngFor="let p of priorityCatalogs" [value]="p.id">{{ p.label }}</option>
+                  <option *ngFor="let p of priorityCatalogs" [ngValue]="p.id">{{ p.label }}</option>
                 </select>
               </div>
 
               <div class="form-group col">
-                <label>Initial Status</label>
+                <label>Initial Status <span class="required-star">*</span></label>
                 <select class="form-control" [(ngModel)]="createForm.status_id">
-                  <option *ngFor="let s of statusCatalogs" [value]="s.id">{{ s.label }}</option>
+                  <option *ngFor="let s of statusCatalogs" [ngValue]="s.id">{{ s.label }}</option>
                 </select>
               </div>
             </div>
@@ -183,16 +183,16 @@ import { ToastService } from '../../core/services/toast.service';
               <div class="form-group col">
                 <label>Action Owner (Assignee)</label>
                 <select class="form-control" [(ngModel)]="createForm.owner_person_id">
-                  <option [value]="null">Unassigned</option>
-                  <option *ngFor="let p of people" [value]="p.id">{{ p.display_name }} ({{ p.role_title }})</option>
+                  <option [ngValue]="null">Unassigned</option>
+                  <option *ngFor="let p of people" [ngValue]="p.id">{{ p.display_name }} ({{ p.role_title }})</option>
                 </select>
               </div>
 
               <div class="form-group col">
                 <label>Contact / Dependency</label>
                 <select class="form-control" [(ngModel)]="createForm.contact_person_id">
-                  <option [value]="null">Select Contact</option>
-                  <option *ngFor="let p of people" [value]="p.id">{{ p.display_name }} ({{ p.role_title }})</option>
+                  <option [ngValue]="null">Select Contact</option>
+                  <option *ngFor="let p of people" [ngValue]="p.id">{{ p.display_name }} ({{ p.role_title }})</option>
                 </select>
               </div>
             </div>
@@ -200,7 +200,7 @@ import { ToastService } from '../../core/services/toast.service';
             <div class="form-row">
               <div class="form-group col">
                 <label>Target Completion Date (yyyy-mm-dd)</label>
-                <input type="text" class="form-control" [(ngModel)]="createForm.due_date" placeholder="yyyy-mm-dd">
+                <input type="date" class="form-control" [(ngModel)]="createForm.due_date" placeholder="yyyy-mm-dd">
               </div>
 
               <div class="form-group col checkbox-group">
@@ -232,27 +232,27 @@ import { ToastService } from '../../core/services/toast.service';
           </div>
           <div class="modal-body">
             <div class="form-group">
-              <label>Action Description</label>
+              <label>Action Description <span class="required-star">*</span></label>
               <input type="text" class="form-control" [(ngModel)]="editForm.action">
             </div>
 
             <div class="form-group">
-              <label>Status</label>
+              <label>Status <span class="required-star">*</span></label>
               <select class="form-control" [(ngModel)]="editForm.status_id">
-                <option *ngFor="let s of statusCatalogs" [value]="s.id">{{ s.label }}</option>
+                <option *ngFor="let s of statusCatalogs" [ngValue]="s.id">{{ s.label }}</option>
               </select>
             </div>
 
             <div class="form-group">
               <label>Target Completion Date (yyyy-mm-dd)</label>
-              <input type="text" class="form-control" [(ngModel)]="editForm.due_date" placeholder="yyyy-mm-dd">
+              <input type="date" class="form-control" [(ngModel)]="editForm.due_date" placeholder="yyyy-mm-dd">
             </div>
 
             <div class="form-group">
               <label>Contact / Dependency Person</label>
               <select class="form-control" [(ngModel)]="editForm.contact_person_id">
-                <option [value]="null">Select Contact</option>
-                <option *ngFor="let p of people" [value]="p.id">{{ p.display_name }} ({{ p.role_title }})</option>
+                <option [ngValue]="null">Select Contact</option>
+                <option *ngFor="let p of people" [ngValue]="p.id">{{ p.display_name }} ({{ p.role_title }})</option>
               </select>
             </div>
 
@@ -274,6 +274,7 @@ import { ToastService } from '../../core/services/toast.service';
     .header-banner { display: flex; justify-content: space-between; align-items: flex-end; }
     .page-title { font-size: 1.75rem; font-weight: 700; color: #FFF; }
     .page-subtitle { color: var(--text-muted); font-size: 0.9rem; }
+    .required-star { color: #EF4444; font-weight: bold; margin-left: 0.15rem; }
 
     .btn-action-lg {
       display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.1rem;

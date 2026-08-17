@@ -160,21 +160,21 @@ import { ToastService } from '../../core/services/toast.service';
             <p class="modal-item-title">{{ selectedActionItemTitle }}</p>
 
             <div class="form-group">
-              <label>Required Action *</label>
+              <label>Required Action <span class="required-star">*</span></label>
               <input type="text" class="form-control" [(ngModel)]="actionEditForm.action">
             </div>
 
             <div class="form-row">
               <div class="form-group col">
-                <label>Status</label>
+                <label>Status <span class="required-star">*</span></label>
                 <select class="form-control" [(ngModel)]="actionEditForm.status_id">
-                  <option *ngFor="let s of statusCatalogs" [value]="s.id">{{ s.label }}</option>
+                  <option *ngFor="let s of statusCatalogs" [ngValue]="s.id">{{ s.label }}</option>
                 </select>
               </div>
               <div class="form-group col">
-                <label>Priority</label>
+                <label>Priority <span class="required-star">*</span></label>
                 <select class="form-control" [(ngModel)]="actionEditForm.priority_id">
-                  <option *ngFor="let p of priorityCatalogs" [value]="p.id">{{ p.label }}</option>
+                  <option *ngFor="let p of priorityCatalogs" [ngValue]="p.id">{{ p.label }}</option>
                 </select>
               </div>
             </div>
@@ -183,8 +183,8 @@ import { ToastService } from '../../core/services/toast.service';
               <div class="form-group col">
                 <label>Owner / Assigned Lead</label>
                 <select class="form-control" [(ngModel)]="actionEditForm.owner_person_id">
-                  <option [value]="null">Unassigned</option>
-                  <option *ngFor="let p of people" [value]="p.id">{{ p.display_name }}</option>
+                  <option [ngValue]="null">Unassigned</option>
+                  <option *ngFor="let p of people" [ngValue]="p.id">{{ p.display_name }}</option>
                 </select>
               </div>
               <div class="form-group col">
@@ -275,6 +275,7 @@ import { ToastService } from '../../core/services/toast.service';
     .form-row .col { flex: 1; }
     .checkbox-label { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; user-select: none; }
     .text-red { color: #EF4444; }
+    .required-star { color: #EF4444; font-weight: bold; margin-left: 0.15rem; }
     .no-action-text { color: var(--text-subtle); font-style: italic; font-size: 0.8rem; }
     .verified-cell { color: var(--text-subtle); font-size: 0.8rem; }
     .empty-state { text-align: center; padding: 2.5rem 1rem; color: var(--text-muted); font-style: italic; }
@@ -343,7 +344,7 @@ export class MatrixComponent implements OnInit {
     this.apiService.getCatalogs().subscribe(res => {
       this.envStateCatalogs = res.catalogs['environment_state'] || [];
       this.statusCatalogs = res.catalogs['follow_up_status'] || [];
-      this.priorityCatalogs = res.catalogs['follow_up_priority'] || [];
+      this.priorityCatalogs = res.catalogs['priority'] || res.catalogs['follow_up_priority'] || [];
       this.people = res.people || [];
     });
 
@@ -435,6 +436,30 @@ export class MatrixComponent implements OnInit {
     return dates.length > 0 ? dates[0] : '';
   }
 
+  isClosedStatus(fu: any): boolean {
+    if (!fu) return false;
+    const code = (fu.status?.code || '').toLowerCase();
+    const label = (fu.status?.label || '').toLowerCase();
+
+    if (code === 'completed' || code === 'cancelled' || code === 'canceled' ||
+        label.includes('completed') || label.includes('cancelled') || label.includes('completad') || label.includes('cancelad')) {
+      return true;
+    }
+
+    if (fu.status_id && this.statusCatalogs.length > 0) {
+      const cat = this.statusCatalogs.find(s => s.id === fu.status_id);
+      if (cat) {
+        const cCode = (cat.code || '').toLowerCase();
+        const cLabel = (cat.label || '').toLowerCase();
+        if (cCode === 'completed' || cCode === 'cancelled' || cCode === 'canceled' ||
+            cLabel.includes('completed') || cLabel.includes('cancelled') || cLabel.includes('completad') || cLabel.includes('cancelad')) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   getActionPoints(item: ReleaseItem): { id?: number; text: string; isBlocker: boolean; ownerName?: string; rawFollowUp?: any }[] {
     const results: { id?: number; text: string; isBlocker: boolean; ownerName?: string; rawFollowUp?: any }[] = [];
 
@@ -447,6 +472,9 @@ export class MatrixComponent implements OnInit {
       });
 
       for (const fu of sorted) {
+        if (this.isClosedStatus(fu)) {
+          continue;
+        }
         if (fu.action) {
           results.push({
             id: fu.id,
@@ -457,9 +485,7 @@ export class MatrixComponent implements OnInit {
           });
         }
       }
-    }
-
-    if (item.next_action && !results.some(r => r.text === item.next_action)) {
+    } else if (item.next_action && item.next_action.trim()) {
       results.push({
         text: item.next_action,
         isBlocker: false
@@ -474,23 +500,31 @@ export class MatrixComponent implements OnInit {
     this.selectedActionItemTitle = item.title;
     this.selectedActionItemId = item.id;
 
+    const defaultStatus = this.statusCatalogs.find(s => s.code === 'pending')?.id || (this.statusCatalogs[0]?.id || 18);
+    const defaultPriority = this.priorityCatalogs.find(p => p.code === 'high')?.id || (this.priorityCatalogs[0]?.id || 20);
+
     if (ap.rawFollowUp) {
       const fu = ap.rawFollowUp;
+      let formattedDate = '';
+      if (fu.due_date) {
+        formattedDate = String(fu.due_date).split('T')[0];
+      }
+
       this.actionEditForm = {
         action: fu.action,
-        status_id: fu.status_id,
-        priority_id: fu.priority_id,
-        owner_person_id: fu.owner_person_id || null,
-        due_date: fu.due_date || '',
+        status_id: fu.status_id ? Number(fu.status_id) : defaultStatus,
+        priority_id: fu.priority_id ? Number(fu.priority_id) : defaultPriority,
+        owner_person_id: fu.owner_person_id ? Number(fu.owner_person_id) : null,
+        due_date: formattedDate,
         is_blocker: !!fu.is_blocker,
         notes: fu.notes || ''
       };
     } else {
       this.actionEditForm = {
         action: ap.text,
-        status_id: this.statusCatalogs[0]?.id || 0,
-        priority_id: this.priorityCatalogs[0]?.id || 0,
-        owner_person_id: item.owner_person_id || null,
+        status_id: defaultStatus,
+        priority_id: defaultPriority,
+        owner_person_id: item.owner_person_id ? Number(item.owner_person_id) : null,
         due_date: new Date().toISOString().split('T')[0],
         is_blocker: false,
         notes: ''
@@ -504,23 +538,64 @@ export class MatrixComponent implements OnInit {
 
   saveActionPoint(): void {
     if (!this.selectedActionPoint) return;
+    if (!this.actionEditForm.action || !this.actionEditForm.action.trim()) {
+      this.toastService.error('Required action title cannot be empty.');
+      return;
+    }
+
+    const payload = {
+      action: this.actionEditForm.action.trim(),
+      status_id: Number(this.actionEditForm.status_id) || (this.statusCatalogs[0]?.id || 0),
+      priority_id: Number(this.actionEditForm.priority_id) || (this.priorityCatalogs[0]?.id || 0),
+      owner_person_id: this.actionEditForm.owner_person_id ? Number(this.actionEditForm.owner_person_id) : null,
+      due_date: this.actionEditForm.due_date ? String(this.actionEditForm.due_date).split('T')[0] : null,
+      is_blocker: Boolean(this.actionEditForm.is_blocker),
+      notes: this.actionEditForm.notes || null,
+    };
 
     if (this.selectedActionPoint.rawFollowUp) {
       const id = this.selectedActionPoint.rawFollowUp.id;
-      this.apiService.updateFollowUp(id, this.actionEditForm).subscribe(() => {
-        this.closeActionModal();
-        this.toastService.success('Action Item updated successfully!');
-        this.loadData();
+      this.apiService.updateFollowUp(id, payload).subscribe({
+        next: () => {
+          this.closeActionModal();
+          this.toastService.success('Action Item updated successfully!');
+          this.loadData();
+        },
+        error: (err) => {
+          console.error('Failed to update action item:', err);
+          this.toastService.error('Failed to update action item. Please check all fields.');
+        }
       });
     } else {
-      const payload = {
+      const createPayload = {
         release_item_id: this.selectedActionItemId,
-        ...this.actionEditForm
+        ...payload
       };
-      this.apiService.createFollowUp(payload).subscribe(() => {
-        this.closeActionModal();
-        this.toastService.success('Action Point created successfully!');
-        this.loadData();
+      this.apiService.createFollowUp(createPayload).subscribe({
+        next: () => {
+          if (this.selectedActionItemId) {
+            this.apiService.updateReleaseItem(this.selectedActionItemId, { next_action: '' }).subscribe({
+              next: () => {
+                this.closeActionModal();
+                this.toastService.success('Action Point updated successfully!');
+                this.loadData();
+              },
+              error: () => {
+                this.closeActionModal();
+                this.toastService.success('Action Point updated successfully!');
+                this.loadData();
+              }
+            });
+          } else {
+            this.closeActionModal();
+            this.toastService.success('Action Point updated successfully!');
+            this.loadData();
+          }
+        },
+        error: (err) => {
+          console.error('Failed to create action item:', err);
+          this.toastService.error('Failed to create action item. Please check all fields.');
+        }
       });
     }
   }
