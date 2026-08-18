@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ApiService, FollowUp, ReleaseItem, CatalogValue, Person } from '../../core/services/api.service';
+import { ApiService, FollowUp, ReleaseItem, CatalogValue, Person, Project } from '../../core/services/api.service';
 import { ToastService } from '../../core/services/toast.service';
 
 @Component({
@@ -13,15 +13,12 @@ import { ToastService } from '../../core/services/toast.service';
       <!-- Header Banner with Create Button -->
       <div class="header-banner">
         <div>
-          <h1 class="page-title">Action Items Inbox</h1>
-          <p class="page-subtitle">Track, assign, and close coordination follow-ups with owners and target dates.</p>
+          <h1 class="page-title">Action Items & Follow-ups</h1>
+          <p class="page-subtitle">Track, assign, and manage critical operational follow-ups and release blockers across all release units.</p>
         </div>
         <button class="btn btn-action-lg" (click)="openCreateModal()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="5" x2="12" y2="19"></line>
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-          </svg>
-          <span>New Action Point</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>+ New Action Point</span>
         </button>
       </div>
 
@@ -31,6 +28,14 @@ import { ToastService } from '../../core/services/toast.service';
           <div class="filter-group search-box">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             <input type="text" class="filter-input" placeholder="Search unit or action..." [(ngModel)]="filterText">
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-label">Project:</label>
+            <select class="filter-select" [(ngModel)]="filterProject">
+              <option value="all">All Projects</option>
+              <option *ngFor="let p of projectsList" [value]="p.name">{{ p.name }}</option>
+            </select>
           </div>
 
           <div class="filter-group">
@@ -72,37 +77,39 @@ import { ToastService } from '../../core/services/toast.service';
             <thead>
               <tr>
                 <th (click)="toggleSort('id')" class="sortable">
-                  ACTION ID <span class="sort-icon" *ngIf="sortColumn === 'id'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                  ID <span class="sort-icon" *ngIf="sortColumn === 'id'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
                 </th>
                 <th (click)="toggleSort('title')" class="sortable">
                   RELEASE UNIT <span class="sort-icon" *ngIf="sortColumn === 'title'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
                 </th>
                 <th (click)="toggleSort('action')" class="sortable">
-                  REQUIRED ACTION <span class="sort-icon" *ngIf="sortColumn === 'action'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
-                </th>
-                <th (click)="toggleSort('priority')" class="sortable">
-                  PRIORITY <span class="sort-icon" *ngIf="sortColumn === 'priority'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
-                </th>
-                <th (click)="toggleSort('owner')" class="sortable">
-                  OWNER <span class="sort-icon" *ngIf="sortColumn === 'owner'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
-                </th>
-                <th>CONTACT / DEPENDENCY</th>
-                <th (click)="toggleSort('due_date')" class="sortable">
-                  TARGET DATE <span class="sort-icon" *ngIf="sortColumn === 'due_date'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                  ACTION POINT <span class="sort-icon" *ngIf="sortColumn === 'action'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
                 </th>
                 <th (click)="toggleSort('status')" class="sortable">
                   STATUS <span class="sort-icon" *ngIf="sortColumn === 'status'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
                 </th>
+                <th>PRIORITY</th>
+                <th>OWNER</th>
+                <th>TARGET DATE</th>
                 <th>ACTIONS</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let f of processedFollowUps" [class.row-overdue]="isOverdue(f)">
                 <td><span class="action-id">#{{ f.id }}</span></td>
-                <td><span class="item-link" [title]="f.release_item?.description || f.release_item?.title">{{ f.release_item?.title }}</span></td>
-                <td class="action-text">
-                  <span class="blocker-pill" *ngIf="f.is_blocker">BLOCKER</span>
-                  {{ f.action }}
+                <td>
+                  <div class="item-link" [title]="f.release_item?.description || f.release_item?.title">{{ f.release_item?.title }}</div>
+                </td>
+                <td>
+                  <div class="action-text">
+                    <span class="blocker-pill" *ngIf="f.is_blocker">BLOCKER</span>
+                    <span>{{ f.action }}</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="status-badge" [style.color]="f.status?.color">
+                    {{ f.status?.label }}
+                  </span>
                 </td>
                 <td>
                   <span class="priority-badge" [style.color]="f.priority?.color">
@@ -110,17 +117,8 @@ import { ToastService } from '../../core/services/toast.service';
                   </span>
                 </td>
                 <td>{{ f.owner?.display_name || 'Unassigned' }}</td>
-                <td>{{ f.contact?.display_name || 'N/A' }}</td>
-                <td>
-                  <span [class.text-danger]="isOverdue(f)">{{ f.due_date || 'Not Set' }}</span>
-                </td>
-                <td>
-                  <div class="status-indicator">
-                    <span class="status-dot" [style.background-color]="f.status?.color || '#9CA3AF'"></span>
-                    <span class="status-text" [style.color]="f.status?.color || '#9CA3AF'">
-                      {{ f.status?.label }}
-                    </span>
-                  </div>
+                <td [class.text-danger]="isOverdue(f)">
+                  {{ f.due_date ? f.due_date : '—' }}
                 </td>
                 <td>
                   <button class="btn btn-action" (click)="openEditModal(f)">
@@ -128,21 +126,19 @@ import { ToastService } from '../../core/services/toast.service';
                       <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                       <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                     </svg>
-                    <span>Edit / Close</span>
+                    <span>Update</span>
                   </button>
                 </td>
               </tr>
               <tr *ngIf="processedFollowUps.length === 0">
-                <td colspan="9" class="empty-table-cell">
-                  No action items match the selected filter criteria.
-                </td>
+                <td colspan="8" class="empty-table-cell">No action items match the current filter criteria.</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <!-- Create New Action Point Modal -->
+      <!-- Create Modal -->
       <div class="modal-overlay" *ngIf="showCreateModal">
         <div class="modal-content">
           <div class="modal-header">
@@ -153,38 +149,37 @@ import { ToastService } from '../../core/services/toast.service';
             <div class="form-group">
               <label>Release Unit <span class="required-star">*</span></label>
               <select class="form-control" [(ngModel)]="createForm.release_item_id">
-                <option [ngValue]="0" disabled selected>Select Target Release Unit</option>
-                <option *ngFor="let item of releaseItems" [ngValue]="item.id">{{ item.title }} ({{ item.module?.name }})</option>
+                <option *ngFor="let item of releaseItems" [ngValue]="item.id">{{ item.title }}</option>
               </select>
             </div>
 
             <div class="form-group">
-              <label>Required Action <span class="required-star">*</span></label>
-              <input type="text" class="form-control" [(ngModel)]="createForm.action" placeholder="Describe the required coordination action or task">
+              <label>Action Description <span class="required-star">*</span></label>
+              <input type="text" class="form-control" [(ngModel)]="createForm.action" placeholder="Describe the required action point...">
             </div>
 
             <div class="form-row">
+              <div class="form-group col">
+                <label>Status <span class="required-star">*</span></label>
+                <select class="form-control" [(ngModel)]="createForm.status_id">
+                  <option *ngFor="let s of statusCatalogs" [ngValue]="s.id">{{ s.label }}</option>
+                </select>
+              </div>
+
               <div class="form-group col">
                 <label>Priority <span class="required-star">*</span></label>
                 <select class="form-control" [(ngModel)]="createForm.priority_id">
                   <option *ngFor="let p of priorityCatalogs" [ngValue]="p.id">{{ p.label }}</option>
                 </select>
               </div>
-
-              <div class="form-group col">
-                <label>Initial Status <span class="required-star">*</span></label>
-                <select class="form-control" [(ngModel)]="createForm.status_id">
-                  <option *ngFor="let s of statusCatalogs" [ngValue]="s.id">{{ s.label }}</option>
-                </select>
-              </div>
             </div>
 
             <div class="form-row">
               <div class="form-group col">
-                <label>Action Owner (Assignee)</label>
+                <label>Action Owner (Assignee) <span class="required-star">*</span></label>
                 <select class="form-control" [(ngModel)]="createForm.owner_person_id">
                   <option [ngValue]="null">Unassigned</option>
-                  <option *ngFor="let p of people" [ngValue]="p.id">{{ p.display_name }} ({{ p.role_title }})</option>
+                  <option *ngFor="let p of people" [ngValue]="p.id">{{ p.display_name }}</option>
                 </select>
               </div>
 
@@ -192,33 +187,24 @@ import { ToastService } from '../../core/services/toast.service';
                 <label>Contact / Dependency</label>
                 <select class="form-control" [(ngModel)]="createForm.contact_person_id">
                   <option [ngValue]="null">Select Contact</option>
-                  <option *ngFor="let p of people" [ngValue]="p.id">{{ p.display_name }} ({{ p.role_title }})</option>
+                  <option *ngFor="let p of people" [ngValue]="p.id">{{ p.display_name }}</option>
                 </select>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group col">
-                <label>Target Completion Date (yyyy-mm-dd)</label>
-                <input type="date" class="form-control" [(ngModel)]="createForm.due_date" placeholder="yyyy-mm-dd">
+                <label>Target Date</label>
+                <input type="date" class="form-control" [(ngModel)]="createForm.due_date">
               </div>
-
               <div class="form-group col checkbox-group">
-                <label class="checkbox-label">
-                  <input type="checkbox" [(ngModel)]="createForm.is_blocker">
-                  <span>Is Release Blocker?</span>
-                </label>
+                <label class="checkbox-label"><input type="checkbox" [(ngModel)]="createForm.is_blocker"> <span>Is Blocker</span></label>
               </div>
-            </div>
-
-            <div class="form-group">
-              <label>Notes / Context</label>
-              <textarea class="form-control" [(ngModel)]="createForm.notes" rows="2" placeholder="Additional background or dependencies..."></textarea>
             </div>
           </div>
           <div class="modal-footer">
             <button class="btn btn-outline" (click)="closeCreateModal()">Cancel</button>
-            <button class="btn btn-primary" (click)="submitCreate()" [disabled]="!createForm.release_item_id || !createForm.action">Create Action Point</button>
+            <button class="btn btn-primary" (click)="submitCreate()">Create Action</button>
           </div>
         </div>
       </div>
@@ -258,7 +244,7 @@ import { ToastService } from '../../core/services/toast.service';
 
             <div class="form-group">
               <label>Outcome / Resolution Notes</label>
-              <textarea class="form-control" [(ngModel)]="editForm.outcome" rows="3" placeholder="Describe the result or confirmation evidence when closing"></textarea>
+              <textarea class="form-control" [(ngModel)]="editForm.outcome" rows="3" placeholder="Record resolution or update details..."></textarea>
             </div>
           </div>
           <div class="modal-footer">
@@ -271,9 +257,9 @@ import { ToastService } from '../../core/services/toast.service';
   `,
   styles: [`
     .follow-ups-page { display: flex; flex-direction: column; gap: 1.5rem; }
-    .header-banner { display: flex; justify-content: space-between; align-items: flex-end; }
+    .header-banner { display: flex; justify-content: space-between; align-items: flex-start; }
     .page-title { font-size: 1.75rem; font-weight: 700; color: #FFF; }
-    .page-subtitle { color: var(--text-muted); font-size: 0.9rem; }
+    .page-subtitle { color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem; }
     .required-star { color: #EF4444; font-weight: bold; margin-left: 0.15rem; }
 
     .btn-action-lg {
@@ -323,6 +309,7 @@ import { ToastService } from '../../core/services/toast.service';
     .action-text { max-width: 280px; color: var(--text-main); }
     .blocker-pill { background: #EF4444; color: #FFF; font-size: 0.65rem; font-weight: 800; padding: 0.1rem 0.4rem; border-radius: 4px; margin-right: 0.4rem; }
     .priority-badge { font-weight: 700; font-size: 0.8rem; }
+    .status-badge { font-weight: 600; font-size: 0.8rem; }
     .text-danger { color: #F87171; font-weight: 700; }
 
     .empty-table-cell { text-align: center; color: var(--text-muted); padding: 2.5rem 1rem; font-style: italic; }
@@ -344,9 +331,11 @@ export class FollowUpsComponent implements OnInit {
   statusCatalogs: CatalogValue[] = [];
   priorityCatalogs: CatalogValue[] = [];
   people: Person[] = [];
+  projectsList: Project[] = [];
 
   // Filter & Sorting state
   filterText: string = '';
+  filterProject: string = 'all';
   filterStatus: string = 'all';
   filterPriority: string = 'all';
   filterOwner: string = 'all';
@@ -361,7 +350,7 @@ export class FollowUpsComponent implements OnInit {
     action: '',
     status_id: 0,
     priority_id: 0,
-    owner_person_id: 1 as number | null,
+    owner_person_id: null as number | null,
     contact_person_id: null as number | null,
     due_date: '',
     is_blocker: false,
@@ -400,6 +389,10 @@ export class FollowUpsComponent implements OnInit {
       this.priorityCatalogs = res.catalogs['priority'] || [];
       this.people = res.people || [];
     });
+
+    this.apiService.getProjects().subscribe(projects => {
+      this.projectsList = projects;
+    });
   }
 
   get processedFollowUps(): FollowUp[] {
@@ -412,6 +405,10 @@ export class FollowUpsComponent implements OnInit {
         (f.action && f.action.toLowerCase().includes(q)) ||
         (f.owner?.display_name && f.owner.display_name.toLowerCase().includes(q))
       );
+    }
+
+    if (this.filterProject !== 'all') {
+      list = list.filter(f => f.release_item?.project?.name === this.filterProject);
     }
 
     if (this.filterStatus !== 'all') {

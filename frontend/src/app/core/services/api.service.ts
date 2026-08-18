@@ -139,7 +139,6 @@ export interface HealthStatus {
 
 export interface ReleaseItem {
   id: number;
-  project_id: number;
   release_id: number;
   module_id: number;
   title: string;
@@ -150,7 +149,6 @@ export interface ReleaseItem {
   owner_person_id?: number;
   jira_key?: string;
   jira_url?: string;
-  next_action: string;
   target_date?: string;
   project?: Project;
   module?: Module;

@@ -100,13 +100,17 @@ class HealthCalculatorService
         // -------------------------------------------------------------
         // Rank 4: Action Required
         // -------------------------------------------------------------
-        $missingNextAction = empty(trim($item->next_action ?? ''));
+        $activeFollowUps = $item->followUps->filter(function ($f) {
+            $statusCode = optional($f->status)->code;
+            return !in_array($statusCode, ['completed', 'cancelled']);
+        });
+        $missingNextAction = $activeFollowUps->isEmpty();
         $missingOwner = empty($item->owner_person_id);
         $missingTargetDate = empty($item->target_date);
 
         if ($missingNextAction || $missingOwner || $missingTargetDate) {
             $reasons = [];
-            if ($missingNextAction) $reasons[] = 'Missing next action';
+            if ($missingNextAction) $reasons[] = 'Missing active action point';
             if ($missingOwner) $reasons[] = 'Missing owner assignment';
             if ($missingTargetDate) $reasons[] = 'Missing target date';
 

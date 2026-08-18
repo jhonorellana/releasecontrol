@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ApiService, ReleaseItem, CatalogValue, Person } from '../../core/services/api.service';
+import { ApiService, ReleaseItem, CatalogValue, Person, Project, Module } from '../../core/services/api.service';
 import { ToastService } from '../../core/services/toast.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { ToastService } from '../../core/services/toast.service';
       <div class="header-banner">
         <div>
           <h1 class="page-title">Client Activation Tracker</h1>
-          <p class="page-subtitle">Exclusively tracking client enablement for release units deployed to Production.</p>
+          <p class="page-subtitle">Track client-facing feature enablement for release units deployed to Production.</p>
         </div>
       </div>
 
@@ -22,11 +22,27 @@ import { ToastService } from '../../core/services/toast.service';
         <div class="filter-toolbar">
           <div class="filter-group search-box">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" class="filter-input" placeholder="Search by unit name..." [(ngModel)]="filterText">
+            <input type="text" class="filter-input" placeholder="Search by release unit name..." [(ngModel)]="filterText">
           </div>
 
           <div class="filter-group">
-            <label class="filter-label">Activation Status:</label>
+            <label class="filter-label">PROJECT:</label>
+            <select class="filter-select" [(ngModel)]="filterProject" (change)="onProjectChange()">
+              <option value="all">All Projects</option>
+              <option *ngFor="let p of projectsList" [value]="p.name">{{ p.name }}</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-label">MODULE:</label>
+            <select class="filter-select" [(ngModel)]="filterModule">
+              <option value="all">All Modules</option>
+              <option *ngFor="let m of filteredModules" [value]="m.name">{{ m.name }}</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-label">ACTIVATION STATUS:</label>
             <select class="filter-select" [(ngModel)]="filterStatus">
               <option value="all">All Statuses</option>
               <option *ngFor="let s of activationCatalogs" [value]="s.code">{{ s.label }}</option>
@@ -50,43 +66,37 @@ import { ToastService } from '../../core/services/toast.service';
                 <th (click)="toggleSort('scope_type')" class="sortable">
                   SCOPE TYPE <span class="sort-icon" *ngIf="sortColumn === 'scope_type'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
                 </th>
-                <th>SCOPE DESCRIPTION</th>
+                <th>SCOPE DETAILS</th>
                 <th (click)="toggleSort('confirmed_by')" class="sortable">
                   CONFIRMED BY <span class="sort-icon" *ngIf="sortColumn === 'confirmed_by'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
                 </th>
-                <th>ACTIONS</th>
+                <th>ACTION</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let item of processedItems">
                 <td>
-                  <div class="item-title" [title]="item.description || item.title">{{ item.title }}</div>
-                  <div class="item-sub" [title]="item.module?.description || item.module?.name">{{ item.module?.name }}</div>
+                  <div class="item-title">{{ item.title }}</div>
+                  <div class="item-sub">{{ item.module?.name }} • {{ item.release?.name || item.release?.code }}</div>
                 </td>
                 <td>
-                  <div class="status-indicator">
-                    <span class="status-dot" [style.background-color]="getProdStateColor(item)"></span>
-                    <span class="status-text">{{ getProdStateLabel(item) }}</span>
-                  </div>
+                  <span class="status-badge" [style.color]="getProdStateColor(item)">
+                    {{ getProdStateLabel(item) }}
+                  </span>
                 </td>
                 <td>
-                  <div class="status-indicator">
-                    <span class="status-dot" [style.background-color]="item.client_activation?.status?.color || '#9CA3AF'"></span>
-                    <span class="status-text" [style.color]="item.client_activation?.status?.color || '#9CA3AF'">
-                      {{ item.client_activation?.status?.label || 'N/A' }}
-                    </span>
-                  </div>
+                  <span class="status-badge" [style.color]="item.client_activation?.status?.color || '#9CA3AF'">
+                    {{ item.client_activation?.status?.label || 'Not Set' }}
+                  </span>
                 </td>
-                <td class="capitalize">{{ item.client_activation?.scope_type || 'N/A' }}</td>
+                <td>
+                  <span class="capitalize">{{ item.client_activation?.scope_type || '—' }}</span>
+                </td>
                 <td>{{ item.client_activation?.scope_description || '—' }}</td>
                 <td>{{ item.client_activation?.confirmed_by_person?.display_name || item.client_activation?.confirmed_by_text || '—' }}</td>
                 <td>
                   <button class="btn btn-action" (click)="openActivationModal(item)">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                    </svg>
-                    <span>Update Activation</span>
+                    Update Activation
                   </button>
                 </td>
               </tr>
@@ -96,14 +106,14 @@ import { ToastService } from '../../core/services/toast.service';
 
         <ng-template #emptyState>
           <div class="empty-state">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#6366F1" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-            <p class="empty-title">No release units match the filter criteria</p>
-            <p class="empty-sub">Client activation tracking activates automatically once a release unit is promoted to Deployed state in PROD.</p>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <div class="empty-title">No Activation Records Found</div>
+            <div class="empty-sub">There are no release units matching your filter criteria or deployed to Production.</div>
           </div>
         </ng-template>
       </div>
 
-      <!-- Activation Modal -->
+      <!-- Update Activation Modal -->
       <div class="modal-overlay" *ngIf="selectedItem">
         <div class="modal-content">
           <div class="modal-header">
@@ -112,20 +122,20 @@ import { ToastService } from '../../core/services/toast.service';
           </div>
           <div class="modal-body">
             <div class="form-group">
-              <label>Activation Status</label>
+              <label>Activation Status <span class="required-star">*</span></label>
               <select class="form-control" [(ngModel)]="activationForm.status_id">
-                <option *ngFor="let s of activationCatalogs" [value]="s.id">{{ s.label }}</option>
+                <option *ngFor="let s of activationCatalogs" [ngValue]="s.id">{{ s.label }} — {{ s.description }}</option>
               </select>
             </div>
 
             <div class="form-group">
-              <label>Enablement Scope Type</label>
+              <label>Enablement Scope Type <span class="required-star">*</span></label>
               <select class="form-control" [(ngModel)]="activationForm.scope_type">
-                <option value="not_applicable">Not Applicable (N/A)</option>
-                <option value="unconfirmed">Unconfirmed</option>
-                <option value="all">Active for All Clients</option>
-                <option value="group">Pilot Group</option>
-                <option value="plan">Specific Subscription Plan</option>
+                <option value="global">Global (Enabled for all clients)</option>
+                <option value="selective">Selective (Enabled for specific clients)</option>
+                <option value="off">Off (Disabled globally)</option>
+                <option value="not_applicable">Not Applicable</option>
+                <option value="unknown">Unconfirmed</option>
               </select>
             </div>
 
@@ -140,10 +150,10 @@ import { ToastService } from '../../core/services/toast.service';
             </div>
 
             <div class="form-group">
-              <label>Confirmed By (Person)</label>
+              <label>Confirmed By (Person) <span class="required-star">*</span></label>
               <select class="form-control" [(ngModel)]="activationForm.confirmed_by_person_id">
-                <option [value]="null">Select Person</option>
-                <option *ngFor="let p of people" [value]="p.id">{{ p.display_name }} ({{ p.role_title }})</option>
+                <option [ngValue]="null">Select Person</option>
+                <option *ngFor="let p of people" [ngValue]="p.id">{{ p.display_name }} ({{ p.role_title }})</option>
               </select>
             </div>
           </div>
@@ -198,6 +208,7 @@ import { ToastService } from '../../core/services/toast.service';
     .empty-state { text-align: center; padding: 3rem 1.5rem; color: var(--text-muted); }
     .empty-title { font-size: 1.1rem; font-weight: 600; color: #FFF; margin-top: 0.75rem; }
     .empty-sub { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.35rem; }
+    .required-star { color: #EF4444; font-weight: bold; margin-left: 0.15rem; }
 
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
     .modal-header h3 { font-size: 1.1rem; color: #FFF; }
@@ -209,9 +220,13 @@ export class ActivationComponent implements OnInit {
   items: ReleaseItem[] = [];
   activationCatalogs: CatalogValue[] = [];
   people: Person[] = [];
+  projectsList: Project[] = [];
+  modulesList: Module[] = [];
 
   // Filter & Sorting state
   filterText: string = '';
+  filterProject: string = 'all';
+  filterModule: string = 'all';
   filterStatus: string = 'all';
   sortColumn: string = 'title';
   sortDirection: 'asc' | 'desc' = 'asc';
@@ -236,7 +251,6 @@ export class ActivationComponent implements OnInit {
 
   loadData(): void {
     this.apiService.getReleaseItems().subscribe(res => {
-      // Filter ONLY release units deployed to Production ('deployed' or 'approved' in PROD)
       this.items = res.filter(item => {
         const prodState = item.environment_states?.find((st: any) => st.project_environment?.environment?.code === 'PROD');
         const code = prodState?.status?.code;
@@ -248,6 +262,30 @@ export class ActivationComponent implements OnInit {
       this.activationCatalogs = res.catalogs['activation_status'] || [];
       this.people = res.people || [];
     });
+
+    this.apiService.getProjects().subscribe(projects => {
+      this.projectsList = projects;
+    });
+
+    this.apiService.getModules().subscribe(modules => {
+      this.modulesList = modules;
+    });
+  }
+
+  get filteredModules(): Module[] {
+    if (this.filterProject === 'all') {
+      return this.modulesList;
+    }
+    const matchedProj = this.projectsList.find(p => p.name === this.filterProject);
+    if (!matchedProj) return this.modulesList;
+    return this.modulesList.filter(m => m.project_id === matchedProj.id);
+  }
+
+  onProjectChange(): void {
+    const availNames = this.filteredModules.map(m => m.name);
+    if (this.filterModule !== 'all' && !availNames.includes(this.filterModule)) {
+      this.filterModule = 'all';
+    }
   }
 
   get processedItems(): ReleaseItem[] {
@@ -256,6 +294,14 @@ export class ActivationComponent implements OnInit {
     if (this.filterText.trim()) {
       const q = this.filterText.toLowerCase();
       list = list.filter(i => i.title.toLowerCase().includes(q) || (i.client_activation?.scope_description && i.client_activation.scope_description.toLowerCase().includes(q)));
+    }
+
+    if (this.filterProject !== 'all') {
+      list = list.filter(i => i.project?.name === this.filterProject || i.module?.project?.name === this.filterProject);
+    }
+
+    if (this.filterModule !== 'all') {
+      list = list.filter(i => i.module?.name === this.filterModule);
     }
 
     if (this.filterStatus !== 'all') {
@@ -303,11 +349,13 @@ export class ActivationComponent implements OnInit {
   }
 
   hasActiveFilters(): boolean {
-    return !!this.filterText || this.filterStatus !== 'all';
+    return !!this.filterText || this.filterProject !== 'all' || this.filterModule !== 'all' || this.filterStatus !== 'all';
   }
 
   resetFilters(): void {
     this.filterText = '';
+    this.filterProject = 'all';
+    this.filterModule = 'all';
     this.filterStatus = 'all';
   }
 
@@ -326,11 +374,11 @@ export class ActivationComponent implements OnInit {
     const act = item.client_activation;
 
     this.activationForm = {
-      status_id: act?.status_id || (this.activationCatalogs[0]?.id || 0),
-      scope_type: act?.scope_type || 'unknown',
+      status_id: act?.status_id ? Number(act.status_id) : (this.activationCatalogs[0]?.id || 0),
+      scope_type: act?.scope_type || 'unconfirmed',
       scope_description: act?.scope_description || '',
       source_summary: act?.source_summary || 'Verification meeting',
-      confirmed_by_person_id: act?.confirmed_by_person_id || null,
+      confirmed_by_person_id: act?.confirmed_by_person_id ? Number(act.confirmed_by_person_id) : null,
     };
   }
 

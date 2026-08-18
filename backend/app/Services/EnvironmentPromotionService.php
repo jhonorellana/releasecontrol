@@ -51,7 +51,7 @@ class EnvironmentPromotionService
                 $stateModel = $existingState;
             } else {
                 $stateModel = ReleaseItemEnvironmentState::create([
-                    'project_id' => $item->project_id,
+                    'project_id' => $item->module->project_id,
                     'release_item_id' => $item->id,
                     'project_environment_id' => $projectEnvironmentId,
                     'status_id' => $statusId,

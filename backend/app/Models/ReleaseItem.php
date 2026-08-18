@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ReleaseItem extends Model
@@ -13,9 +14,9 @@ class ReleaseItem extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'project_id', 'release_id', 'module_id', 'title', 'description',
+        'release_id', 'module_id', 'title', 'description',
         'item_type_id', 'status_id', 'priority_id', 'owner_person_id',
-        'jira_key', 'jira_url', 'next_action', 'target_date', 'closed_at'
+        'jira_key', 'jira_url', 'target_date', 'closed_at'
     ];
 
     protected static function boot()
@@ -29,9 +30,9 @@ class ReleaseItem extends Model
         });
     }
 
-    public function project(): BelongsTo
+    public function project(): HasOneThrough
     {
-        return $this->belongsTo(Project::class);
+        return $this->hasOneThrough(Project::class, Module::class, 'id', 'id', 'module_id', 'project_id');
     }
 
     public function release(): BelongsTo

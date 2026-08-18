@@ -46,7 +46,9 @@ class ReleaseItemController extends Controller
         ]);
 
         if ($request->has('project_id')) {
-            $query->where('project_id', $request->query('project_id'));
+            $query->whereHas('module', function ($q) use ($request) {
+                $q->where('project_id', $request->query('project_id'));
+            });
         }
 
         if ($request->has('release_id')) {
@@ -90,7 +92,6 @@ class ReleaseItemController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'project_id' => 'required|exists:projects,id',
             'release_id' => 'required|exists:releases,id',
             'module_id' => 'required|exists:modules,id',
             'title' => 'required|string|max:200',
@@ -101,7 +102,6 @@ class ReleaseItemController extends Controller
             'owner_person_id' => 'nullable|exists:people,id',
             'jira_key' => 'nullable|string|max:40',
             'jira_url' => 'nullable|url|max:2048',
-            'next_action' => 'nullable|string|max:500',
             'target_date' => 'nullable|date',
         ]);
 
@@ -115,12 +115,13 @@ class ReleaseItemController extends Controller
             $notReachedStatusId = CatalogValue::where('category', 'environment_state')->where('code', 'not_reached')->value('id');
             $naActivationStatusId = CatalogValue::where('category', 'activation_status')->where('code', 'not_applicable')->value('id');
             $now = Carbon::now();
+            $projectId = $newItem->module->project_id;
 
             // Initialize environment states for project environments
-            $projectEnvironments = ProjectEnvironment::where('project_id', $newItem->project_id)->get();
+            $projectEnvironments = ProjectEnvironment::where('project_id', $projectId)->get();
             foreach ($projectEnvironments as $penv) {
                 ReleaseItemEnvironmentState::create([
-                    'project_id' => $newItem->project_id,
+                    'project_id' => $projectId,
                     'release_item_id' => $newItem->id,
                     'project_environment_id' => $penv->id,
                     'status_id' => $notReachedStatusId,
@@ -176,7 +177,6 @@ class ReleaseItemController extends Controller
             'owner_person_id' => 'nullable|exists:people,id',
             'jira_key' => 'nullable|string|max:40',
             'jira_url' => 'nullable|url|max:2048',
-            'next_action' => 'nullable|string|max:500',
             'target_date' => 'nullable|date',
         ]);
 

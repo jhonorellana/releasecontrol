@@ -19,10 +19,6 @@ import { ToastService } from '../../core/services/toast.service';
 
       <!-- Navigation Tabs -->
       <div class="tabs-header">
-        <button class="tab-btn" [class.active]="activeTab === 'units'" (click)="activeTab = 'units'">
-          <span>Release Units</span>
-          <span class="tab-count">{{ items.length }}</span>
-        </button>
         <button class="tab-btn" [class.active]="activeTab === 'projects'" (click)="activeTab = 'projects'">
           <span>Projects & Modules</span>
           <span class="tab-count">{{ projects.length }}</span>
@@ -30,6 +26,10 @@ import { ToastService } from '../../core/services/toast.service';
         <button class="tab-btn" [class.active]="activeTab === 'releases'" (click)="activeTab = 'releases'">
           <span>Releases</span>
           <span class="tab-count">{{ releases.length }}</span>
+        </button>
+        <button class="tab-btn" [class.active]="activeTab === 'units'" (click)="activeTab = 'units'">
+          <span>Release Units</span>
+          <span class="tab-count">{{ items.length }}</span>
         </button>
         <button class="tab-btn" [class.active]="activeTab === 'catalogs'" (click)="activeTab = 'catalogs'">
           <span>Catalog Values</span>
@@ -47,12 +47,50 @@ import { ToastService } from '../../core/services/toast.service';
           <button class="btn btn-action-lg" (click)="openUnitModal()">+ New Release Unit</button>
         </div>
 
+        <!-- Filter Toolbar -->
+        <div class="filter-toolbar mb-4">
+          <div class="filter-group search-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" class="filter-input" placeholder="Search by release unit name..." [(ngModel)]="unitFilterText">
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-label">Project:</label>
+            <select class="filter-select" [(ngModel)]="unitFilterProject" (change)="onUnitFilterProjectChange()">
+              <option value="all">All Projects</option>
+              <option *ngFor="let p of projects" [value]="p.name">{{ p.name }}</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-label">Module:</label>
+            <select class="filter-select" [(ngModel)]="unitFilterModule">
+              <option value="all">All Modules</option>
+              <option *ngFor="let m of filteredUnitModules" [value]="m.name">{{ m.name }}</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-label">Release:</label>
+            <select class="filter-select" [(ngModel)]="unitFilterRelease">
+              <option value="all">All Releases</option>
+              <option *ngFor="let r of filteredUnitReleasePackages" [value]="r.name">{{ r.name }}</option>
+            </select>
+          </div>
+
+          <button class="btn btn-outline btn-sm reset-btn" *ngIf="hasUnitFilters()" (click)="resetUnitFilters()">Reset Filters</button>
+        </div>
+
         <div class="table-responsive">
           <table class="data-table">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Title</th>
+                <th (click)="toggleUnitSort('id')" class="sortable">
+                  ID <span class="sort-icon" *ngIf="unitSortColumn === 'id'">{{ unitSortDirection === 'asc' ? '↑' : '↓' }}</span>
+                </th>
+                <th (click)="toggleUnitSort('title')" class="sortable">
+                  TITLE <span class="sort-icon" *ngIf="unitSortColumn === 'title'">{{ unitSortDirection === 'asc' ? '↑' : '↓' }}</span>
+                </th>
                 <th>Module</th>
                 <th>Release</th>
                 <th>Type</th>
@@ -63,11 +101,11 @@ import { ToastService } from '../../core/services/toast.service';
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of items">
+              <tr *ngFor="let item of processedUnits">
                 <td>#{{ item.id }}</td>
                 <td class="font-semibold" [title]="item.description || item.title">{{ item.title }}</td>
                 <td>{{ item.module?.name }}</td>
-                <td>{{ item.release?.code }}</td>
+                <td>{{ item.release?.name || item.release?.code }}</td>
                 <td>{{ item.item_type?.label }}</td>
                 <td><span [style.color]="item.priority?.color" class="font-bold">{{ item.priority?.label }}</span></td>
                 <td>{{ item.owner?.display_name || 'Unassigned' }}</td>
@@ -76,6 +114,9 @@ import { ToastService } from '../../core/services/toast.service';
                   <button class="btn btn-outline btn-sm" (click)="openUnitModal(item)">Edit</button>
                   <button class="btn btn-danger-sm" (click)="confirmDelete('unit', item.id, item.title)">Delete</button>
                 </td>
+              </tr>
+              <tr *ngIf="processedUnits.length === 0">
+                <td colspan="9" class="empty-table-cell">No release units match the filter criteria.</td>
               </tr>
             </tbody>
           </table>
@@ -128,7 +169,16 @@ import { ToastService } from '../../core/services/toast.service';
       <!-- TAB 3: RELEASES -->
       <div class="tab-content glass-card" *ngIf="activeTab === 'releases'">
         <div class="tab-banner">
-          <h3>Release Packages</h3>
+          <div class="banner-title-group">
+            <h3>Release Packages</h3>
+            <div class="filter-group ml-4">
+              <label class="filter-label">Project:</label>
+              <select class="filter-select" [(ngModel)]="releaseFilterProject">
+                <option value="all">All Projects</option>
+                <option *ngFor="let p of projects" [value]="p.name">{{ p.name }}</option>
+              </select>
+            </div>
+          </div>
           <button class="btn btn-action-lg" (click)="openReleaseModal()">+ New Release Package</button>
         </div>
 
@@ -136,9 +186,13 @@ import { ToastService } from '../../core/services/toast.service';
           <table class="data-table">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Release Code</th>
-                <th>Release Name</th>
+                <th (click)="toggleReleaseSort('id')" class="sortable">
+                  ID <span class="sort-icon" *ngIf="releaseSortColumn === 'id'">{{ releaseSortDirection === 'asc' ? '↑' : '↓' }}</span>
+                </th>
+                <th>Project</th>
+                <th (click)="toggleReleaseSort('name')" class="sortable">
+                  RELEASE NAME <span class="sort-icon" *ngIf="releaseSortColumn === 'name'">{{ releaseSortDirection === 'asc' ? '↑' : '↓' }}</span>
+                </th>
                 <th>Target Date</th>
                 <th>Status</th>
                 <th>Owner</th>
@@ -147,9 +201,9 @@ import { ToastService } from '../../core/services/toast.service';
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let r of releases">
+              <tr *ngFor="let r of processedReleases">
                 <td>#{{ r.id }}</td>
-                <td class="font-bold">{{ r.code }}</td>
+                <td><span class="font-bold text-accent">{{ r.project?.name || '—' }}</span></td>
                 <td>{{ r.name }}</td>
                 <td>{{ r.target_date || 'Not Set' }}</td>
                 <td><span class="status-badge" [style.color]="r.status?.color">{{ r.status?.label }}</span></td>
@@ -178,6 +232,7 @@ import { ToastService } from '../../core/services/toast.service';
             <table class="data-table">
               <thead>
                 <tr>
+                  <th>ID</th>
                   <th>Code</th>
                   <th>Label</th>
                   <th>Description</th>
@@ -188,6 +243,7 @@ import { ToastService } from '../../core/services/toast.service';
               </thead>
               <tbody>
                 <tr *ngFor="let c of catalogMap[catKey]">
+                  <td class="font-mono text-muted">#{{ c.id }}</td>
                   <td><code>{{ c.code }}</code></td>
                   <td class="font-bold">{{ c.label }}</td>
                   <td>{{ c.description || '—' }}</td>
@@ -264,14 +320,14 @@ import { ToastService } from '../../core/services/toast.service';
             <div class="form-row">
               <div class="form-group col">
                 <label>Module <span class="required-star">*</span></label>
-                <select class="form-control" [(ngModel)]="unitForm.module_id">
-                  <option *ngFor="let m of modulesList" [ngValue]="m.id">{{ m.name }}</option>
+                <select class="form-control" [(ngModel)]="unitForm.module_id" (change)="onUnitModuleChange()">
+                  <option *ngFor="let m of modulesList" [ngValue]="m.id">{{ m.name }} ({{ m.project?.name || 'Project ' + m.project_id }})</option>
                 </select>
               </div>
               <div class="form-group col">
                 <label>Release Package <span class="required-star">*</span></label>
                 <select class="form-control" [(ngModel)]="unitForm.release_id">
-                  <option *ngFor="let r of releases" [ngValue]="r.id">{{ r.name }}</option>
+                  <option *ngFor="let r of availableUnitReleases" [ngValue]="r.id">{{ r.name }} ({{ r.project?.name || 'Project ' + r.project_id }})</option>
                 </select>
               </div>
             </div>
@@ -301,10 +357,6 @@ import { ToastService } from '../../core/services/toast.service';
                 <label>Jira Key</label>
                 <input type="text" class="form-control" [(ngModel)]="unitForm.jira_key" placeholder="e.g. RPT-104">
               </div>
-            </div>
-            <div class="form-group">
-              <label>Next Action</label>
-              <input type="text" class="form-control" [(ngModel)]="unitForm.next_action" placeholder="Describe next coordination step">
             </div>
           </div>
           <div class="modal-footer">
@@ -591,6 +643,25 @@ import { ToastService } from '../../core/services/toast.service';
     .tab-banner h3 { font-size: 1.2rem; color: #FFF; }
     .banner-actions { display: flex; gap: 0.75rem; }
 
+    /* Filter Toolbar Styles (Matching Environment Tracking Matrix) */
+    .filter-toolbar {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 1rem;
+      padding-bottom: 1.25rem; margin-bottom: 1rem; border-bottom: 1px solid var(--bg-surface-border);
+    }
+    .filter-group { display: flex; align-items: center; gap: 0.4rem; }
+    .search-box {
+      position: relative; background: #0F172A; border: 1px solid var(--bg-surface-border);
+      border-radius: var(--radius-md); padding: 0.35rem 0.65rem; display: flex; align-items: center; gap: 0.5rem; min-width: 240px;
+    }
+    .search-box svg { color: var(--text-muted); flex-shrink: 0; }
+    .filter-input { background: none; border: none; outline: none; color: #FFF; font-size: 0.825rem; width: 100%; }
+    .filter-label { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
+    .filter-select {
+      background: #0F172A; border: 1px solid var(--bg-surface-border); border-radius: var(--radius-md);
+      color: #FFF; font-size: 0.8rem; padding: 0.35rem 0.6rem; outline: none; cursor: pointer;
+    }
+    .reset-btn { font-size: 0.75rem; padding: 0.3rem 0.6rem; }
+
     .btn-action-lg {
       display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem;
       border-radius: var(--radius-md); background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
@@ -643,7 +714,14 @@ import { ToastService } from '../../core/services/toast.service';
   `]
 })
 export class SettingsComponent implements OnInit {
-  activeTab: 'units' | 'projects' | 'releases' | 'catalogs' | 'people' = 'units';
+  activeTab: 'units' | 'projects' | 'releases' | 'catalogs' | 'people' = 'projects';
+  releaseFilterProject: string = 'all';
+
+  // Release Units tab filter state
+  unitFilterText: string = '';
+  unitFilterProject: string = 'all';
+  unitFilterModule: string = 'all';
+  unitFilterRelease: string = 'all';
 
   items: ReleaseItem[] = [];
   projects: Project[] = [];
@@ -655,7 +733,7 @@ export class SettingsComponent implements OnInit {
   // Modals state
   showUnitModal = false;
   editingUnitId: number | null = null;
-  unitForm = { title: '', description: '', module_id: 0, release_id: 0, item_type_id: 0, priority_id: 0, owner_person_id: null as number | null, jira_key: '', next_action: '' };
+  unitForm = { title: '', description: '', module_id: 0, release_id: 0, item_type_id: 0, priority_id: 0, owner_person_id: null as number | null, jira_key: '' };
 
   showProjectModal = false;
   editingProjectId: number | null = null;
@@ -705,6 +783,152 @@ export class SettingsComponent implements OnInit {
     this.apiService.getCatalogs().subscribe(res => this.catalogMap = res.catalogs || {});
   }
 
+  get filteredUnitModules(): Module[] {
+    if (this.unitFilterProject === 'all') {
+      return this.modulesList;
+    }
+    const matchedProj = this.projects.find(p => p.name === this.unitFilterProject);
+    if (!matchedProj) return this.modulesList;
+    return this.modulesList.filter(m => m.project_id === matchedProj.id);
+  }
+
+  get filteredUnitReleasePackages(): Release[] {
+    if (this.unitFilterProject === 'all') {
+      return this.releases;
+    }
+    const matchedProj = this.projects.find(p => p.name === this.unitFilterProject);
+    if (!matchedProj) return this.releases;
+    return this.releases.filter(r => r.project_id === matchedProj.id);
+  }
+
+  onUnitFilterProjectChange(): void {
+    const availModNames = this.filteredUnitModules.map(m => m.name);
+    if (this.unitFilterModule !== 'all' && !availModNames.includes(this.unitFilterModule)) {
+      this.unitFilterModule = 'all';
+    }
+    const availRelNames = this.filteredUnitReleasePackages.map(r => r.name);
+    if (this.unitFilterRelease !== 'all' && !availRelNames.includes(this.unitFilterRelease)) {
+      this.unitFilterRelease = 'all';
+    }
+  }
+
+  hasUnitFilters(): boolean {
+    return !!this.unitFilterText || this.unitFilterProject !== 'all' || this.unitFilterModule !== 'all' || this.unitFilterRelease !== 'all';
+  }
+
+  resetUnitFilters(): void {
+    this.unitFilterText = '';
+    this.unitFilterProject = 'all';
+    this.unitFilterModule = 'all';
+    this.unitFilterRelease = 'all';
+  }
+
+  unitSortColumn: string = 'id';
+  unitSortDirection: 'asc' | 'desc' = 'asc';
+
+  toggleUnitSort(column: string): void {
+    if (this.unitSortColumn === column) {
+      this.unitSortDirection = this.unitSortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.unitSortColumn = column;
+      this.unitSortDirection = 'asc';
+    }
+  }
+
+  get processedUnits(): ReleaseItem[] {
+    let list = [...this.items];
+
+    if (this.unitFilterText.trim()) {
+      const q = this.unitFilterText.toLowerCase();
+      list = list.filter(i =>
+        i.title.toLowerCase().includes(q) ||
+        (i.description && i.description.toLowerCase().includes(q))
+      );
+    }
+
+    if (this.unitFilterProject !== 'all') {
+      list = list.filter(i => i.project?.name === this.unitFilterProject || i.module?.project?.name === this.unitFilterProject);
+    }
+
+    if (this.unitFilterModule !== 'all') {
+      list = list.filter(i => i.module?.name === this.unitFilterModule);
+    }
+
+    if (this.unitFilterRelease !== 'all') {
+      list = list.filter(i => i.release?.name === this.unitFilterRelease || i.release?.code === this.unitFilterRelease);
+    }
+
+    list.sort((a, b) => {
+      let valA: any = '';
+      let valB: any = '';
+      switch (this.unitSortColumn) {
+        case 'id':
+          valA = a.id;
+          valB = b.id;
+          break;
+        case 'title':
+          valA = a.title || '';
+          valB = b.title || '';
+          break;
+      }
+      if (valA < valB) return this.unitSortDirection === 'asc' ? -1 : 1;
+      if (valA > valB) return this.unitSortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
+
+    return list;
+  }
+
+  releaseSortColumn: string = 'id';
+  releaseSortDirection: 'asc' | 'desc' = 'asc';
+
+  toggleReleaseSort(column: string): void {
+    if (this.releaseSortColumn === column) {
+      this.releaseSortDirection = this.releaseSortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.releaseSortColumn = column;
+      this.releaseSortDirection = 'asc';
+    }
+  }
+
+  get processedReleases(): Release[] {
+    let list = [...this.releases];
+    if (this.releaseFilterProject !== 'all') {
+      list = list.filter(r => r.project?.name === this.releaseFilterProject);
+    }
+    list.sort((a, b) => {
+      let valA: any = '';
+      let valB: any = '';
+      switch (this.releaseSortColumn) {
+        case 'id':
+          valA = a.id;
+          valB = b.id;
+          break;
+        case 'name':
+          valA = a.name || '';
+          valB = b.name || '';
+          break;
+      }
+      if (valA < valB) return this.releaseSortDirection === 'asc' ? -1 : 1;
+      if (valA > valB) return this.releaseSortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
+    return list;
+  }
+
+  get availableUnitReleases(): Release[] {
+    const selectedMod = this.modulesList.find(m => m.id === Number(this.unitForm.module_id));
+    if (!selectedMod) return this.releases;
+    return this.releases.filter(r => r.project_id === selectedMod.project_id);
+  }
+
+  onUnitModuleChange(): void {
+    const avail = this.availableUnitReleases;
+    if (avail.length > 0 && !avail.some(r => r.id === Number(this.unitForm.release_id))) {
+      this.unitForm.release_id = avail[0].id;
+    }
+  }
+
   get catalogCategories(): string[] {
     return Object.keys(this.catalogMap);
   }
@@ -736,7 +960,6 @@ export class SettingsComponent implements OnInit {
         priority_id: item.priority_id,
         owner_person_id: item.owner_person_id || null,
         jira_key: item.jira_key || '',
-        next_action: item.next_action || '',
       };
     } else {
       this.editingUnitId = null;
@@ -749,9 +972,9 @@ export class SettingsComponent implements OnInit {
         priority_id: this.catalogMap['priority']?.[0]?.id || 0,
         owner_person_id: null,
         jira_key: '',
-        next_action: '',
       };
     }
+    this.onUnitModuleChange();
     this.showUnitModal = true;
   }
 
@@ -763,7 +986,7 @@ export class SettingsComponent implements OnInit {
         this.loadAllData();
       });
     } else {
-      const payload = { ...this.unitForm, project_id: this.projects[0]?.id || 1 };
+      const payload = { ...this.unitForm };
       this.apiService.createReleaseItem(payload).subscribe(() => {
         this.showUnitModal = false;
         this.toastService.success('New Release unit created successfully!');
