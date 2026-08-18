@@ -485,7 +485,11 @@ export class MatrixComponent implements OnInit {
   }
 
   getEnvState(item: ReleaseItem, envCode: string) {
-    return item.environment_states?.find((s: any) => s.project_environment?.environment?.code === envCode);
+    const projId = item.project?.id || item.module?.project_id;
+    return item.environment_states?.find((s: any) =>
+      s.project_environment?.environment?.code === envCode &&
+      (!projId || s.project_environment?.project_id === projId)
+    );
   }
 
   getEnvStateLabel(item: ReleaseItem, envCode: string): string {
@@ -675,7 +679,11 @@ export class MatrixComponent implements OnInit {
     this.selectedItem = item;
     this.selectedEnvCode = envCode;
 
-    const penv = this.projEnvs.find((p: any) => p.environment?.code === envCode);
+    const projId = item.project?.id || item.module?.project_id;
+    const project = this.projectsList.find(p => p.id === projId) || this.projectsList[0];
+    const projectEnvs = project?.project_environments || [];
+
+    const penv = projectEnvs.find((p: any) => p.environment?.code === envCode);
     const existing = this.getEnvState(item, envCode);
 
     this.promotionForm = {

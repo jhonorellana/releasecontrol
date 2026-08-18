@@ -31,6 +31,19 @@ class EnvironmentPromotionService
         ) {
             $now = Carbon::now();
 
+            $itemProjId = $item->module ? $item->module->project_id : null;
+            if ($itemProjId) {
+                $targetPE = \App\Models\ProjectEnvironment::find($projectEnvironmentId);
+                if ($targetPE && $targetPE->project_id !== $itemProjId) {
+                    $matchingPE = \App\Models\ProjectEnvironment::where('project_id', $itemProjId)
+                        ->where('environment_id', $targetPE->environment_id)
+                        ->first();
+                    if ($matchingPE) {
+                        $projectEnvironmentId = $matchingPE->id;
+                    }
+                }
+            }
+
             $existingState = ReleaseItemEnvironmentState::where('release_item_id', $item->id)
                 ->where('project_environment_id', $projectEnvironmentId)
                 ->lockForUpdate()
