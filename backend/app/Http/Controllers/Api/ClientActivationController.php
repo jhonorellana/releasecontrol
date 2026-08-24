@@ -19,7 +19,7 @@ class ClientActivationController extends Controller
 
         $validated = $request->validate([
             'status_id' => 'required|exists:catalog_values,id',
-            'scope_type' => 'required|string|in:all,group,plan,not_applicable,unknown',
+            'scope_type' => 'required|string|in:global,selective,off,all,group,plan,not_applicable,unknown',
             'scope_description' => 'nullable|string|max:500',
             'activated_at' => 'nullable|date',
             'source_summary' => 'required|string|max:500',

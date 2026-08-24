@@ -96,9 +96,9 @@ import { ToastService } from '../../core/services/toast.service';
                         (click)="openEditActionModal(item, ap)"
                         title="Click to edit Action Item: {{ ap.text }}"
                       >
-                        <span class="action-bullet" [class.blocker-bullet]="ap.isBlocker">•</span>
+                        <span class="action-bullet" [style.color]="ap.priorityColor">•</span>
                         <span class="blocker-tag" *ngIf="ap.isBlocker">BLOCKER</span>
-                        <span class="action-text action-link">{{ ap.text }}</span>
+                        <span class="action-text action-link" [style.color]="ap.isBlocker ? '#FCA5A5' : ap.priorityColor">{{ ap.text }}</span>
                         <span class="action-owner" *ngIf="ap.ownerName">({{ ap.ownerName }})</span>
                         <svg class="edit-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                       </div>
@@ -508,8 +508,34 @@ export class MatrixComponent implements OnInit {
   }
 
   getLatestVerifiedDate(item: ReleaseItem): string {
-    const dates = item.environment_states?.map((s: any) => s.verified_at).filter(Boolean) || [];
-    return dates.length > 0 ? dates[0] : '';
+    const dates: string[] = [];
+
+    // 1. Gather update/creation dates from related action points (follow_ups)
+    if (item.follow_ups && item.follow_ups.length > 0) {
+      for (const fu of item.follow_ups) {
+        if (fu.updated_at) dates.push(fu.updated_at);
+        else if (fu.created_at) dates.push(fu.created_at);
+      }
+    }
+
+    // 2. Fallback to environment states verified_at if no follow-ups exist
+    if (dates.length === 0 && item.environment_states) {
+      for (const s of item.environment_states) {
+        if (s.verified_at) dates.push(s.verified_at);
+      }
+    }
+
+    // 3. Fallback to item updated_at / created_at
+    if (dates.length === 0) {
+      if (item.updated_at) dates.push(item.updated_at);
+      else if (item.created_at) dates.push(item.created_at);
+    }
+
+    if (dates.length === 0) return '';
+
+    // Sort descending to find the latest date
+    dates.sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
+    return dates[0];
   }
 
   isClosedStatus(fu: any): boolean {
@@ -536,15 +562,17 @@ export class MatrixComponent implements OnInit {
     return false;
   }
 
-  getActionPoints(item: ReleaseItem): { id?: number; text: string; isBlocker: boolean; ownerName?: string; rawFollowUp?: any }[] {
-    const results: { id?: number; text: string; isBlocker: boolean; ownerName?: string; rawFollowUp?: any }[] = [];
+  getActionPoints(item: ReleaseItem): { id?: number; text: string; isBlocker: boolean; priorityColor: string; priorityLabel?: string; ownerName?: string; rawFollowUp?: any }[] {
+    const results: { id?: number; text: string; isBlocker: boolean; priorityColor: string; priorityLabel?: string; ownerName?: string; rawFollowUp?: any }[] = [];
 
     if (item.follow_ups && item.follow_ups.length > 0) {
-      // Sort follow-ups so blockers appear first
+      // Sort follow-ups so blockers appear first, then by priority
       const sorted = [...item.follow_ups].sort((a: any, b: any) => {
         if (a.is_blocker && !b.is_blocker) return -1;
         if (!a.is_blocker && b.is_blocker) return 1;
-        return 0;
+        const orderA = a.priority?.sort_order ?? 99;
+        const orderB = b.priority?.sort_order ?? 99;
+        return orderA - orderB;
       });
 
       for (const fu of sorted) {
@@ -552,10 +580,24 @@ export class MatrixComponent implements OnInit {
           continue;
         }
         if (fu.action) {
+          let pColor = fu.priority?.color;
+          if (!pColor) {
+            if (fu.is_blocker) pColor = '#EF4444';
+            else if (fu.priority_id && this.priorityCatalogs.length > 0) {
+              const cat = this.priorityCatalogs.find(p => p.id === fu.priority_id);
+              pColor = cat?.color || '#3B82F6';
+            } else {
+              pColor = '#3B82F6';
+            }
+          }
+          if (fu.is_blocker) pColor = '#EF4444';
+
           results.push({
             id: fu.id,
             text: fu.action,
             isBlocker: !!fu.is_blocker,
+            priorityColor: pColor,
+            priorityLabel: fu.priority?.label || '',
             ownerName: fu.owner?.display_name,
             rawFollowUp: fu
           });

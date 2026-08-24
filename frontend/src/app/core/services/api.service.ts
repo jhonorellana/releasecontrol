@@ -122,6 +122,8 @@ export interface FollowUp {
   notes?: string;
   outcome?: string;
   completed_at?: string;
+  created_at?: string;
+  updated_at?: string;
   status?: CatalogValue;
   priority?: CatalogValue;
   owner?: Person;
@@ -161,6 +163,8 @@ export interface ReleaseItem {
   client_activation?: ClientActivation;
   follow_ups?: FollowUp[];
   health?: HealthStatus;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface AuditEvent {
