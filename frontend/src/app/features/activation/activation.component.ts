@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService, ReleaseItem, CatalogValue, Person, Project, Module } from '../../core/services/api.service';
 import { ToastService } from '../../core/services/toast.service';
+import { FilterStateService } from '../../core/services/filter-state.service';
 
 @Component({
   selector: 'app-activation',
@@ -22,7 +23,7 @@ import { ToastService } from '../../core/services/toast.service';
         <div class="filter-toolbar">
           <div class="filter-group search-box">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" class="filter-input" placeholder="Search by release unit name..." [(ngModel)]="filterText">
+            <input type="text" class="filter-input" placeholder="Search by release unit name..." [(ngModel)]="filterText" (ngModelChange)="onFilterTextChange()">
           </div>
 
           <div class="filter-group">
@@ -35,7 +36,7 @@ import { ToastService } from '../../core/services/toast.service';
 
           <div class="filter-group">
             <label class="filter-label">MODULE:</label>
-            <select class="filter-select" [(ngModel)]="filterModule">
+            <select class="filter-select" [(ngModel)]="filterModule" (change)="onModuleChange()">
               <option value="all">All Modules</option>
               <option *ngFor="let m of filteredModules" [value]="m.name">{{ m.name }}</option>
             </select>
@@ -43,7 +44,7 @@ import { ToastService } from '../../core/services/toast.service';
 
           <div class="filter-group">
             <label class="filter-label">ACTIVATION STATUS:</label>
-            <select class="filter-select" [(ngModel)]="filterStatus">
+            <select class="filter-select" [(ngModel)]="filterStatus" (change)="onStatusChange()">
               <option value="all">All Statuses</option>
               <option *ngFor="let s of activationCatalogs" [value]="s.code">{{ s.label }}</option>
             </select>
@@ -242,11 +243,78 @@ export class ActivationComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private filterStateService: FilterStateService
   ) {}
 
   ngOnInit(): void {
+    this.restoreFilterState();
     this.loadData();
+  }
+
+  restoreFilterState(): void {
+    const saved = this.filterStateService.getActivationState();
+    this.filterText = saved.filterText || '';
+    this.filterProject = saved.filterProject || 'all';
+    this.filterModule = saved.filterModule || 'all';
+    this.filterStatus = saved.filterStatus || 'all';
+    this.sortColumn = saved.sortColumn || 'title';
+    this.sortDirection = saved.sortDirection || 'asc';
+  }
+
+  saveFilterState(): void {
+    this.filterStateService.saveActivationState({
+      filterText: this.filterText,
+      filterProject: this.filterProject,
+      filterModule: this.filterModule,
+      filterStatus: this.filterStatus,
+      sortColumn: this.sortColumn,
+      sortDirection: this.sortDirection
+    });
+  }
+
+  onFilterTextChange(): void {
+    this.saveFilterState();
+  }
+
+  onProjectChange(): void {
+    const availNames = this.filteredModules.map(m => m.name);
+    if (this.filterModule !== 'all' && !availNames.includes(this.filterModule)) {
+      this.filterModule = 'all';
+    }
+    this.saveFilterState();
+  }
+
+  onModuleChange(): void {
+    this.saveFilterState();
+  }
+
+  onStatusChange(): void {
+    this.saveFilterState();
+  }
+
+  toggleSort(column: string): void {
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = 'asc';
+    }
+    this.saveFilterState();
+  }
+
+  hasActiveFilters(): boolean {
+    return !!this.filterText || this.filterProject !== 'all' || this.filterModule !== 'all' || this.filterStatus !== 'all';
+  }
+
+  resetFilters(): void {
+    const defaultState = this.filterStateService.resetActivationState();
+    this.filterText = defaultState.filterText;
+    this.filterProject = defaultState.filterProject;
+    this.filterModule = defaultState.filterModule;
+    this.filterStatus = defaultState.filterStatus;
+    this.sortColumn = defaultState.sortColumn;
+    this.sortDirection = defaultState.sortDirection;
   }
 
   loadData(): void {
@@ -279,13 +347,6 @@ export class ActivationComponent implements OnInit {
     const matchedProj = this.projectsList.find(p => p.name === this.filterProject);
     if (!matchedProj) return this.modulesList;
     return this.modulesList.filter(m => m.project_id === matchedProj.id);
-  }
-
-  onProjectChange(): void {
-    const availNames = this.filteredModules.map(m => m.name);
-    if (this.filterModule !== 'all' && !availNames.includes(this.filterModule)) {
-      this.filterModule = 'all';
-    }
   }
 
   get processedItems(): ReleaseItem[] {
@@ -337,26 +398,6 @@ export class ActivationComponent implements OnInit {
     });
 
     return list;
-  }
-
-  toggleSort(column: string): void {
-    if (this.sortColumn === column) {
-      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-    } else {
-      this.sortColumn = column;
-      this.sortDirection = 'asc';
-    }
-  }
-
-  hasActiveFilters(): boolean {
-    return !!this.filterText || this.filterProject !== 'all' || this.filterModule !== 'all' || this.filterStatus !== 'all';
-  }
-
-  resetFilters(): void {
-    this.filterText = '';
-    this.filterProject = 'all';
-    this.filterModule = 'all';
-    this.filterStatus = 'all';
   }
 
   getProdStateLabel(item: ReleaseItem): string {

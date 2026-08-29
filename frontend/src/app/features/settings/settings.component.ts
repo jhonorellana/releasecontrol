@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService, Project, Module, Release, ReleaseItem, CatalogValue, Person } from '../../core/services/api.service';
 import { ToastService } from '../../core/services/toast.service';
+import { FilterStateService } from '../../core/services/filter-state.service';
 
 @Component({
   selector: 'app-settings',
@@ -19,22 +20,22 @@ import { ToastService } from '../../core/services/toast.service';
 
       <!-- Navigation Tabs -->
       <div class="tabs-header">
-        <button class="tab-btn" [class.active]="activeTab === 'projects'" (click)="activeTab = 'projects'">
+        <button class="tab-btn" [class.active]="activeTab === 'projects'" (click)="selectTab('projects')">
           <span>Projects & Modules</span>
           <span class="tab-count">{{ projects.length }}</span>
         </button>
-        <button class="tab-btn" [class.active]="activeTab === 'releases'" (click)="activeTab = 'releases'">
+        <button class="tab-btn" [class.active]="activeTab === 'releases'" (click)="selectTab('releases')">
           <span>Releases</span>
           <span class="tab-count">{{ releases.length }}</span>
         </button>
-        <button class="tab-btn" [class.active]="activeTab === 'units'" (click)="activeTab = 'units'">
+        <button class="tab-btn" [class.active]="activeTab === 'units'" (click)="selectTab('units')">
           <span>Release Units</span>
           <span class="tab-count">{{ items.length }}</span>
         </button>
-        <button class="tab-btn" [class.active]="activeTab === 'catalogs'" (click)="activeTab = 'catalogs'">
+        <button class="tab-btn" [class.active]="activeTab === 'catalogs'" (click)="selectTab('catalogs')">
           <span>Catalog Values</span>
         </button>
-        <button class="tab-btn" [class.active]="activeTab === 'people'" (click)="activeTab = 'people'">
+        <button class="tab-btn" [class.active]="activeTab === 'people'" (click)="selectTab('people')">
           <span>Team Members</span>
           <span class="tab-count">{{ people.length }}</span>
         </button>
@@ -51,7 +52,7 @@ import { ToastService } from '../../core/services/toast.service';
         <div class="filter-toolbar mb-4">
           <div class="filter-group search-box">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" class="filter-input" placeholder="Search by release unit name..." [(ngModel)]="unitFilterText">
+            <input type="text" class="filter-input" placeholder="Search by release unit name..." [(ngModel)]="unitFilterText" (ngModelChange)="onUnitFilterChange()">
           </div>
 
           <div class="filter-group">
@@ -64,7 +65,7 @@ import { ToastService } from '../../core/services/toast.service';
 
           <div class="filter-group">
             <label class="filter-label">Module:</label>
-            <select class="filter-select" [(ngModel)]="unitFilterModule">
+            <select class="filter-select" [(ngModel)]="unitFilterModule" (change)="onUnitFilterChange()">
               <option value="all">All Modules</option>
               <option *ngFor="let m of filteredUnitModules" [value]="m.name">{{ m.name }}</option>
             </select>
@@ -72,7 +73,7 @@ import { ToastService } from '../../core/services/toast.service';
 
           <div class="filter-group">
             <label class="filter-label">Release:</label>
-            <select class="filter-select" [(ngModel)]="unitFilterRelease">
+            <select class="filter-select" [(ngModel)]="unitFilterRelease" (change)="onUnitFilterChange()">
               <option value="all">All Releases</option>
               <option *ngFor="let r of filteredUnitReleasePackages" [value]="r.name">{{ r.name }}</option>
             </select>
@@ -173,7 +174,7 @@ import { ToastService } from '../../core/services/toast.service';
             <h3>Release Packages</h3>
             <div class="filter-group ml-4">
               <label class="filter-label">Project:</label>
-              <select class="filter-select" [(ngModel)]="releaseFilterProject">
+              <select class="filter-select" [(ngModel)]="releaseFilterProject" (change)="onReleaseFilterProjectChange()">
                 <option value="all">All Projects</option>
                 <option *ngFor="let p of projects" [value]="p.name">{{ p.name }}</option>
               </select>
@@ -767,11 +768,105 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private filterStateService: FilterStateService
   ) {}
 
   ngOnInit(): void {
+    this.restoreFilterState();
     this.loadAllData();
+  }
+
+  restoreFilterState(): void {
+    const saved = this.filterStateService.getSettingsState();
+    this.activeTab = saved.activeTab || 'projects';
+    this.releaseFilterProject = saved.releaseFilterProject || 'all';
+    this.releaseSortColumn = saved.releaseSortColumn || 'id';
+    this.releaseSortDirection = saved.releaseSortDirection || 'asc';
+    this.unitFilterText = saved.unitFilterText || '';
+    this.unitFilterProject = saved.unitFilterProject || 'all';
+    this.unitFilterModule = saved.unitFilterModule || 'all';
+    this.unitFilterRelease = saved.unitFilterRelease || 'all';
+    this.unitSortColumn = saved.unitSortColumn || 'id';
+    this.unitSortDirection = saved.unitSortDirection || 'asc';
+  }
+
+  saveFilterState(): void {
+    this.filterStateService.saveSettingsState({
+      activeTab: this.activeTab,
+      releaseFilterProject: this.releaseFilterProject,
+      releaseSortColumn: this.releaseSortColumn,
+      releaseSortDirection: this.releaseSortDirection,
+      unitFilterText: this.unitFilterText,
+      unitFilterProject: this.unitFilterProject,
+      unitFilterModule: this.unitFilterModule,
+      unitFilterRelease: this.unitFilterRelease,
+      unitSortColumn: this.unitSortColumn,
+      unitSortDirection: this.unitSortDirection
+    });
+  }
+
+  selectTab(tab: 'projects' | 'releases' | 'units' | 'catalogs' | 'people'): void {
+    this.activeTab = tab;
+    this.saveFilterState();
+  }
+
+  onReleaseFilterProjectChange(): void {
+    this.saveFilterState();
+  }
+
+  onUnitFilterChange(): void {
+    this.saveFilterState();
+  }
+
+  onUnitFilterProjectChange(): void {
+    const availModNames = this.filteredUnitModules.map(m => m.name);
+    if (this.unitFilterModule !== 'all' && !availModNames.includes(this.unitFilterModule)) {
+      this.unitFilterModule = 'all';
+    }
+    const availRelNames = this.filteredUnitReleasePackages.map(r => r.name);
+    if (this.unitFilterRelease !== 'all' && !availRelNames.includes(this.unitFilterRelease)) {
+      this.unitFilterRelease = 'all';
+    }
+    this.saveFilterState();
+  }
+
+  hasUnitFilters(): boolean {
+    return !!this.unitFilterText || this.unitFilterProject !== 'all' || this.unitFilterModule !== 'all' || this.unitFilterRelease !== 'all';
+  }
+
+  resetUnitFilters(): void {
+    this.filterStateService.resetUnitSettingsState();
+    this.unitFilterText = '';
+    this.unitFilterProject = 'all';
+    this.unitFilterModule = 'all';
+    this.unitFilterRelease = 'all';
+  }
+
+  unitSortColumn: string = 'id';
+  unitSortDirection: 'asc' | 'desc' = 'asc';
+
+  toggleUnitSort(column: string): void {
+    if (this.unitSortColumn === column) {
+      this.unitSortDirection = this.unitSortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.unitSortColumn = column;
+      this.unitSortDirection = 'asc';
+    }
+    this.saveFilterState();
+  }
+
+  releaseSortColumn: string = 'id';
+  releaseSortDirection: 'asc' | 'desc' = 'asc';
+
+  toggleReleaseSort(column: string): void {
+    if (this.releaseSortColumn === column) {
+      this.releaseSortDirection = this.releaseSortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.releaseSortColumn = column;
+      this.releaseSortDirection = 'asc';
+    }
+    this.saveFilterState();
   }
 
   loadAllData(): void {
@@ -799,40 +894,6 @@ export class SettingsComponent implements OnInit {
     const matchedProj = this.projects.find(p => p.name === this.unitFilterProject);
     if (!matchedProj) return this.releases;
     return this.releases.filter(r => r.project_id === matchedProj.id);
-  }
-
-  onUnitFilterProjectChange(): void {
-    const availModNames = this.filteredUnitModules.map(m => m.name);
-    if (this.unitFilterModule !== 'all' && !availModNames.includes(this.unitFilterModule)) {
-      this.unitFilterModule = 'all';
-    }
-    const availRelNames = this.filteredUnitReleasePackages.map(r => r.name);
-    if (this.unitFilterRelease !== 'all' && !availRelNames.includes(this.unitFilterRelease)) {
-      this.unitFilterRelease = 'all';
-    }
-  }
-
-  hasUnitFilters(): boolean {
-    return !!this.unitFilterText || this.unitFilterProject !== 'all' || this.unitFilterModule !== 'all' || this.unitFilterRelease !== 'all';
-  }
-
-  resetUnitFilters(): void {
-    this.unitFilterText = '';
-    this.unitFilterProject = 'all';
-    this.unitFilterModule = 'all';
-    this.unitFilterRelease = 'all';
-  }
-
-  unitSortColumn: string = 'id';
-  unitSortDirection: 'asc' | 'desc' = 'asc';
-
-  toggleUnitSort(column: string): void {
-    if (this.unitSortColumn === column) {
-      this.unitSortDirection = this.unitSortDirection === 'asc' ? 'desc' : 'asc';
-    } else {
-      this.unitSortColumn = column;
-      this.unitSortDirection = 'asc';
-    }
   }
 
   get processedUnits(): ReleaseItem[] {
@@ -877,18 +938,6 @@ export class SettingsComponent implements OnInit {
     });
 
     return list;
-  }
-
-  releaseSortColumn: string = 'id';
-  releaseSortDirection: 'asc' | 'desc' = 'asc';
-
-  toggleReleaseSort(column: string): void {
-    if (this.releaseSortColumn === column) {
-      this.releaseSortDirection = this.releaseSortDirection === 'asc' ? 'desc' : 'asc';
-    } else {
-      this.releaseSortColumn = column;
-      this.releaseSortDirection = 'asc';
-    }
   }
 
   get processedReleases(): Release[] {

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService, FollowUp, ReleaseItem, CatalogValue, Person, Project } from '../../core/services/api.service';
 import { ToastService } from '../../core/services/toast.service';
+import { FilterStateService } from '../../core/services/filter-state.service';
 
 @Component({
   selector: 'app-follow-ups',
@@ -27,12 +28,12 @@ import { ToastService } from '../../core/services/toast.service';
         <div class="filter-toolbar">
           <div class="filter-group search-box">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" class="filter-input" placeholder="Search unit or action..." [(ngModel)]="filterText">
+            <input type="text" class="filter-input" placeholder="Search unit or action..." [(ngModel)]="filterText" (ngModelChange)="onFilterChange()">
           </div>
 
           <div class="filter-group">
             <label class="filter-label">Project:</label>
-            <select class="filter-select" [(ngModel)]="filterProject">
+            <select class="filter-select" [(ngModel)]="filterProject" (change)="onFilterChange()">
               <option value="all">All Projects</option>
               <option *ngFor="let p of projectsList" [value]="p.name">{{ p.name }}</option>
             </select>
@@ -40,7 +41,7 @@ import { ToastService } from '../../core/services/toast.service';
 
           <div class="filter-group">
             <label class="filter-label">Status:</label>
-            <select class="filter-select" [(ngModel)]="filterStatus">
+            <select class="filter-select" [(ngModel)]="filterStatus" (change)="onFilterChange()">
               <option value="all">All Statuses</option>
               <option *ngFor="let s of statusCatalogs" [value]="s.code">{{ s.label }}</option>
             </select>
@@ -48,7 +49,7 @@ import { ToastService } from '../../core/services/toast.service';
 
           <div class="filter-group">
             <label class="filter-label">Priority:</label>
-            <select class="filter-select" [(ngModel)]="filterPriority">
+            <select class="filter-select" [(ngModel)]="filterPriority" (change)="onFilterChange()">
               <option value="all">All Priorities</option>
               <option *ngFor="let p of priorityCatalogs" [value]="p.code">{{ p.label }}</option>
             </select>
@@ -56,7 +57,7 @@ import { ToastService } from '../../core/services/toast.service';
 
           <div class="filter-group">
             <label class="filter-label">Owner:</label>
-            <select class="filter-select" [(ngModel)]="filterOwner">
+            <select class="filter-select" [(ngModel)]="filterOwner" (change)="onFilterChange()">
               <option value="all">All Owners</option>
               <option *ngFor="let p of people" [value]="p.display_name">{{ p.display_name }}</option>
             </select>
@@ -368,11 +369,66 @@ export class FollowUpsComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private filterStateService: FilterStateService
   ) {}
 
   ngOnInit(): void {
+    this.restoreFilterState();
     this.loadData();
+  }
+
+  restoreFilterState(): void {
+    const saved = this.filterStateService.getFollowUpsState();
+    this.filterText = saved.filterText || '';
+    this.filterProject = saved.filterProject || 'all';
+    this.filterStatus = saved.filterStatus || 'all';
+    this.filterPriority = saved.filterPriority || 'all';
+    this.filterOwner = saved.filterOwner || 'all';
+    this.sortColumn = saved.sortColumn || 'action';
+    this.sortDirection = saved.sortDirection || 'asc';
+  }
+
+  saveFilterState(): void {
+    this.filterStateService.saveFollowUpsState({
+      filterText: this.filterText,
+      filterProject: this.filterProject,
+      filterStatus: this.filterStatus,
+      filterPriority: this.filterPriority,
+      filterOwner: this.filterOwner,
+      sortColumn: this.sortColumn,
+      sortDirection: this.sortDirection
+    });
+  }
+
+  onFilterChange(): void {
+    this.saveFilterState();
+  }
+
+  toggleSort(column: string): void {
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = 'asc';
+    }
+    this.saveFilterState();
+  }
+
+  hasActiveFilters(): boolean {
+    return !!this.filterText || this.filterProject !== 'all' || this.filterStatus !== 'all' || this.filterPriority !== 'all' || this.filterOwner !== 'all' || this.filterBlockerOnly;
+  }
+
+  resetFilters(): void {
+    const defaultState = this.filterStateService.resetFollowUpsState();
+    this.filterText = defaultState.filterText;
+    this.filterProject = defaultState.filterProject;
+    this.filterStatus = defaultState.filterStatus;
+    this.filterPriority = defaultState.filterPriority;
+    this.filterOwner = defaultState.filterOwner;
+    this.sortColumn = defaultState.sortColumn;
+    this.sortDirection = defaultState.sortDirection;
+    this.filterBlockerOnly = false;
   }
 
   loadData(): void {
@@ -468,27 +524,6 @@ export class FollowUpsComponent implements OnInit {
     });
 
     return list;
-  }
-
-  toggleSort(column: string): void {
-    if (this.sortColumn === column) {
-      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-    } else {
-      this.sortColumn = column;
-      this.sortDirection = 'asc';
-    }
-  }
-
-  hasActiveFilters(): boolean {
-    return !!this.filterText || this.filterStatus !== 'all' || this.filterPriority !== 'all' || this.filterOwner !== 'all' || this.filterBlockerOnly;
-  }
-
-  resetFilters(): void {
-    this.filterText = '';
-    this.filterStatus = 'all';
-    this.filterPriority = 'all';
-    this.filterOwner = 'all';
-    this.filterBlockerOnly = false;
   }
 
   isOverdue(f: FollowUp): boolean {
