@@ -42,6 +42,15 @@ import { FilterStateService } from '../../core/services/filter-state.service';
             </select>
           </div>
 
+          <div class="filter-group">
+            <label class="filter-label">Action Items:</label>
+            <select class="filter-select" [(ngModel)]="filterActionStatus" (change)="onActionStatusFilterChange()">
+              <option value="all">All Units (Both)</option>
+              <option value="with_actions">With Active Actions</option>
+              <option value="without_actions">Without Active Actions</option>
+            </select>
+          </div>
+
           <button class="btn btn-outline btn-sm reset-btn" *ngIf="hasActiveFilters()" (click)="resetFilters()">Reset Filters</button>
         </div>
 
@@ -59,8 +68,12 @@ import { FilterStateService } from '../../core/services/filter-state.service';
                 <th>TATU</th>
                 <th>SITA</th>
                 <th>PROD</th>
-                <th (click)="toggleSort('next_action')" class="sortable">
-                  NEXT ACTION <span class="sort-icon" *ngIf="sortColumn === 'next_action'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                <th>NEXT ACTION</th>
+                <th (click)="toggleSort('owner')" class="sortable">
+                  OWNER <span class="sort-icon" *ngIf="sortColumn === 'owner'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                </th>
+                <th (click)="toggleSort('age')" class="sortable">
+                  AGE <span class="sort-icon" *ngIf="sortColumn === 'age'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
                 </th>
                 <th (click)="toggleSort('verified')" class="sortable">
                   LAST VERIFIED <span class="sort-icon" *ngIf="sortColumn === 'verified'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
@@ -100,7 +113,6 @@ import { FilterStateService } from '../../core/services/filter-state.service';
                         <span class="action-bullet" [style.color]="ap.priorityColor">•</span>
                         <span class="blocker-tag" *ngIf="ap.isBlocker">BLOCKER</span>
                         <span class="action-text action-link" [style.color]="ap.isBlocker ? '#FCA5A5' : ap.priorityColor">{{ ap.text }}</span>
-                        <span class="action-owner" *ngIf="ap.ownerName">({{ ap.ownerName }})</span>
                         <svg class="edit-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                       </div>
                     </div>
@@ -109,6 +121,20 @@ import { FilterStateService } from '../../core/services/filter-state.service';
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                       <span>Add Action</span>
                     </button>
+                  </div>
+                </td>
+                <td class="owner-cell">
+                  <div class="action-owners-list">
+                    <div *ngFor="let ap of getActionPoints(item)" class="action-owner-item">
+                      <span class="action-owner" *ngIf="ap.ownerName">({{ ap.ownerName }})</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="age-cell">
+                  <div class="action-ages-list">
+                    <div *ngFor="let ap of getActionPoints(item)" class="action-age-item">
+                      <span class="action-age-badge" *ngIf="ap.ageText" [class.age-stale]="(ap.ageDays || 0) > 7" title="Age: {{ ap.ageText }}">🕒 {{ ap.ageText }}</span>
+                    </div>
                   </div>
                 </td>
                 <td class="verified-cell">{{ getLatestVerifiedDate(item) | date:'yyyy-MM-dd' }}</td>
@@ -255,17 +281,28 @@ import { FilterStateService } from '../../core/services/filter-state.service';
     }
     .reset-btn { font-size: 0.75rem; padding: 0.3rem 0.6rem; }
 
-    /* Column Header Sorting */
+    /* Column Header Sorting & Row Demarcation */
     .matrix-table { width: 100%; border-collapse: collapse; }
     .matrix-table th {
-      padding: 0.85rem 1rem; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted);
-      border-bottom: 1px solid var(--bg-surface-border); user-select: none;
+      padding: 0.9rem 1rem; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.12); user-select: none; background: rgba(15, 23, 42, 0.4);
     }
     .matrix-table th.sortable { cursor: pointer; transition: color 0.15s ease; }
     .matrix-table th.sortable:hover { color: #FFF; }
     .sort-icon { color: var(--accent-primary); font-weight: 700; margin-left: 0.25rem; font-size: 0.85rem; }
 
-    .matrix-table td { padding: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-size: 0.85rem; vertical-align: middle; }
+    .matrix-table tbody tr {
+      transition: background-color 0.15s ease-in-out;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .matrix-table tbody tr:nth-child(even) {
+      background-color: rgba(255, 255, 255, 0.025);
+    }
+    .matrix-table tbody tr:hover {
+      background-color: rgba(99, 102, 241, 0.08) !important;
+    }
+    .matrix-table td { padding: 1.1rem 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); font-size: 0.85rem; vertical-align: middle; }
+    .item-id-cell { font-family: monospace; font-weight: 700; color: var(--accent-primary); font-size: 0.85rem; }
     .item-title { font-weight: 600; color: #FFF; font-size: 0.9rem; }
     .item-sub { font-size: 0.75rem; color: var(--text-subtle); margin-top: 0.2rem; }
 
@@ -298,13 +335,13 @@ import { FilterStateService } from '../../core/services/filter-state.service';
       color: #FFF;
       transform: translateY(-1px);
     }
-    .action-point-item { display: flex; align-items: flex-start; gap: 0.35rem; font-size: 0.82rem; line-height: 1.35; color: var(--text-main); }
-    .action-point-item.is-blocker { color: #FCA5A5; font-weight: 600; background: rgba(239, 68, 68, 0.12); padding: 0.25rem 0.45rem; border-radius: 4px; border-left: 3px solid #EF4444; }
-    .action-bullet { color: var(--accent-primary); font-weight: bold; font-size: 1.1rem; line-height: 1; flex-shrink: 0; margin-right: 0.1rem; }
-    .blocker-bullet { color: #EF4444; }
-    .blocker-tag { font-size: 0.65rem; font-weight: 800; background: #EF4444; color: #FFF; padding: 0.05rem 0.35rem; border-radius: 3px; letter-spacing: 0.03em; margin-right: 0.2rem; flex-shrink: 0; }
+    .action-points-list, .action-owners-list, .action-ages-list { display: flex; flex-direction: column; gap: 0.35rem; width: 100%; }
+    .action-point-item, .action-owner-item, .action-age-item { min-height: 24px; display: flex; align-items: center; }
+    .owner-cell, .age-cell { vertical-align: top; padding: 1rem 0.75rem; white-space: nowrap; }
     .action-text { flex: 1; word-break: break-word; }
-    .action-owner { font-size: 0.75rem; color: var(--text-muted); font-weight: 400; flex-shrink: 0; margin-left: 0.2rem; }
+    .action-owner { font-size: 0.78rem; color: #94A3B8; font-weight: 500; }
+    .action-age-badge { font-size: 0.75rem; color: #94A3B8; background: rgba(15, 23, 42, 0.6); padding: 0.15rem 0.45rem; border-radius: 4px; font-weight: 600; border: 1px solid rgba(255, 255, 255, 0.08); display: inline-flex; align-items: center; gap: 0.25rem; }
+    .action-age-badge.age-stale { color: #F59E0B; background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3); }
     .clickable-action { cursor: pointer; transition: var(--transition-fast); border-radius: 4px; padding: 0.15rem 0.35rem; }
     .clickable-action:hover { background: rgba(99, 102, 241, 0.18); }
     .clickable-action:hover .action-text { text-decoration: underline; color: #818CF8; }
@@ -340,6 +377,7 @@ export class MatrixComponent implements OnInit {
   filterText: string = '';
   filterProject: string = 'all';
   filterModule: string = 'all';
+  filterActionStatus: string = 'all';
   sortColumn: string = 'title';
   sortDirection: 'asc' | 'desc' = 'asc';
 
@@ -383,6 +421,7 @@ export class MatrixComponent implements OnInit {
     this.filterText = saved.filterText || '';
     this.filterProject = saved.filterProject || 'all';
     this.filterModule = saved.filterModule || 'all';
+    this.filterActionStatus = saved.filterActionStatus || 'all';
     this.sortColumn = saved.sortColumn || 'title';
     this.sortDirection = saved.sortDirection || 'asc';
   }
@@ -392,6 +431,7 @@ export class MatrixComponent implements OnInit {
       filterText: this.filterText,
       filterProject: this.filterProject,
       filterModule: this.filterModule,
+      filterActionStatus: this.filterActionStatus,
       sortColumn: this.sortColumn,
       sortDirection: this.sortDirection
     });
@@ -412,6 +452,10 @@ export class MatrixComponent implements OnInit {
     this.saveFilterState();
   }
 
+  onActionStatusFilterChange(): void {
+    this.saveFilterState();
+  }
+
   toggleSort(column: string): void {
     if (this.sortColumn === column) {
       this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
@@ -423,7 +467,7 @@ export class MatrixComponent implements OnInit {
   }
 
   hasActiveFilters(): boolean {
-    return !!this.filterText || this.filterProject !== 'all' || this.filterModule !== 'all';
+    return !!this.filterText || this.filterProject !== 'all' || this.filterModule !== 'all' || this.filterActionStatus !== 'all';
   }
 
   resetFilters(): void {
@@ -431,6 +475,7 @@ export class MatrixComponent implements OnInit {
     this.filterText = defaultState.filterText;
     this.filterProject = defaultState.filterProject;
     this.filterModule = defaultState.filterModule;
+    this.filterActionStatus = defaultState.filterActionStatus || 'all';
     this.sortColumn = defaultState.sortColumn;
     this.sortDirection = defaultState.sortDirection;
   }
@@ -488,6 +533,12 @@ export class MatrixComponent implements OnInit {
       list = list.filter(i => i.module?.name === this.filterModule);
     }
 
+    if (this.filterActionStatus === 'with_actions') {
+      list = list.filter(i => this.getActionPoints(i).length > 0);
+    } else if (this.filterActionStatus === 'without_actions') {
+      list = list.filter(i => this.getActionPoints(i).length === 0);
+    }
+
     list.sort((a, b) => {
       let valA: any = '';
       let valB: any = '';
@@ -504,6 +555,14 @@ export class MatrixComponent implements OnInit {
         case 'next_action':
           valA = this.getActionPoints(a)[0]?.text || '';
           valB = this.getActionPoints(b)[0]?.text || '';
+          break;
+        case 'owner':
+          valA = this.getActionPoints(a)[0]?.ownerName || '';
+          valB = this.getActionPoints(b)[0]?.ownerName || '';
+          break;
+        case 'age':
+          valA = this.getActionPoints(a)[0]?.ageDays ?? -1;
+          valB = this.getActionPoints(b)[0]?.ageDays ?? -1;
           break;
         case 'verified':
           valA = this.getLatestVerifiedDate(a);
@@ -597,8 +656,23 @@ export class MatrixComponent implements OnInit {
     return false;
   }
 
-  getActionPoints(item: ReleaseItem): { id?: number; text: string; isBlocker: boolean; priorityColor: string; priorityLabel?: string; ownerName?: string; rawFollowUp?: any }[] {
-    const results: { id?: number; text: string; isBlocker: boolean; priorityColor: string; priorityLabel?: string; ownerName?: string; rawFollowUp?: any }[] = [];
+  getItemAgeDays(createdAt?: string): number {
+    if (!createdAt) return 0;
+    const created = new Date(createdAt);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - created.getTime());
+    return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  }
+
+  getItemAgeLabel(createdAt?: string): string {
+    const days = this.getItemAgeDays(createdAt);
+    if (days === 0) return 'Today';
+    if (days === 1) return '1d';
+    return `${days}d`;
+  }
+
+  getActionPoints(item: ReleaseItem): { id?: number; text: string; isBlocker: boolean; priorityColor: string; priorityLabel?: string; ownerName?: string; ageText?: string; ageDays?: number; rawFollowUp?: any }[] {
+    const results: { id?: number; text: string; isBlocker: boolean; priorityColor: string; priorityLabel?: string; ownerName?: string; ageText?: string; ageDays?: number; rawFollowUp?: any }[] = [];
 
     if (item.follow_ups && item.follow_ups.length > 0) {
       // Sort follow-ups so blockers appear first, then by priority
@@ -634,6 +708,8 @@ export class MatrixComponent implements OnInit {
             priorityColor: pColor,
             priorityLabel: fu.priority?.label || '',
             ownerName: fu.owner?.display_name,
+            ageText: this.getItemAgeLabel(fu.created_at),
+            ageDays: this.getItemAgeDays(fu.created_at),
             rawFollowUp: fu
           });
         }

@@ -89,9 +89,18 @@ import { FilterStateService } from '../../core/services/filter-state.service';
                 <th (click)="toggleSort('status')" class="sortable">
                   STATUS <span class="sort-icon" *ngIf="sortColumn === 'status'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
                 </th>
-                <th>PRIORITY</th>
-                <th>OWNER</th>
-                <th>TARGET DATE</th>
+                <th (click)="toggleSort('priority')" class="sortable">
+                  PRIORITY <span class="sort-icon" *ngIf="sortColumn === 'priority'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                </th>
+                <th (click)="toggleSort('age')" class="sortable">
+                  AGE <span class="sort-icon" *ngIf="sortColumn === 'age'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                </th>
+                <th (click)="toggleSort('owner')" class="sortable">
+                  OWNER <span class="sort-icon" *ngIf="sortColumn === 'owner'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                </th>
+                <th (click)="toggleSort('due_date')" class="sortable">
+                  TARGET DATE <span class="sort-icon" *ngIf="sortColumn === 'due_date'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                </th>
                 <th>ACTIONS</th>
               </tr>
             </thead>
@@ -113,8 +122,14 @@ import { FilterStateService } from '../../core/services/filter-state.service';
                   </span>
                 </td>
                 <td>
-                  <span class="priority-badge" [style.color]="f.priority?.color">
-                    {{ f.priority?.label }}
+                  <span class="priority-flag-pill" [style.background-color]="getPriorityStyle(f).bg" [style.color]="getPriorityStyle(f).color" [style.border]="getPriorityStyle(f).border">
+                    <span class="flag-icon">{{ getPriorityIcon(f) }}</span>
+                    <span>{{ f.priority?.label || 'Normal' }}</span>
+                  </span>
+                </td>
+                <td>
+                  <span class="age-badge" [class.age-stale]="getItemAgeDays(f.created_at) > 7" title="Created: {{ f.created_at | date:'yyyy-MM-dd HH:mm' }}">
+                    🕒 {{ getItemAgeLabel(f.created_at) }}
                   </span>
                 </td>
                 <td>{{ f.owner?.display_name || 'Unassigned' }}</td>
@@ -132,7 +147,7 @@ import { FilterStateService } from '../../core/services/filter-state.service';
                 </td>
               </tr>
               <tr *ngIf="processedFollowUps.length === 0">
-                <td colspan="8" class="empty-table-cell">No action items match the current filter criteria.</td>
+                <td colspan="9" class="empty-table-cell">No action items match the current filter criteria.</td>
               </tr>
             </tbody>
           </table>
@@ -310,6 +325,20 @@ import { FilterStateService } from '../../core/services/filter-state.service';
     .action-text { max-width: 280px; color: var(--text-main); }
     .blocker-pill { background: #EF4444; color: #FFF; font-size: 0.65rem; font-weight: 800; padding: 0.1rem 0.4rem; border-radius: 4px; margin-right: 0.4rem; }
     .priority-badge { font-weight: 700; font-size: 0.8rem; }
+    .priority-flag-pill {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.25rem 0.6rem; border-radius: 9999px; font-weight: 700; font-size: 0.75rem;
+      text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap;
+    }
+    .flag-icon { font-size: 0.8rem; line-height: 1; }
+    .age-badge {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      font-size: 0.78rem; font-weight: 600; color: #94A3B8;
+      background: rgba(15, 23, 42, 0.6); padding: 0.2rem 0.5rem;
+      border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.08);
+      white-space: nowrap;
+    }
+    .age-stale { color: #F59E0B; border-color: rgba(245, 158, 11, 0.35); background: rgba(245, 158, 11, 0.1); }
     .status-badge { font-weight: 600; font-size: 0.8rem; }
     .text-danger { color: #F87171; font-weight: 700; }
 
@@ -501,8 +530,16 @@ export class FollowUpsComponent implements OnInit {
           valB = b.action || '';
           break;
         case 'priority':
-          valA = a.priority?.sort_order || 99;
-          valB = b.priority?.sort_order || 99;
+          if (a.is_blocker && !b.is_blocker) { valA = -1; valB = 1; }
+          else if (!a.is_blocker && b.is_blocker) { valA = 1; valB = -1; }
+          else {
+            valA = a.priority?.sort_order ?? 99;
+            valB = b.priority?.sort_order ?? 99;
+          }
+          break;
+        case 'age':
+          valA = this.getItemAgeDays(a.created_at);
+          valB = this.getItemAgeDays(b.created_at);
           break;
         case 'owner':
           valA = a.owner?.display_name || '';
@@ -524,6 +561,51 @@ export class FollowUpsComponent implements OnInit {
     });
 
     return list;
+  }
+
+  getItemAgeDays(createdAt?: string): number {
+    if (!createdAt) return 0;
+    const created = new Date(createdAt);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - created.getTime());
+    return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  }
+
+  getItemAgeLabel(createdAt?: string): string {
+    const days = this.getItemAgeDays(createdAt);
+    if (days === 0) return 'Today';
+    if (days === 1) return '1 day';
+    return `${days} days`;
+  }
+
+  getPriorityIcon(f: FollowUp): string {
+    if (f.is_blocker) return '🚩';
+    const code = (f.priority?.code || '').toLowerCase();
+    if (code.includes('critical') || code.includes('blocker')) return '🚩';
+    if (code.includes('high') || code.includes('alta')) return '⚡';
+    if (code.includes('medium') || code.includes('media')) return '🔹';
+    if (code.includes('low') || code.includes('baja')) return '🟢';
+    return '🚩';
+  }
+
+  getPriorityStyle(f: FollowUp): { bg: string; color: string; border: string } {
+    if (f.is_blocker) {
+      return { bg: 'rgba(239, 68, 68, 0.2)', color: '#FCA5A5', border: '1px solid rgba(239, 68, 68, 0.4)' };
+    }
+    const code = (f.priority?.code || '').toLowerCase();
+    if (code.includes('critical') || code.includes('blocker')) {
+      return { bg: 'rgba(239, 68, 68, 0.2)', color: '#FCA5A5', border: '1px solid rgba(239, 68, 68, 0.4)' };
+    }
+    if (code.includes('high') || code.includes('alta')) {
+      return { bg: 'rgba(245, 158, 11, 0.2)', color: '#FCD34D', border: '1px solid rgba(245, 158, 11, 0.4)' };
+    }
+    if (code.includes('medium') || code.includes('media')) {
+      return { bg: 'rgba(59, 130, 246, 0.2)', color: '#93C5FD', border: '1px solid rgba(59, 130, 246, 0.4)' };
+    }
+    if (code.includes('low') || code.includes('baja')) {
+      return { bg: 'rgba(16, 185, 129, 0.2)', color: '#6EE7B7', border: '1px solid rgba(16, 185, 129, 0.4)' };
+    }
+    return { bg: 'rgba(99, 102, 241, 0.2)', color: '#A5B4FC', border: '1px solid rgba(99, 102, 241, 0.4)' };
   }
 
   isOverdue(f: FollowUp): boolean {

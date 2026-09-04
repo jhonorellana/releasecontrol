@@ -4,6 +4,7 @@ export interface MatrixFilterState {
   filterText: string;
   filterProject: string;
   filterModule: string;
+  filterActionStatus?: string;
   sortColumn: string;
   sortDirection: 'asc' | 'desc';
 }
@@ -65,6 +66,7 @@ export class FilterStateService {
       filterText: '',
       filterProject: 'all',
       filterModule: 'all',
+      filterActionStatus: 'all',
       sortColumn: 'title',
       sortDirection: 'asc'
     };
@@ -81,6 +83,7 @@ export class FilterStateService {
       filterText: '',
       filterProject: 'all',
       filterModule: 'all',
+      filterActionStatus: 'all',
       sortColumn: 'title',
       sortDirection: 'asc'
     };
