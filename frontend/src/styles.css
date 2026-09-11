@@ -251,6 +251,27 @@ a:hover {
   box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
+/* High-Contrast Calendar Picker Icon for Dark Theme */
+input[type="date"] {
+  color-scheme: dark !important;
+  color: #FFFFFF !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer !important;
+  filter: brightness(0) invert(1) !important;
+  opacity: 0.9 !important;
+  transition: all 0.2s ease !important;
+  padding: 4px !important;
+  border-radius: 4px !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1 !important;
+  background: rgba(99, 102, 241, 0.35) !important;
+  filter: brightness(0) invert(1) drop-shadow(0 0 4px #818CF8) !important;
+}
+
 /* Clear Table Row Separation, Zebra Striping & Hover Highlights */
 .matrix-table, .data-table {
   width: 100%;

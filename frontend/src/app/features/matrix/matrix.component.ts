@@ -69,10 +69,10 @@ import { FilterStateService } from '../../core/services/filter-state.service';
                 <th>SITA</th>
                 <th>PROD</th>
                 <th>NEXT ACTION</th>
-                <th (click)="toggleSort('owner')" class="sortable">
+                <th (click)="toggleSort('owner')" class="sortable th-owner" style="width: 105px; text-align: center;">
                   OWNER <span class="sort-icon" *ngIf="sortColumn === 'owner'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
                 </th>
-                <th (click)="toggleSort('age')" class="sortable">
+                <th (click)="toggleSort('age')" class="sortable th-age" style="width: 85px; text-align: center;">
                   AGE <span class="sort-icon" *ngIf="sortColumn === 'age'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
                 </th>
                 <th (click)="toggleSort('verified')" class="sortable">
@@ -100,20 +100,27 @@ import { FilterStateService } from '../../core/services/filter-state.service';
                     </span>
                   </div>
                 </td>
-                <td class="action-cell">
+                <td class="action-group-cell" colspan="3">
                   <div class="action-points-container">
-                    <div *ngIf="getActionPoints(item).length > 0" class="action-points-list">
-                      <div
-                        *ngFor="let ap of getActionPoints(item)"
-                        class="action-point-item clickable-action"
-                        [class.is-blocker]="ap.isBlocker"
-                        (click)="openEditActionModal(item, ap)"
-                        title="Click to edit Action Item: {{ ap.text }}"
-                      >
-                        <span class="action-bullet" [style.color]="ap.priorityColor">•</span>
-                        <span class="blocker-tag" *ngIf="ap.isBlocker">BLOCKER</span>
-                        <span class="action-text action-link" [style.color]="ap.isBlocker ? '#FCA5A5' : ap.priorityColor">{{ ap.text }}</span>
-                        <svg class="edit-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    <div *ngIf="getActionPoints(item).length > 0" class="action-rows-list">
+                      <div *ngFor="let ap of getActionPoints(item)" class="action-row-grid">
+                        <div
+                          class="action-point-item clickable-action"
+                          [class.is-blocker]="ap.isBlocker"
+                          (click)="openEditActionModal(item, ap)"
+                          title="Click to edit Action Item: {{ ap.text }}"
+                        >
+                          <span class="action-bullet" [style.color]="ap.priorityColor">•</span>
+                          <span class="blocker-tag" *ngIf="ap.isBlocker">BLOCKER</span>
+                          <span class="action-text action-link" [style.color]="ap.isBlocker ? '#FCA5A5' : ap.priorityColor">{{ ap.text }}</span>
+                          <svg class="edit-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </div>
+                        <div class="action-owner-col">
+                          <span class="action-owner" *ngIf="ap.ownerName">({{ ap.ownerName }})</span>
+                        </div>
+                        <div class="action-age-col">
+                          <span class="action-age-badge" *ngIf="ap.ageText" [class.age-stale]="(ap.ageDays || 0) > 7" title="Age: {{ ap.ageText }}">🕒 {{ ap.ageText }}</span>
+                        </div>
                       </div>
                     </div>
 
@@ -121,20 +128,6 @@ import { FilterStateService } from '../../core/services/filter-state.service';
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                       <span>Add Action</span>
                     </button>
-                  </div>
-                </td>
-                <td class="owner-cell">
-                  <div class="action-owners-list">
-                    <div *ngFor="let ap of getActionPoints(item)" class="action-owner-item">
-                      <span class="action-owner" *ngIf="ap.ownerName">({{ ap.ownerName }})</span>
-                    </div>
-                  </div>
-                </td>
-                <td class="age-cell">
-                  <div class="action-ages-list">
-                    <div *ngFor="let ap of getActionPoints(item)" class="action-age-item">
-                      <span class="action-age-badge" *ngIf="ap.ageText" [class.age-stale]="(ap.ageDays || 0) > 7" title="Age: {{ ap.ageText }}">🕒 {{ ap.ageText }}</span>
-                    </div>
                   </div>
                 </td>
                 <td class="verified-cell">{{ getLatestVerifiedDate(item) | date:'yyyy-MM-dd' }}</td>
@@ -335,9 +328,24 @@ import { FilterStateService } from '../../core/services/filter-state.service';
       color: #FFF;
       transform: translateY(-1px);
     }
-    .action-points-list, .action-owners-list, .action-ages-list { display: flex; flex-direction: column; gap: 0.35rem; width: 100%; }
-    .action-point-item, .action-owner-item, .action-age-item { min-height: 24px; display: flex; align-items: center; }
-    .owner-cell, .age-cell { vertical-align: top; padding: 1rem 0.75rem; white-space: nowrap; }
+    .action-group-cell { padding: 0.85rem 0.65rem; vertical-align: top; }
+    .action-rows-list { display: flex; flex-direction: column; gap: 0.45rem; width: 100%; }
+    .action-row-grid {
+      display: grid;
+      grid-template-columns: 1fr 105px 85px;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.25rem 0;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+    }
+    .action-row-grid:last-child { border-bottom: none; }
+    .action-point-item { display: flex; align-items: flex-start; gap: 0.35rem; font-size: 0.82rem; line-height: 1.35; color: var(--text-main); }
+    .action-point-item.is-blocker { color: #FCA5A5; font-weight: 600; background: rgba(239, 68, 68, 0.12); padding: 0.25rem 0.45rem; border-radius: 4px; border-left: 3px solid #EF4444; }
+    .action-bullet { color: var(--accent-primary); font-weight: bold; font-size: 1.1rem; line-height: 1; flex-shrink: 0; margin-right: 0.1rem; }
+    .blocker-bullet { color: #EF4444; }
+    .blocker-tag { font-size: 0.65rem; font-weight: 800; background: #EF4444; color: #FFF; padding: 0.05rem 0.35rem; border-radius: 3px; letter-spacing: 0.03em; margin-right: 0.2rem; flex-shrink: 0; }
+    .action-owner-col { display: flex; align-items: center; justify-content: center; white-space: nowrap; }
+    .action-age-col { display: flex; align-items: center; justify-content: center; white-space: nowrap; }
     .action-text { flex: 1; word-break: break-word; }
     .action-owner { font-size: 0.78rem; color: #94A3B8; font-weight: 500; }
     .action-age-badge { font-size: 0.75rem; color: #94A3B8; background: rgba(15, 23, 42, 0.6); padding: 0.15rem 0.45rem; border-radius: 4px; font-weight: 600; border: 1px solid rgba(255, 255, 255, 0.08); display: inline-flex; align-items: center; gap: 0.25rem; }
