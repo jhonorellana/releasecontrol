@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-09-2026 a las 12:51:47
+-- Tiempo de generación: 16-09-2026 a las 18:32:49
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -252,7 +252,55 @@ INSERT INTO `audit_events` (`id`, `entity_type`, `entity_id`, `event_type`, `cha
 (178, 'follow_up', 39, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"Update functionality to use populated table\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-10 00:16:38.000000', '2026-09-10 00:16:38.000000'),
 (179, 'release_item', 23, 'environment_state_changed', '{\"project_environment_id\":\"9\",\"old_status_id\":24,\"new_status_id\":25,\"source_summary\":\"Item initial creation\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-10 00:16:58.000000', '2026-09-10 00:16:58.000000'),
 (180, 'client_activation', 21, 'client_activation_changed', '{\"old_status_id\":33,\"new_status_id\":37,\"scope_type\":\"global\",\"source_summary\":\"Item initial creation\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-10 00:18:28.000000', '2026-09-10 00:18:28.000000'),
-(181, 'client_activation', 2, 'client_activation_changed', '{\"old_status_id\":35,\"new_status_id\":49,\"scope_type\":\"selective\",\"source_summary\":\"2026-08-17 release status review with Ximena\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-10 00:19:09.000000', '2026-09-10 00:19:09.000000');
+(181, 'client_activation', 2, 'client_activation_changed', '{\"old_status_id\":35,\"new_status_id\":49,\"scope_type\":\"selective\",\"source_summary\":\"2026-08-17 release status review with Ximena\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-10 00:19:09.000000', '2026-09-10 00:19:09.000000'),
+(182, 'follow_up', 5, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"Complete TATU validation and record QA approval\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 12:13:40.000000', '2026-09-11 12:13:40.000000'),
+(183, 'follow_up', 7, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"Confirm that payslips transference is ready. After that define the TATU promotion plan\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 12:14:19.000000', '2026-09-11 12:14:19.000000'),
+(184, 'follow_up', 8, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"Continue development\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 12:14:42.000000', '2026-09-11 12:14:42.000000'),
+(185, 'follow_up', 9, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"Continue develpment\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 12:14:58.000000', '2026-09-11 12:14:58.000000'),
+(186, 'follow_up', 18, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":41,\"action\":\"Contact Warren and coordinate release to Growth\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 12:15:51.000000', '2026-09-11 12:15:51.000000'),
+(187, 'follow_up', 19, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"Wait for Payrun History released to clients\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 12:16:20.000000', '2026-09-11 12:16:20.000000'),
+(188, 'follow_up', 22, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"Review results in production\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 12:16:47.000000', '2026-09-11 12:16:47.000000'),
+(189, 'follow_up', 23, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"Coordinate release two weeks after Payrun History release\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 12:17:16.000000', '2026-09-11 12:17:16.000000'),
+(190, 'follow_up', 23, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"Coordinate release two weeks after Payrun History release\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 12:17:31.000000', '2026-09-11 12:17:31.000000'),
+(191, 'follow_up', 24, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"AdminAPI endpoint can be deployed on production\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 12:17:53.000000', '2026-09-11 12:17:53.000000'),
+(192, 'follow_up', 25, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"Reports can be deployed in production after endpoint\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 12:18:11.000000', '2026-09-11 12:18:11.000000'),
+(193, 'follow_up', 26, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"If Reports was tested in TATU it could be releases in PROD. Coordinate with Himani to do it during next release to PROD\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 12:18:30.000000', '2026-09-11 12:18:30.000000');
+INSERT INTO `audit_events` (`id`, `entity_type`, `entity_id`, `event_type`, `changes`, `context`, `actor_person_id`, `actor_name`, `occurred_at`, `created_at`) VALUES
+(194, 'follow_up', 27, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"include RPS-298 in next deployment to SITA\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 12:18:44.000000', '2026-09-11 12:18:44.000000'),
+(195, 'follow_up', 32, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"RPS-318 Should be developed\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 12:19:03.000000', '2026-09-11 12:19:03.000000'),
+(196, 'follow_up', 33, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"ADMNAPI-1021 Should be developed by Mario\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 12:19:26.000000', '2026-09-11 12:19:26.000000'),
+(197, 'follow_up', 22, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"Review results in production\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 12:21:52.000000', '2026-09-11 12:21:52.000000'),
+(198, 'follow_up', 23, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"Coordinate release two weeks after Payrun History release\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 12:22:23.000000', '2026-09-11 12:22:23.000000'),
+(199, 'follow_up', 24, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"AdminAPI endpoint can be deployed on production\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 12:23:38.000000', '2026-09-11 12:23:38.000000'),
+(200, 'follow_up', 24, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"AdminAPI endpoint can be deployed on production\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 12:23:58.000000', '2026-09-11 12:23:58.000000'),
+(201, 'follow_up', 36, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":41,\"action\":\"Coordinate meeting with Sam to explain the new feature\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 14:02:24.000000', '2026-09-11 14:02:24.000000'),
+(202, 'release_item', 13, 'environment_state_changed', '{\"project_environment_id\":\"5\",\"old_status_id\":30,\"new_status_id\":52,\"source_summary\":\"Item initial creation\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-11 14:03:03.000000', '2026-09-11 14:03:03.000000'),
+(203, 'release_item', 13, 'environment_state_changed', '{\"project_environment_id\":\"6\",\"old_status_id\":30,\"new_status_id\":52,\"source_summary\":\"Item initial creation\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-11 14:03:10.000000', '2026-09-11 14:03:10.000000'),
+(204, 'release_item', 19, 'environment_state_changed', '{\"project_environment_id\":\"5\",\"old_status_id\":30,\"new_status_id\":52,\"source_summary\":\"Item initial creation\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-11 14:04:00.000000', '2026-09-11 14:04:00.000000'),
+(205, 'release_item', 19, 'environment_state_changed', '{\"project_environment_id\":\"6\",\"old_status_id\":30,\"new_status_id\":29,\"source_summary\":\"Item initial creation\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-11 14:04:22.000000', '2026-09-11 14:04:22.000000'),
+(206, 'follow_up', 31, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":41,\"action\":\"Create new tickets according the feedback received from Ameet\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 14:04:40.000000', '2026-09-11 14:04:40.000000'),
+(207, 'release_item', 10, 'environment_state_changed', '{\"project_environment_id\":\"5\",\"old_status_id\":30,\"new_status_id\":52,\"source_summary\":\"Item initial creation prueba\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-11 14:05:33.000000', '2026-09-11 14:05:33.000000'),
+(208, 'release_item', 10, 'environment_state_changed', '{\"project_environment_id\":\"6\",\"old_status_id\":24,\"new_status_id\":29,\"source_summary\":\"Item initial creation\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-11 14:05:55.000000', '2026-09-11 14:05:55.000000'),
+(209, 'follow_up', 35, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":41,\"action\":\"Deploy solution in TATU\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 14:06:06.000000', '2026-09-11 14:06:06.000000'),
+(210, 'follow_up', 40, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"Access Level control ... testing by Ricardo\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 14:15:18.000000', '2026-09-11 14:15:18.000000'),
+(211, 'follow_up', 41, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"Sign-off from QA\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 14:15:48.000000', '2026-09-11 14:15:48.000000'),
+(212, 'follow_up', 32, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"RPS-318 Should be developed\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 14:21:14.000000', '2026-09-11 14:21:14.000000'),
+(213, 'follow_up', 32, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":41,\"action\":\"RPS-318 Should be developed\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 14:21:34.000000', '2026-09-11 14:21:34.000000'),
+(214, 'follow_up', 33, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"ADMNAPI-1021 Should be developed by Mario\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 14:22:29.000000', '2026-09-11 14:22:29.000000'),
+(215, 'follow_up', 33, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":41,\"action\":\"ADMNAPI-1021 Should be developed by Mario\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 14:22:52.000000', '2026-09-11 14:22:52.000000'),
+(216, 'follow_up', 46, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"Evolv should be updated in SITA\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 14:42:45.000000', '2026-09-11 14:42:45.000000'),
+(217, 'follow_up', 48, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"Fix issues raised by Ricardo Fumachi & Andrea\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 14:47:42.000000', '2026-09-11 14:47:42.000000'),
+(218, 'follow_up', 48, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"Fix issues raised by Ricardo Fumachi & Andrea\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 14:48:31.000000', '2026-09-11 14:48:31.000000'),
+(219, 'follow_up', 45, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":41,\"action\":\"Pending solve fix - Ricardo Haro\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 14:52:41.000000', '2026-09-11 14:52:41.000000'),
+(220, 'follow_up', 48, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":42,\"action\":\"Fix issues raised by Ricardo Fumachi & Andrea\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-11 14:53:11.000000', '2026-09-11 14:53:11.000000'),
+(221, 'client_activation', 12, 'client_activation_changed', '{\"old_status_id\":37,\"new_status_id\":37,\"scope_type\":\"global\",\"source_summary\":\"Item initial creation\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-16 16:17:49.000000', '2026-09-16 16:17:49.000000'),
+(222, 'client_activation', 18, 'client_activation_changed', '{\"old_status_id\":35,\"new_status_id\":35,\"scope_type\":\"off\",\"source_summary\":\"we are waiting for Sync\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-16 16:18:35.000000', '2026-09-16 16:18:35.000000'),
+(223, 'client_activation', 13, 'client_activation_changed', '{\"old_status_id\":37,\"new_status_id\":37,\"scope_type\":\"global\",\"source_summary\":\"Item initial creation\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-16 16:19:13.000000', '2026-09-16 16:19:13.000000'),
+(224, 'client_activation', 17, 'client_activation_changed', '{\"old_status_id\":35,\"new_status_id\":35,\"scope_type\":\"off\",\"source_summary\":\"Item initial creation\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-16 16:19:30.000000', '2026-09-16 16:19:30.000000'),
+(225, 'client_activation', 17, 'client_activation_changed', '{\"old_status_id\":35,\"new_status_id\":35,\"scope_type\":\"off\",\"source_summary\":\"Item initial creation\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-16 16:19:50.000000', '2026-09-16 16:19:50.000000'),
+(226, 'client_activation', 21, 'client_activation_changed', '{\"old_status_id\":37,\"new_status_id\":37,\"scope_type\":\"global\",\"source_summary\":\"Item initial creation\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-16 16:20:26.000000', '2026-09-16 16:20:26.000000'),
+(227, 'client_activation', 17, 'client_activation_changed', '{\"old_status_id\":35,\"new_status_id\":35,\"scope_type\":\"off\",\"source_summary\":\"Item initial creation\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-16 16:20:40.000000', '2026-09-16 16:20:40.000000'),
+(228, 'client_activation', 18, 'client_activation_changed', '{\"old_status_id\":35,\"new_status_id\":35,\"scope_type\":\"off\",\"source_summary\":\"we are waiting for Sync\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-16 16:20:49.000000', '2026-09-16 16:20:49.000000');
 
 -- --------------------------------------------------------
 
@@ -372,16 +420,16 @@ INSERT INTO `client_activations` (`id`, `release_item_id`, `status_id`, `scope_t
 (9, 9, 33, 'not_applicable', NULL, NULL, '2026-08-07 10:00:00.000000', 2, NULL, '2026-08-07 release status review', NULL, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000'),
 (10, 10, 33, 'not_applicable', NULL, NULL, '2026-08-17 20:38:56.000000', NULL, 'Initial Creation', 'Item initial creation', NULL, '2026-08-17 20:38:56.000000', '2026-08-17 20:38:56.000000'),
 (11, 11, 37, 'not_applicable', NULL, NULL, '2026-08-18 14:10:14.000000', NULL, NULL, 'Item initial creation', NULL, '2026-08-17 21:53:14.000000', '2026-08-18 14:10:14.000000'),
-(12, 12, 37, 'global', NULL, NULL, '2026-09-01 15:08:16.000000', NULL, NULL, 'Item initial creation', NULL, '2026-08-17 22:03:34.000000', '2026-09-01 15:08:16.000000'),
-(13, 13, 37, 'global', NULL, NULL, '2026-09-01 15:08:37.000000', NULL, NULL, 'Item initial creation', NULL, '2026-08-17 23:06:01.000000', '2026-09-01 15:08:37.000000'),
+(12, 12, 37, 'global', 'Module to upload EDI Files', NULL, '2026-09-16 16:17:49.000000', 5, NULL, 'Item initial creation', NULL, '2026-08-17 22:03:34.000000', '2026-09-16 16:17:49.000000'),
+(13, 13, 37, 'global', 'Workflow to process EFT Files', NULL, '2026-09-16 16:19:13.000000', 5, NULL, 'Item initial creation', NULL, '2026-08-17 23:06:01.000000', '2026-09-16 16:19:13.000000'),
 (14, 14, 33, 'not_applicable', NULL, NULL, '2026-08-17 23:13:07.000000', NULL, 'Initial Creation', 'Item initial creation', NULL, '2026-08-17 23:13:07.000000', '2026-08-17 23:13:07.000000'),
 (15, 15, 33, 'not_applicable', NULL, NULL, '2026-08-18 00:06:13.000000', NULL, 'Initial Creation', 'Item initial creation', NULL, '2026-08-18 00:06:13.000000', '2026-08-18 00:06:13.000000'),
 (16, 16, 33, 'not_applicable', NULL, NULL, '2026-08-18 00:08:34.000000', NULL, 'Initial Creation', 'Item initial creation', NULL, '2026-08-18 00:08:34.000000', '2026-08-18 00:08:34.000000'),
-(17, 17, 35, 'off', NULL, NULL, '2026-09-01 15:07:45.000000', NULL, NULL, 'Item initial creation', NULL, '2026-08-18 00:42:59.000000', '2026-09-01 15:07:45.000000'),
-(18, 18, 35, 'off', NULL, NULL, '2026-09-01 15:07:59.000000', NULL, NULL, 'we are waiting for Sync', NULL, '2026-08-18 00:43:19.000000', '2026-09-01 15:07:59.000000'),
+(17, 17, 35, 'off', 'Module to allow EDI files Reconciliation', NULL, '2026-09-16 16:20:40.000000', 3, NULL, 'Item initial creation', NULL, '2026-08-18 00:42:59.000000', '2026-09-16 16:20:40.000000'),
+(18, 18, 35, 'off', 'Module to allow EDI files Reconciliation', NULL, '2026-09-16 16:20:49.000000', 3, NULL, 'we are waiting for Sync', NULL, '2026-08-18 00:43:19.000000', '2026-09-16 16:20:49.000000'),
 (19, 19, 33, 'not_applicable', NULL, NULL, '2026-08-18 00:45:42.000000', NULL, 'Initial Creation', 'Item initial creation', NULL, '2026-08-18 00:45:43.000000', '2026-08-18 00:45:43.000000'),
 (20, 20, 33, 'not_applicable', NULL, NULL, '2026-08-18 00:45:42.000000', NULL, 'Initial Creation', 'Item initial creation', NULL, '2026-08-18 00:45:43.000000', '2026-08-18 00:45:43.000000'),
-(21, 21, 37, 'global', NULL, NULL, '2026-09-10 00:18:28.000000', NULL, NULL, 'Item initial creation', NULL, '2026-08-18 01:55:18.000000', '2026-09-10 00:18:28.000000'),
+(21, 21, 37, 'global', 'Module to control Fintrac Backlist', NULL, '2026-09-16 16:20:26.000000', 11, NULL, 'Item initial creation', NULL, '2026-08-18 01:55:18.000000', '2026-09-16 16:20:26.000000'),
 (22, 22, 33, 'not_applicable', NULL, NULL, '2026-09-01 15:35:50.000000', NULL, 'Initial Creation', 'Item initial creation', NULL, '2026-09-01 15:35:51.000000', '2026-09-01 15:35:51.000000'),
 (23, 23, 33, 'not_applicable', NULL, NULL, '2026-09-10 00:10:47.000000', NULL, 'Initial Creation', 'Item initial creation', NULL, '2026-09-10 00:10:47.000000', '2026-09-10 00:10:47.000000');
 
@@ -469,11 +517,11 @@ INSERT INTO `follow_ups` (`id`, `release_item_id`, `action`, `status_id`, `prior
 (2, 2, 'Confirm availability date, enabled plans and companies with Ameet', 41, 21, 1, 3, '2026-08-21', 0, 'Action required for baseline advancement', NULL, '2026-08-24 03:36:53.000000', '2026-08-15 12:00:00.000000', '2026-08-24 03:36:53.000000', NULL),
 (3, 3, 'Confirm production version and client availability with Ameet', 41, 21, 1, 3, '2026-08-21', 0, 'Action required for baseline advancement', NULL, '2026-08-24 03:37:52.000000', '2026-08-15 12:00:00.000000', '2026-08-24 03:37:52.000000', NULL),
 (4, 4, 'Confirm with Ameet to deploy on SITA', 41, 21, 1, 7, '2026-08-21', 0, 'Confirm with Ameet to deploy on SITA', NULL, '2026-08-24 04:01:39.000000', '2026-08-15 12:00:00.000000', '2026-08-24 04:01:39.000000', NULL),
-(5, 5, 'Complete TATU validation and record QA approval', 38, 21, 1, 5, '2026-08-21', 0, 'Action required for baseline advancement', NULL, NULL, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
+(5, 5, 'Complete TATU validation and record QA approval', 38, 21, 1, 5, '2026-09-15', 0, 'Action required for baseline advancement', NULL, NULL, '2026-08-15 12:00:00.000000', '2026-09-11 12:13:39.000000', NULL),
 (6, 6, 'Finish backend merge and confirm deployment to TATU', 41, 21, 1, 2, '2026-08-21', 0, 'We are waiting for frontend decployment', NULL, '2026-08-17 19:37:37.000000', '2026-08-15 12:00:00.000000', '2026-08-17 19:37:37.000000', NULL),
-(7, 7, 'Confirm that payslips transference is ready. After that define the TATU promotion plan', 38, 22, 1, 2, '2026-08-21', 0, 'We are waiting for Payslips transference', NULL, NULL, '2026-08-15 12:00:00.000000', '2026-08-17 20:22:07.000000', NULL),
-(8, 8, 'Continue development', 38, 22, 1, 2, '2026-08-21', 0, 'Action required for baseline advancement', NULL, NULL, '2026-08-15 12:00:00.000000', '2026-08-17 19:46:16.000000', NULL),
-(9, 9, 'Continue develpment', 38, 22, 1, 2, '2026-08-21', 0, 'Action required for baseline advancement', NULL, NULL, '2026-08-15 12:00:00.000000', '2026-08-17 19:49:06.000000', NULL),
+(7, 7, 'Confirm that payslips transference is ready. After that define the TATU promotion plan', 38, 22, 1, 2, '2026-09-30', 0, 'We are waiting for Payslips transference', NULL, NULL, '2026-08-15 12:00:00.000000', '2026-09-11 12:14:19.000000', NULL),
+(8, 8, 'Continue development', 38, 22, 1, 2, '2026-10-01', 0, 'Action required for baseline advancement', NULL, NULL, '2026-08-15 12:00:00.000000', '2026-09-11 12:14:42.000000', NULL),
+(9, 9, 'Continue develpment', 38, 22, 1, 2, '2026-10-01', 0, 'Action required for baseline advancement', NULL, NULL, '2026-08-15 12:00:00.000000', '2026-09-11 12:14:58.000000', NULL),
 (10, 6, 'Mario confirm frontend deployment on TATU', 41, 21, 6, NULL, '2026-08-18', 0, 'Deployment on TATU', NULL, '2026-09-01 13:03:48.000000', '2026-08-17 19:40:13.000000', '2026-09-01 13:03:48.000000', NULL),
 (11, 10, 'Finish testing related to email format and DBID deactivation', 41, 20, 8, NULL, '2026-08-18', 0, NULL, NULL, '2026-08-28 23:35:18.000000', '2026-08-18 13:58:19.000000', '2026-08-28 23:35:18.000000', NULL),
 (12, 13, 'Update Client Account via API', 41, 20, 8, NULL, '2026-08-18', 0, NULL, NULL, '2026-09-09 23:51:12.000000', '2026-08-18 14:01:40.000000', '2026-09-09 23:51:12.000000', NULL),
@@ -482,28 +530,38 @@ INSERT INTO `follow_ups` (`id`, `release_item_id`, `action`, `status_id`, `prior
 (15, 16, 'Continue development', 38, 21, 8, NULL, '2026-08-18', 0, NULL, NULL, NULL, '2026-08-18 14:04:57.000000', '2026-08-18 14:04:57.000000', NULL),
 (16, 19, 'Deploy on TATU new develpment related to payslips Sync', 41, 21, 8, NULL, '2026-08-18', 0, NULL, NULL, '2026-08-31 20:37:23.000000', '2026-08-18 14:06:38.000000', '2026-08-31 20:37:23.000000', NULL),
 (17, 20, 'Continue development', 38, 23, 8, NULL, '2026-08-18', 0, NULL, NULL, NULL, '2026-08-18 14:07:07.000000', '2026-08-24 03:53:04.000000', NULL),
-(18, 2, 'Contact Warren and coordinate release to Growth', 38, 21, 1, NULL, '2026-08-18', 0, NULL, NULL, NULL, '2026-08-18 15:06:20.000000', '2026-08-18 15:06:20.000000', NULL),
-(19, 3, 'Wait for Payrun History released to clients', 38, 23, 1, NULL, '2026-08-18', 0, 'ePay Report should be deployed two weeks after Payrun History', NULL, NULL, '2026-08-18 15:07:04.000000', '2026-08-24 03:57:53.000000', NULL),
+(18, 2, 'Contact Warren and coordinate release to Growth', 41, 21, 1, NULL, '2026-08-18', 0, NULL, NULL, '2026-09-11 12:15:51.000000', '2026-08-18 15:06:20.000000', '2026-09-11 12:15:51.000000', NULL),
+(19, 3, 'Wait for Payrun History released to clients', 38, 23, 1, NULL, '2026-10-15', 0, 'ePay Report should be deployed two weeks after Payrun History', NULL, NULL, '2026-08-18 15:07:04.000000', '2026-09-11 12:16:20.000000', NULL),
 (20, 17, 'Wait for Twine - SQL Sync features', 38, 21, 8, NULL, '2026-09-18', 0, NULL, NULL, NULL, '2026-08-18 15:21:18.000000', '2026-09-01 14:02:52.000000', NULL),
 (21, 18, 'Wait for Twine - SQL Sync features', 38, 21, 8, NULL, '2026-09-18', 0, NULL, NULL, NULL, '2026-08-18 15:21:25.000000', '2026-09-01 14:03:17.000000', NULL),
-(22, 2, 'Review results in production', 38, 22, 4, NULL, '2026-08-31', 0, NULL, NULL, NULL, '2026-08-24 03:56:58.000000', '2026-08-24 03:56:58.000000', NULL),
-(23, 3, 'Coordinate release two weeks after Payrun History release', 38, 23, 6, NULL, '2026-08-24', 0, NULL, NULL, NULL, '2026-08-24 03:57:42.000000', '2026-08-24 03:58:02.000000', NULL),
-(24, 4, 'AdminAPI endpoint can be deployed on production', 38, 20, 6, NULL, '2026-08-31', 0, NULL, NULL, NULL, '2026-08-24 04:00:43.000000', '2026-08-24 04:00:43.000000', NULL),
-(25, 4, 'Reports can be deployed in production after endpoint', 38, 23, 6, NULL, '2026-08-24', 0, NULL, NULL, NULL, '2026-08-24 04:02:25.000000', '2026-08-24 04:02:25.000000', NULL),
-(26, 4, 'If Reports was tested in TATU it could be releases in PROD. Coordinate with Himani to do it during next release to PROD', 38, 21, 6, NULL, '2026-08-24', 0, NULL, NULL, NULL, '2026-08-24 04:05:54.000000', '2026-08-24 04:06:18.000000', NULL),
-(27, 1, 'include RPS-298 in next deployment to SITA', 38, 21, 4, NULL, '2026-08-28', 0, NULL, NULL, NULL, '2026-08-28 23:19:58.000000', '2026-08-28 23:19:58.000000', NULL),
+(22, 2, 'Review results in production', 38, 22, 2, NULL, '2026-09-18', 0, NULL, NULL, NULL, '2026-08-24 03:56:58.000000', '2026-09-11 12:21:52.000000', NULL),
+(23, 3, 'Coordinate release two weeks after Payrun History release', 38, 23, 1, NULL, '2026-10-01', 0, NULL, NULL, NULL, '2026-08-24 03:57:42.000000', '2026-09-11 12:22:23.000000', NULL),
+(24, 4, 'AdminAPI endpoint can be deployed on production', 38, 20, 8, NULL, '2026-09-18', 0, NULL, NULL, NULL, '2026-08-24 04:00:43.000000', '2026-09-11 12:23:58.000000', NULL),
+(25, 4, 'Reports can be deployed in production after endpoint', 38, 23, 6, NULL, '2026-10-01', 0, NULL, NULL, NULL, '2026-08-24 04:02:25.000000', '2026-09-11 12:18:11.000000', NULL),
+(26, 4, 'If Reports was tested in TATU it could be releases in PROD. Coordinate with Himani to do it during next release to PROD', 38, 21, 6, NULL, '2026-09-15', 0, NULL, NULL, NULL, '2026-08-24 04:05:54.000000', '2026-09-11 12:18:30.000000', NULL),
+(27, 1, 'include RPS-298 in next deployment to SITA', 38, 21, 4, NULL, '2026-09-15', 0, NULL, NULL, NULL, '2026-08-28 23:19:58.000000', '2026-09-11 12:18:44.000000', NULL),
 (28, 10, 'Third email development', 41, 21, 8, NULL, '2026-08-28', 0, NULL, NULL, '2026-09-09 23:49:04.000000', '2026-08-28 23:32:51.000000', '2026-09-09 23:49:04.000000', NULL),
 (29, 13, 'Add new tickets according feedback received during demo 2026-08-31', 41, 21, 1, NULL, '2026-08-31', 0, NULL, NULL, '2026-09-10 00:00:36.000000', '2026-08-31 20:33:41.000000', '2026-09-10 00:00:36.000000', NULL),
 (30, 14, 'Include this feature during next DEMO', 41, 21, 1, NULL, '2026-08-31', 0, NULL, NULL, '2026-09-10 00:01:38.000000', '2026-08-31 20:35:51.000000', '2026-09-10 00:01:38.000000', NULL),
-(31, 19, 'Create new tickets according the feedback received from Ameet', 38, 21, 8, NULL, '2026-08-31', 0, NULL, NULL, NULL, '2026-08-31 20:37:58.000000', '2026-08-31 20:37:58.000000', NULL),
-(32, 6, 'RPS-318 Should be developed', 38, 21, 8, NULL, '2026-09-10', 0, NULL, NULL, NULL, '2026-09-01 13:01:27.000000', '2026-09-01 13:03:35.000000', NULL),
-(33, 6, 'ADMNAPI-1021 Should be developed by Mario', 38, 21, 6, NULL, '2026-09-10', 0, NULL, NULL, NULL, '2026-09-01 13:02:41.000000', '2026-09-01 13:02:58.000000', NULL),
+(31, 19, 'Create new tickets according the feedback received from Ameet', 41, 21, 8, NULL, '2026-08-31', 0, NULL, NULL, '2026-09-11 14:04:40.000000', '2026-08-31 20:37:58.000000', '2026-09-11 14:04:40.000000', NULL),
+(32, 6, 'RPS-318 Should be developed', 41, 21, 6, NULL, '2026-09-17', 0, NULL, NULL, '2026-09-11 14:21:34.000000', '2026-09-01 13:01:27.000000', '2026-09-11 14:21:34.000000', NULL),
+(33, 6, 'ADMNAPI-1021 Should be developed by Mario', 41, 21, 8, NULL, '2026-09-22', 0, NULL, NULL, '2026-09-11 14:22:52.000000', '2026-09-01 13:02:41.000000', '2026-09-11 14:22:52.000000', NULL),
 (34, 22, 'Continue Development', 38, 23, 8, NULL, '2026-09-01', 0, NULL, NULL, NULL, '2026-09-01 15:50:03.000000', '2026-09-01 15:51:08.000000', NULL),
-(35, 10, 'Deploy solution in TATU', 38, 21, 8, NULL, '2026-09-15', 0, NULL, NULL, NULL, '2026-09-09 23:49:37.000000', '2026-09-09 23:49:37.000000', NULL),
-(36, 14, 'Coordinate meeting with Sam to explain the new feature', 38, 21, 8, NULL, '2026-09-10', 0, NULL, NULL, NULL, '2026-09-10 00:01:31.000000', '2026-09-10 00:01:31.000000', NULL),
+(35, 10, 'Deploy solution in TATU', 41, 21, 8, NULL, '2026-09-15', 0, NULL, NULL, '2026-09-11 14:06:06.000000', '2026-09-09 23:49:37.000000', '2026-09-11 14:06:06.000000', NULL),
+(36, 14, 'Coordinate meeting with Sam to explain the new feature', 41, 21, 8, NULL, '2026-09-11', 0, NULL, NULL, '2026-09-11 14:02:24.000000', '2026-09-10 00:01:31.000000', '2026-09-11 14:02:24.000000', NULL),
 (37, 21, 'Waiting for feedback from Warren', 38, 21, 11, NULL, '2026-09-10', 0, NULL, NULL, NULL, '2026-09-10 00:03:05.000000', '2026-09-10 00:03:05.000000', NULL),
 (38, 23, 'Investigate modules using Geolocation', 38, 22, 14, 14, '2026-09-17', 0, NULL, NULL, NULL, '2026-09-10 00:12:54.000000', '2026-09-10 00:16:06.000000', NULL),
-(39, 23, 'Update functionality to use populated table', 38, 22, 14, 14, '2026-09-30', 0, NULL, NULL, NULL, '2026-09-10 00:14:34.000000', '2026-09-10 00:16:38.000000', NULL);
+(39, 23, 'Update functionality to use populated table', 38, 22, 14, 14, '2026-09-30', 0, NULL, NULL, NULL, '2026-09-10 00:14:34.000000', '2026-09-10 00:16:38.000000', NULL),
+(40, 12, 'Access Level control ... testing by Ricardo', 38, 21, 14, NULL, '2026-09-16', 0, NULL, NULL, NULL, '2026-09-11 14:01:57.000000', '2026-09-11 14:15:18.000000', NULL),
+(41, 19, 'Sign-off from QA', 38, 21, 8, NULL, '2026-09-15', 0, NULL, NULL, NULL, '2026-09-11 14:05:11.000000', '2026-09-11 14:15:48.000000', NULL),
+(42, 10, 'Finalize Testing', 38, 21, 8, NULL, '2026-09-15', 0, NULL, NULL, NULL, '2026-09-11 14:06:26.000000', '2026-09-11 14:06:26.000000', NULL),
+(43, 6, 'Wait for ADMNAPI-1021 deployment in production', 38, 21, 6, NULL, '2026-09-11', 0, NULL, NULL, NULL, '2026-09-11 14:23:48.000000', '2026-09-11 14:23:48.000000', NULL),
+(44, 2, 'Pending solve fix - Ricardo Haro', 38, 21, 4, NULL, '2026-09-11', 0, NULL, NULL, NULL, '2026-09-11 14:40:49.000000', '2026-09-11 14:40:49.000000', NULL),
+(45, 2, 'Pending solve fix - Ricardo Haro', 41, 21, 4, NULL, '2026-09-11', 0, NULL, NULL, '2026-09-11 14:52:41.000000', '2026-09-11 14:41:10.000000', '2026-09-11 14:52:41.000000', NULL),
+(46, 4, 'Evolv should be updated in SITA', 38, 21, 6, NULL, '2026-09-17', 0, NULL, NULL, NULL, '2026-09-11 14:42:13.000000', '2026-09-11 14:42:45.000000', NULL),
+(47, 5, 'Fix issues assigned to Felipe - RPS 347', 38, 21, 12, NULL, '2026-09-11', 0, NULL, NULL, NULL, '2026-09-11 14:44:29.000000', '2026-09-11 14:44:29.000000', NULL),
+(48, 6, 'Fix issues raised by Ricardo Fumachi & Andrea', 42, 21, 6, NULL, '2026-09-16', 0, NULL, NULL, NULL, '2026-09-11 14:47:01.000000', '2026-09-11 14:53:11.000000', NULL),
+(49, 7, 'Fix issues raised by Ricardo Fumachi & Andrea', 38, 21, 2, NULL, '2026-09-16', 0, NULL, NULL, NULL, '2026-09-11 14:48:45.000000', '2026-09-11 14:48:45.000000', NULL);
 
 -- --------------------------------------------------------
 
@@ -574,17 +632,17 @@ INSERT INTO `modules` (`id`, `project_id`, `name`, `code`, `description`, `statu
 (5, 1, 'Cheques & Payslips', 'CP', 'Cheques & Payslips functional area.', 4, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
 (6, 1, 'PayExplorer', 'PE', 'PayExplorer functional area.', 4, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
 (7, 1, 'Reports Homepage', 'HOME', 'Reports Homepage functional area.', 4, 1, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000', NULL),
-(8, 2, 'EFT Rejects', 'EFT_Rejects', 'EFT Rejects', 4, NULL, '2026-08-16 16:44:58.000000', '2026-08-16 16:44:58.000000', NULL),
-(9, 2, 'EDI Processing', 'EDI_Processing', 'EDI_Processing', 4, NULL, '2026-08-16 16:45:26.000000', '2026-08-16 16:56:02.000000', NULL),
-(10, 2, 'EFT Processing', 'EFT_Processing', 'EFT Processing', 4, NULL, '2026-08-16 16:56:27.000000', '2026-08-16 16:56:34.000000', NULL),
-(11, 2, 'EFT Sync & Generation', 'EFT_Sync_Generation', 'EFT Sync & Generation', 4, NULL, '2026-08-16 16:57:21.000000', '2026-08-16 16:57:21.000000', NULL),
-(12, 2, 'eMailReminders', 'eMailReminders', 'eMailReminders', 4, NULL, '2026-08-16 16:58:02.000000', '2026-08-16 16:58:02.000000', NULL),
+(8, 2, 'EFT Rejects', 'EFT_Rejects', 'EFT Rejects. It includes debit and credit EFT Rejects', 4, NULL, '2026-08-16 16:44:58.000000', '2026-09-16 15:51:04.000000', NULL),
+(9, 2, 'EDI Processing', 'EDI_Processing', 'EDI_Processing. Worflow to control EDI payments.', 4, NULL, '2026-08-16 16:45:26.000000', '2026-09-16 15:51:36.000000', NULL),
+(10, 2, 'EFT Processing', 'EFT_Processing', 'EDI_Processing. Worflow to control EFT payments.', 4, NULL, '2026-08-16 16:56:27.000000', '2026-09-16 15:51:54.000000', NULL),
+(11, 2, 'EFT Sync & Generation', 'EFT_Sync_Generation', 'EFT Sync & Generation workflow', 4, NULL, '2026-08-16 16:57:21.000000', '2026-09-16 15:52:12.000000', NULL),
+(12, 2, 'eMailReminders', 'eMailReminders', 'eMailReminders. Three emails should be sent when an EDI payment is received. 1. One day before payment. 2. One day after payment. 3. two days after payment, account is blocked', 4, NULL, '2026-08-16 16:58:02.000000', '2026-09-16 15:54:17.000000', NULL),
 (13, 2, 'Upload Files', 'UploadFiles', 'Module that allows to upload EDI and EFT Files', 4, NULL, '2026-08-17 21:41:42.000000', '2026-09-01 14:07:22.000000', '2026-09-01 14:07:22.000000'),
 (14, 2, 'EFT & EDI Recondiliation', 'EFT_EDI_Recondiliation', 'Module for EDI and EFT Files reconciliation', 4, NULL, '2026-08-17 21:41:42.000000', '2026-08-17 21:41:42.000000', NULL),
-(15, 2, 'Payslips Sync', 'PayslipsSync', 'PayslipsSync', 4, NULL, '0000-00-00 00:00:00.000000', '2026-08-17 18:24:22.565583', NULL),
-(16, 2, 'Fintrac Blacklist', 'FintracBlacklist', 'Fintrac Blacklist', 4, NULL, '0000-00-00 00:00:00.000000', '2026-08-17 18:24:22.728151', NULL),
-(17, 3, 'Geolocation', 'Geolocation', NULL, 4, NULL, '2026-09-10 00:06:56.000000', '2026-09-10 00:06:56.000000', NULL),
-(18, 3, 'BankValidation', 'BankValidation', NULL, 4, NULL, '2026-09-10 00:07:18.000000', '2026-09-10 00:07:35.000000', NULL);
+(15, 2, 'Payslips Sync', 'PayslipsSync', 'PayslipsSync. Workflow to control Payslips Syncrhonization', 4, NULL, '0000-00-00 00:00:00.000000', '2026-09-16 15:54:54.000000', NULL),
+(16, 2, 'Fintrac Blacklist', 'FintracBlacklist', 'Fintrac Blacklist control', 4, NULL, '0000-00-00 00:00:00.000000', '2026-09-16 15:55:08.000000', NULL),
+(17, 3, 'Geolocation', 'Geolocation', 'Geolocation API functionality', 4, NULL, '2026-09-10 00:06:56.000000', '2026-09-16 15:59:59.000000', NULL),
+(18, 3, 'BankValidation', 'BankValidation', 'BankValidation - Account numbers control', 4, NULL, '2026-09-10 00:07:18.000000', '2026-09-16 16:00:27.000000', NULL);
 
 -- --------------------------------------------------------
 
@@ -880,8 +938,8 @@ INSERT INTO `release_item_environment_states` (`id`, `project_id`, `release_item
 (46, 2, 12, 6, 52, '2026-08-18 03:39:24.000000', '2026-08-18 03:39:24.000000', 5, NULL, 'Item initial creation', NULL, '2026-08-17 22:03:34.000000', '2026-08-18 03:39:24.000000'),
 (47, 2, 12, 7, 24, '2026-08-17 22:03:34.000000', '2026-08-17 22:03:34.000000', NULL, 'Initial Creation', 'Item initial creation', NULL, '2026-08-17 22:03:34.000000', '2026-08-17 22:03:34.000000'),
 (48, 2, 12, 8, 28, '2026-08-18 03:39:42.000000', '2026-08-18 03:39:42.000000', 8, NULL, 'Item initial creation', NULL, '2026-08-17 22:03:34.000000', '2026-08-18 03:39:42.000000'),
-(49, 2, 13, 5, 30, '2026-08-18 14:02:04.000000', '2026-08-18 14:02:04.000000', 5, NULL, 'Item initial creation', NULL, '2026-08-17 23:06:01.000000', '2026-08-18 14:02:04.000000'),
-(50, 2, 13, 6, 30, '2026-08-28 23:36:39.000000', '2026-08-28 23:36:39.000000', 5, NULL, 'Item initial creation', NULL, '2026-08-17 23:06:01.000000', '2026-08-28 23:36:39.000000'),
+(49, 2, 13, 5, 52, '2026-09-11 14:03:03.000000', '2026-09-11 14:03:03.000000', 5, NULL, 'Item initial creation', NULL, '2026-08-17 23:06:01.000000', '2026-09-11 14:03:03.000000'),
+(50, 2, 13, 6, 52, '2026-09-11 14:03:10.000000', '2026-09-11 14:03:10.000000', 5, NULL, 'Item initial creation', NULL, '2026-08-17 23:06:01.000000', '2026-09-11 14:03:10.000000'),
 (51, 2, 13, 7, 24, '2026-08-17 23:06:01.000000', '2026-08-17 23:06:01.000000', NULL, 'Initial Creation', 'Item initial creation', NULL, '2026-08-17 23:06:01.000000', '2026-08-17 23:06:01.000000'),
 (52, 2, 13, 8, 28, '2026-08-18 03:40:41.000000', '2026-08-18 03:40:41.000000', 5, NULL, 'Item initial creation', NULL, '2026-08-17 23:06:01.000000', '2026-08-18 03:40:41.000000'),
 (53, 2, 14, 5, 30, '2026-08-18 14:02:50.000000', '2026-08-18 14:02:50.000000', 5, NULL, 'Item initial creation', NULL, '2026-08-17 23:13:07.000000', '2026-08-18 14:02:50.000000'),
@@ -904,8 +962,8 @@ INSERT INTO `release_item_environment_states` (`id`, `project_id`, `release_item
 (70, 2, 18, 6, 52, '2026-08-18 03:43:30.000000', '2026-08-18 03:43:30.000000', 5, NULL, 'Item initial creation', NULL, '2026-08-18 00:43:18.000000', '2026-08-18 03:43:30.000000'),
 (71, 2, 18, 7, 24, '2026-08-18 00:43:18.000000', '2026-08-18 00:43:18.000000', NULL, 'Initial Creation', 'Item initial creation', NULL, '2026-08-18 00:43:19.000000', '2026-08-18 00:43:19.000000'),
 (72, 2, 18, 8, 28, '2026-08-18 03:43:47.000000', '2026-08-18 03:43:47.000000', 8, NULL, 'Item initial creation', NULL, '2026-08-18 00:43:19.000000', '2026-08-18 03:43:47.000000'),
-(73, 2, 19, 5, 30, '2026-08-18 14:06:05.000000', '2026-08-18 14:06:05.000000', 8, NULL, 'Item initial creation', NULL, '2026-08-18 00:45:42.000000', '2026-08-18 14:06:05.000000'),
-(74, 2, 19, 6, 30, '2026-08-28 23:37:42.000000', '2026-08-28 23:37:42.000000', 8, NULL, 'Item initial creation', NULL, '2026-08-18 00:45:42.000000', '2026-08-28 23:37:42.000000'),
+(73, 2, 19, 5, 52, '2026-09-11 14:04:00.000000', '2026-09-11 14:04:00.000000', 8, NULL, 'Item initial creation', NULL, '2026-08-18 00:45:42.000000', '2026-09-11 14:04:00.000000'),
+(74, 2, 19, 6, 29, '2026-09-11 14:04:22.000000', '2026-09-11 14:04:22.000000', 8, NULL, 'Item initial creation', NULL, '2026-08-18 00:45:42.000000', '2026-09-11 14:04:22.000000'),
 (75, 2, 19, 7, 24, '2026-08-18 00:45:42.000000', '2026-08-18 00:45:42.000000', NULL, 'Initial Creation', 'Item initial creation', NULL, '2026-08-18 00:45:42.000000', '2026-08-18 00:45:42.000000'),
 (76, 2, 19, 8, 24, '2026-08-18 01:42:39.000000', '2026-08-18 01:42:39.000000', NULL, 'Initial Creation', 'Item initial creation', NULL, '2026-08-18 01:42:39.000000', '2026-08-18 01:42:39.000000'),
 (81, 2, 20, 5, 25, '2026-08-18 03:44:18.000000', '2026-08-18 03:44:18.000000', 8, NULL, 'Item initial creation', NULL, '2026-08-18 00:45:42.000000', '2026-08-18 03:44:18.000000'),
@@ -916,8 +974,8 @@ INSERT INTO `release_item_environment_states` (`id`, `project_id`, `release_item
 (86, 2, 21, 6, 52, '2026-09-10 00:02:33.000000', '2026-09-10 00:02:33.000000', 11, NULL, 'Item initial creation', NULL, '2026-08-18 01:55:18.000000', '2026-09-10 00:02:33.000000'),
 (87, 2, 21, 7, 24, '2026-08-18 01:55:18.000000', '2026-08-18 01:55:18.000000', NULL, 'Initial Creation', 'Item initial creation', NULL, '2026-08-18 01:55:18.000000', '2026-08-18 01:55:18.000000'),
 (88, 2, 21, 8, 28, '2026-09-10 00:02:43.000000', '2026-09-10 00:02:43.000000', NULL, NULL, 'Item initial creation', NULL, '2026-08-18 01:55:18.000000', '2026-09-10 00:02:43.000000'),
-(91, 2, 10, 5, 30, '2026-09-09 23:48:42.000000', '2026-09-09 23:48:42.000000', 1, NULL, 'Item initial creation prueba', NULL, '2026-08-18 02:13:07.000000', '2026-09-09 23:48:42.000000'),
-(92, 2, 10, 6, 24, '2026-08-18 02:13:07.000000', '2026-08-18 02:13:07.000000', NULL, 'Initial Creation', 'Item initial creation', NULL, '2026-08-18 02:13:07.000000', '2026-08-18 02:13:07.000000'),
+(91, 2, 10, 5, 52, '2026-09-11 14:05:33.000000', '2026-09-11 14:05:33.000000', 1, NULL, 'Item initial creation prueba', NULL, '2026-08-18 02:13:07.000000', '2026-09-11 14:05:33.000000'),
+(92, 2, 10, 6, 29, '2026-09-11 14:05:55.000000', '2026-09-11 14:05:55.000000', NULL, NULL, 'Item initial creation', NULL, '2026-08-18 02:13:07.000000', '2026-09-11 14:05:55.000000'),
 (93, 2, 10, 7, 24, '2026-08-18 02:13:07.000000', '2026-08-18 02:13:07.000000', NULL, 'Initial Creation', 'Item initial creation', NULL, '2026-08-18 02:13:07.000000', '2026-08-18 02:13:07.000000'),
 (94, 2, 10, 8, 24, '2026-08-18 02:13:07.000000', '2026-08-18 02:13:07.000000', NULL, 'Initial Creation', 'Item initial creation', NULL, '2026-08-18 02:13:07.000000', '2026-08-18 02:13:07.000000'),
 (97, 2, 22, 5, 25, '2026-09-01 15:49:35.000000', '2026-09-01 15:49:35.000000', 8, NULL, 'Item initial creation', NULL, '2026-09-01 15:35:50.000000', '2026-09-01 15:49:35.000000'),
@@ -1088,7 +1146,7 @@ ALTER TABLE `release_item_environment_states`
 -- AUTO_INCREMENT de la tabla `audit_events`
 --
 ALTER TABLE `audit_events`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=182;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=229;
 
 --
 -- AUTO_INCREMENT de la tabla `catalog_values`
@@ -1118,7 +1176,7 @@ ALTER TABLE `evidences`
 -- AUTO_INCREMENT de la tabla `follow_ups`
 --
 ALTER TABLE `follow_ups`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT de la tabla `migrations`
