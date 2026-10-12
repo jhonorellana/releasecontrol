@@ -1,0 +1,432 @@
+[Ameet] (0:00 - 0:04)
+Can you send me the link to your document?
+
+[Jhon] (0:04 - 0:05)
+Oh, let me see.
+
+[Ameet] (0:07 - 0:08)
+How was your weekend?
+
+[Jhon] (0:08 - 0:15)
+Oh, fine. What about you? How was your weekend?
+
+[Ameet] (0:15 - 0:15)
+Ah, it was good.
+
+[Jhon] (0:16 - 2:27)
+Busy. Ah, great. Okay, let me see where is it.
+
+Yep, I sent you in the chat. Yep, are you able to see it? Yep.
+
+Okay. Regarding the last four weeks, I did some activities. For instance, I am sending you on Friday, or sometimes on Saturdays, the summary of my weekly activities.
+
+So you can see what I am doing during my week. On the other hand, I delivered the release tracker to Shreya and Richard. I had a meeting with them.
+
+I explained what I created. They suggested many improvements. I believe the most important one is related to automate the source of the information that we have.
+
+They suggested, for instance, to connect to GitHub for the tools that we are using to deploy and get the information from the tools. However, I believe that it is complex for me. Obviously, we can do it, but I don't know how to do it.
+
+[Ameet] (2:30 - 2:36)
+Let's talk about overall, do they see any value in the tool?
+
+[Jhon] (2:39 - 3:25)
+I didn't know that they had the same problems that I had. Because we are running many things in parallel. According to the priorities we have, maybe we need to switch or swap tasks.
+
+You know, the time continues going on, and maybe we can forget what we were doing maybe two or four weeks ago. So that's happening in my case, and it looks like it's the same situation that they are facing.
+
+[Ameet] (3:25 - 3:50)
+So, Jhon, let me rephrase my sentence. With you and me, I'm always, you know, I apologize because I want to move, move, move, keep moving, and I don't have time to, you know, go into so much depth about the same thing or reiterate the same thing. My question to you is simple.
+
+Did they see value in what you built? That's the question.
+
+[Jhon] (3:51 - 3:52)
+Yes, yes, yes.
+
+[Ameet] (3:54 - 5:09)
+So what improvements did they ask for that's critical for them to start using the tool? We have to separate this in our mind just like we do with any project that you manage. People can ask for the world, right?
+
+They may say, oh, I want this connected automatically. You know what I would say? I want this connected to AI.
+
+I don't even think we should be using this tool. This whole thing should be automatic. It should notify us every time there's something that's pending.
+
+It should automatically be pulling our JIRA and a Bitbucket. It should be adding things into the dashboard on its own. I can ask for the world, Jhon, but is it reasonable?
+
+No. What is it that they need in order, like what's critical for them to start using it or for them to, like what's the major component that they need, right? That's what I'm asking, and that's what you need to ask.
+
+And this is the same concept you would use in any project if you're working on. You want me to do all of this, okay. I have to take the necessary steps to get there because I can't give you everything you want tomorrow, right?
+
+So when you ask that question, now maybe I'll ask you again. They like the product. They like what you have.
+
+They have the same problem as you. What is it that they need? What enhancements do they need you to make for it to be an effective tool for them?
+
+[Jhon] (5:10 - 6:17)
+Yeah, when I created the tool, I was thinking just in my needs. And right now, for instance, I don't have a login page in order to control the security. So at the moment, I can manage just my projects.
+
+I believe that this is the main problem I have because it is— That's a big one. Yeah. This is, I believe, the most important one.
+
+And the other thing is that, you know, all the systems we have in Payment Evolution are connected to the identity server that's managed by David. And I don't know how it's working. So that is—I believe that this is the main blocker, I believe.
+
+Perfect.
+
+[Ameet] (6:17 - 6:19)
+Good. Any other blocker?
+
+[Jhon] (6:20 - 6:54)
+Any other feature they need? Yeah. Also, for instance, when I create modules or I create projects into the tool, I am not handling projects by person.
+
+So it's necessary to improve a lot of things in order to— What do you mean by that, like projects by person?
+
+[Ameet] (6:54 - 6:55)
+Can you tell me a little bit more about that?
+
+[Jhon] (6:55 - 7:24)
+Yeah, for instance, Shreya is managing companion boarding, so maybe it's necessary to create a table to join Shreya with companion boarding, join with AdminAPI. So the tool needs to be improved in order to control these kinds of things.
+
+[Ameet] (7:25 - 7:48)
+Okay. So what if we—I have two ideas. One is, you know, first of all, you don't need to connect to identity server.
+
+This is an internal tool. We need to connect to Microsoft ID, the same thing we use to log into Copilot and the JIRA dashboard. You logged into the JIRA dashboard before with us?
+
+[Jhon] (7:50 - 8:01)
+Okay, yes. Actually, I just opened the page, and I suppose that the system detects that I am using the tool. Yeah.
+
+[Ameet] (8:03 - 8:11)
+The first time you did it, it would have prompted you to say log in with Microsoft or something, and then it would take you to your Microsoft account.
+
+[Jhon] (8:11 - 8:11)
+Okay.
+
+[Ameet] (8:11 - 8:14)
+Maybe you don't remember, but it would have been there, right?
+
+[Jhon] (8:15 - 8:15)
+Yeah.
+
+[Ameet] (8:16 - 8:48)
+Yeah. So I have two options. Option one, we find that code base, and we ask the system to add it into it.
+
+Okay. Option two is maybe Yarhos can move this module within the JIRA dashboard. So it can be another link or another section within the JIRA dashboard to deal with releases.
+
+[Jhon] (8:48 - 8:50)
+Okay. Okay.
+
+[Ameet] (8:50 - 8:51)
+What do you think about that?
+
+[Jhon] (8:51 - 8:57)
+I believe it's better. Yeah, okay. I will talk to Yarhos in order to do it.
+
+Okay.
+
+[Ameet] (8:58 - 9:49)
+Yeah, so he can kind of merge your project within the JIRA analytics dashboard, and you log in with the same login, and now there will be a left-side menu, manage releases, or maybe some way of navigating to it. And now we can manage it all through one system. Because I believe the same people who are managing releases, Shreya, you, Naim, Richard, they also would want maybe access to JIRA analytics to know what's happening in their boards, right, what's happening in their projects.
+
+And then maybe we can leverage even JIRA in some way so that we get the relationships, we know who the user is, if they have, you know, their role in JIRA, right? So we might be able to do that.
+
+[Jhon] (9:51 - 9:58)
+Okay. Yeah, it's a good possibility. I will talk to Yarhos.
+
+[Ameet] (9:59 - 10:31)
+So what if we make your goal for that project is, in this next month, is to whether we're, you know, embedded within the JIRA analytics tool, and let's get this version so each project has their own kind of lead, whoever's managing it. So those are the two features we want, and we want to get it onto the deployed version. Wherever JIRA analytics is currently deployed, we should get it deployed in there so that people can start using it.
+
+[Jhon] (10:31 - 10:31)
+Okay.
+
+[Ameet] (10:32 - 10:36)
+Because in the end, people need to start using it. That's the main point, right?
+
+[Jhon] (10:36 - 10:55)
+Okay. Yeah, my concern is that, you know, I will be on vacation from 15th, yeah, so I just have one week and a half, and I believe it will not be possible for me to achieve the goal.
+
+[Ameet] (10:55 - 11:06)
+That's a good one. So I do have, yeah, I have this Louis, Louis?
+
+[Jhon] (11:07 - 11:08)
+Yeah.
+
+[Ameet] (11:08 - 11:08)
+I need to say his name.
+
+[Jhon] (11:09 - 11:09)
+Louis or Louis? Louis.
+
+[Ameet] (11:11 - 11:52)
+Louis. Louis. His project is actually on the JIRA analytics dashboard is his project right now to analyze it, to make some changes to it, to add some data points.
+
+He's not a developer, but he has some development experience, and he's supposed to be like a business analyst, right? So you might be able to work with him and Yarhos before you go to make him aware of the changes you want. What's important is that you have the documentation in place.
+
+So you'd want to make sure that you're a repo, and that you give the right MD files, and you would say, you know what I mean by MD files, right?
+
+[Jhon] (11:52 - 11:54)
+Just mark them.
+
+[Ameet] (11:54 - 12:55)
+Make sure that the existing MD files are there. So what you've already built matches the MD files. So you can use ChatGPT if you don't have it already or whatever to create those MD files.
+
+And now you'll say the two requests are, and you have to define the specs, which is what you do normally in your job as a BA. So spec one is users want to be able to log in using their Microsoft credentials, their Microsoft Payment Evolution credentials, and each lead needs to have their own projects that they're the lead of. So for example, Shreya should be the lead of this, and Richard should be the lead of that, and I should be the lead of this.
+
+And so that's feature one. No, that's feature one and two, both. You'll define the specifications for it, and that maybe we can embed this project within the JIRA Analytics dashboard.
+
+By providing that documentation to Yarhos and Luis, maybe he'll have the time and capacity to do the work.
+
+[Jhon] (12:57 - 13:12)
+Okay, so my goal is just to create the Markdown file and give them to continue the job. That's the goal?
+
+[Ameet] (13:12 - 13:26)
+Yeah, you'd want to prepare the Markdown file of what exists, the repo of what you've built, and so the Markdown file tells the purpose and all the specifications and what changes you need made. And hopefully, by the time you're back, maybe they can execute on it.
+
+[Jhon] (13:27 - 13:41)
+Okay, yeah. Yeah, I am afraid of not having the time to finish this task.
+
+[Ameet] (13:42 - 13:46)
+Do you not have the time to document your work and to create the spec?
+
+[Jhon] (13:46 - 13:57)
+I don't see what I create. I can create the specs, but in order to see working what we want, I don't know.
+
+[Ameet] (13:58 - 14:06)
+Tell me, Jhon, what steps would you be taking in order to create the steps, the documentation? What steps would you be taking?
+
+[Jhon] (14:07 - 14:36)
+Yeah, I imagine what we need to do, and obviously using ChatGPT. I know that ChatGPT can't help me, but I am not sure that when I return to Payment Evolution after the vacation, it could be developed. I can create the specs.
+
+[Ameet] (14:36 - 14:49)
+That's not your goal. Your goal is not to make sure it's developed. Your goal is to provide the documentation.
+
+My point, my question to you is, you said you might not be able to be successful before you leave and create the documentation and the specs.
+
+[Jhon] (14:50 - 14:50)
+I can do it.
+
+[Ameet] (14:50 - 15:52)
+You need to make sure, I think you coded it all using AI. The same AI that you used to code it can generate the documentation. So you don't write it on your own.
+
+It should write it for you. You're asking it a few questions and making sure it's tailored correctly. Then the hard work is for you to create these two new specs, which again, you're talking to ChatGPT and you're explaining to it, I want to add these two new features.
+
+Can you create me a markdown file for these two new tasks and features? One is to interface to Microsoft Identity so that you can log in with your existing Payment Evolution account. Two, I want to be able to assign a project lead.
+
+So we need to change the spec of the database so that each project can have a lead. And I can assign that based on the login of the user. And three, to embed this within the existing GeoAnalytics dashboard.
+
+That's it. Okay. You ask it to generate the specs.
+
+It will obviously give you some detail. It may ask you a question or two. Within an hour, I can't imagine that it's going to be longer.
+
+You need to make sure that you keep it tight to that.
+
+[Jhon] (15:52 - 15:54)
+Okay. Yeah, sure. I can do it.
+
+[Ameet] (15:54 - 16:01)
+All right. So you can write that in your goal here and your discussion, please.
+
+[Jhon] (16:01 - 16:02)
+Okay. I will do.
+
+[Ameet] (16:03 - 17:22)
+Okay. I don't know why we ran out of time so fast. Okay.
+
+Give me one moment, please. Okay. Yeah, so, I mean, I think that you want to go on vacation, feeling relaxed.
+
+By the way, are you going anywhere exciting? Are you leaving town?
+
+[Jhon] (17:25 - 18:14)
+Here in Ecuador, we have mountains. We have Cotopaxi. We have other mountains, which is Chimborazo.
+
+They are good places for me in order to relax, so I am going to these places. Have you gone to Mindo? Yes, it's good also, yeah.
+
+But in these weeks, I am going to Colt because we have – I want to do it in this place. Mindo is hot. It's really nice also.
+
+Yeah, I like it also.
+
+[Ameet] (18:15 - 18:16)
+My mom is there right now.
+
+[Jhon] (18:17 - 18:18)
+Ah, yeah.
+
+[Ameet] (18:18 - 18:24)
+Because she goes and she has this person she knows.
+
+[Jhon] (18:24 - 18:25)
+Many beers. There are many beers.
+
+[Ameet] (18:26 - 18:27)
+Yes, that's why she goes.
+
+[Jhon] (18:27 - 18:29)
+It's a good place, yes.
+
+[Ameet] (18:29 - 19:11)
+Yeah. Good. Well, I want you to enjoy.
+
+But in order to enjoy and relax, I want you to feel like you're prepared for this. And as you mentioned, you have all of these different projects. And really, we need to narrow down to what projects are important for the upcoming projects.
+
+So for each project, you should go through it and say, Reports. Do I have the tickets and everything prepared for the next one to two sprints, ideally, right? What projects are they working on?
+
+Do I have ready on AdminAPI? I think dashboard project is on hold. Is that true?
+
+[Jhon] (19:12 - 19:14)
+Yes, it's on hold right now.
+
+[Ameet] (19:14 - 19:20)
+Okay, so we can maybe leave dashboard. I think FINTRAC is almost on hold. Is it true?
+
+[Jhon] (19:22 - 19:40)
+Yes, we are little things, little improvements that we are doing. And we need participation from other people, Ricardo Haro, mainly him. But it is not in the hands of Valis right now.
+
+Most important things, yeah.
+
+[Ameet] (19:40 - 22:00)
+So whether it be on your release dashboard or on an Excel spreadsheet, if you identify these five projects, seven projects that you're working on, and if you can get them all, if you can start marking them as planned, planned, planned, then it will start feeling a little bit of comfort and success. If you get FINTRAC off your plate and you get dashboarding off your plate, for example, then the next one is Invoicing. I think Invoicing between you and me, we know what has to come up.
+
+This one or two tickets that we've discussed, if you've already done that, mark it as complete so that it's off your mind. Now you're left with the two big ones, Reports and AdminAPI, right? Even Reports, I think that you know that they're working on Pay Explorer, they're finalizing things, cleaning up.
+
+You can make tickets related to performance and efficiency and caching, if at all, and testing and unit testing and automation testing we can do. But you can kind of close that off and say, I've done Reports now. And then AdminAPI you're left with, which between EDI tickets that I think you already have, hopefully you don't have so much planning to do.
+
+So what I'm trying to do is get you to declutter your mind. When you look at it and you say, I'll read it to you. Reports, FINTRAC, Invoicing, dashboard, AdminAPI, utilities, geolocation, industry code, checks and Payslips, FINTRAC.
+
+If you say all of those things in your mind, then you're going to blow up your head, right? If you go down to narrow it down, what is it that I'm working on? What is it Jesús is going to work on for the next two sprints?
+
+He's going to look at geolocation and industry code and that's it. And that's all he'll have the capacity for. Then great, I have it planned.
+
+I move on to the next person. Mario has EDI. He's going to be finishing any production related matters to EFT sync.
+
+So he's planned. I'm giving an example. I'm not saying this is legitimate, okay?
+
+Then he's finished and I don't have to plan him anymore. Reports, we're on Pay Explorer. Hopefully by the time I'm back, they have signed off on that.
+
+This is my goal. So I need to send that off to my lead or Igor to handle while I'm gone. And let's make sure that that's the goal for Reports, right?
+
+So set in your mind those expectations and make sure that you have the requirements for them and finish them off so you don't have to think about it anymore. Do you know what I mean by finishing it off? Once it's planned, you don't have to think about it anymore.
+
+[Jhon] (22:00 - 22:37)
+Yes. Yeah. For instance, eMailReminders.
+
+We finished it. It was good. And other things.
+
+Yeah. Yes. I know.
+
+Yeah. But it's important to not forget that we have the main thing. I believe these close, more little things that we have.
+
+Because mostly we have little things that they...
+
+[Ameet] (22:37 - 22:38)
+Drag on. They make it bigger.
+
+[Jhon] (22:39 - 22:40)
+Yeah. Yes.
+
+[Ameet] (22:40 - 23:10)
+I agree. So what we can also do is Luis is supposed to be shadowing you and Shreya this next couple weeks. I can have him just shadow you.
+
+So he can be someone. He's your eyes and ears while you're gone to help you, right? So I will make sure that that's known because I forgot that you're going on vacation.
+
+So I'll send a note to Luis and Yarhos that that's what's going to happen. And please make sure he's invited to all your meetings.
+
+[Jhon] (23:10 - 23:10)
+Yes.
+
+[Ameet] (23:11 - 23:57)
+Hopefully he attends. But at least you can share your knowledge on what's happening. I think in the end before you go, you're not going to be productive in giving him all the projects to help with.
+
+But you may find that maybe I can give him geolocation and industry code project or something to help manage while I'm gone. Right? I'm going to give Igor Reports because most of that's planned.
+
+I have an API. Obviously, I can help you with that and Ximena. Right?
+
+And Luis is just there to kind of be your eyes and ears to make sure that any problems are being documented that he can kind of try and reach out to different team members. And it's a good experiment for him to see how he does in handling the communication, handling these types of requests.
+
+[Jhon] (23:57 - 23:58)
+Okay. Yep.
+
+[Ameet] (23:59 - 23:59)
+Is that fair?
+
+[Jhon] (24:00 - 24:00)
+Yes. Sure.
+
+[Ameet] (24:01 - 24:09)
+Okay. So, I mean, I think that's good for today. Any other topics or discussions that you want to have?
+
+[Jhon] (24:09 - 24:41)
+Yes. I have a question. It's related to Invoicing.
+
+Yeah. This is my main concern right now. Yeah.
+
+I had a meeting with Shreya. Yeah. She explained something related to the status we should manage.
+
+She told me that Rupali was working on Invoicing some time ago. So, I will contact her in order to review.
+
+[Ameet] (24:41 - 24:42)
+Who was working on it?
+
+[Jhon] (24:44 - 24:57)
+Rupali. Rupali was working on Invoicing. Yeah.
+
+Okay. It looks like she has expertise on it. So, I am going to contact her in order to get help for testing.
+
+[Ameet] (24:57 - 24:59)
+Why? What happened? We need help?
+
+[Jhon] (25:00 - 25:45)
+Yeah. For testing because we are going to... We discovered that when the payroll is executed, we have two records in the charge table.
+
+Yeah. So, we have two records and we have different statuses in each one. So, we are going to change just one status as rejected, but I don't know what should be the right behavior.
+
+Yeah. So, maybe she can explain me if what we are going to do is correct or not. Yeah.
+
+[Ameet] (25:45 - 25:48)
+Have you asked Ximena about this? About the different behaviors?
+
+[Jhon] (25:50 - 25:58)
+She told me that she doesn't have enough knowledge about Invoicing. For this reason, I...
+
+[Ameet] (25:58 - 26:07)
+Do you have anything that you can send in a message, any documentation or conversation or any chance you can summarize what's happening so that I can see it?
+
+[Jhon] (26:10 - 26:11)
+No.
+
+[Ameet] (26:11 - 26:12)
+Can you post it in the group chat?
+
+[Jhon] (26:12 - 26:51)
+Okay. I will do it. Yeah.
+
+Yeah. In order to... But right now, we are investigating what's the best solution.
+
+Yeah. On the other hand, you know, Mario was working on EFT Sank, but right now, I created two tickets for him in order to get help for Invoicing. Today, he is investigating EDI MRQ, but for sure, I believe he will not be able to finish all the investigation that we need to...
+
+[Ameet] (26:51 - 27:01)
+So, what has he been working on Wednesday, Thursday, Friday? Because I met with him, I think, Wednesday afternoon. So, what is he working on Thursday, Friday, today?
+
+[Jhon] (27:02 - 27:48)
+Yeah. He was finishing some features that we assigned related to EFT Sank. He is finishing, you know, the feedback you gave us.
+
+He was working on it and also in EDI MRQ. Yeah. He is investigating it.
+
+Yeah. But I believe both things was the main things that he was doing. And maybe today or tomorrow, he will work on the Invoicing features that we need.
+
+Okay. Yeah. That's it from my side.
+
+[Ameet] (27:50 - 27:50)
+Okay.
+
+[Jhon] (27:51 - 27:51)
+Yeah.
+
+[Ameet] (27:51 - 27:56)
+All right. Thank you. Okay, thank you.
+
+Let me see how I can help you get through this, okay?
+
+[Jhon] (27:56 - 27:58)
+Okay. Thank you. All right.
+
+[Ameet] (27:58 - 27:58)
+Thank you.
+
+[Jhon] (27:58 - 27:58)
+Bye.
+
+[Ameet] (27:59 - 27:59)
+Bye.

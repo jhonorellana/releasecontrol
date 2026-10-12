@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-09-2026 a las 18:32:49
+-- Tiempo de generación: 30-09-2026 a las 17:05:57
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -300,7 +300,17 @@ INSERT INTO `audit_events` (`id`, `entity_type`, `entity_id`, `event_type`, `cha
 (225, 'client_activation', 17, 'client_activation_changed', '{\"old_status_id\":35,\"new_status_id\":35,\"scope_type\":\"off\",\"source_summary\":\"Item initial creation\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-16 16:19:50.000000', '2026-09-16 16:19:50.000000'),
 (226, 'client_activation', 21, 'client_activation_changed', '{\"old_status_id\":37,\"new_status_id\":37,\"scope_type\":\"global\",\"source_summary\":\"Item initial creation\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-16 16:20:26.000000', '2026-09-16 16:20:26.000000'),
 (227, 'client_activation', 17, 'client_activation_changed', '{\"old_status_id\":35,\"new_status_id\":35,\"scope_type\":\"off\",\"source_summary\":\"Item initial creation\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-16 16:20:40.000000', '2026-09-16 16:20:40.000000'),
-(228, 'client_activation', 18, 'client_activation_changed', '{\"old_status_id\":35,\"new_status_id\":35,\"scope_type\":\"off\",\"source_summary\":\"we are waiting for Sync\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-16 16:20:49.000000', '2026-09-16 16:20:49.000000');
+(228, 'client_activation', 18, 'client_activation_changed', '{\"old_status_id\":35,\"new_status_id\":35,\"scope_type\":\"off\",\"source_summary\":\"we are waiting for Sync\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-16 16:20:49.000000', '2026-09-16 16:20:49.000000'),
+(229, 'follow_up', 1, 'follow_up_updated', '{\"old_status_id\":41,\"new_status_id\":41,\"action\":\"Start testing - Ticket RPS-298\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-23 19:40:10.000000', '2026-09-23 19:40:10.000000'),
+(230, 'release_item', 2, 'environment_state_changed', '{\"project_environment_id\":\"3\",\"old_status_id\":52,\"new_status_id\":24,\"source_summary\":\"Reconstructed baseline from 2026-08-07 meeting with Ximena\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-23 20:12:57.000000', '2026-09-23 20:12:57.000000'),
+(231, 'release_item', 2, 'environment_state_changed', '{\"project_environment_id\":\"3\",\"old_status_id\":24,\"new_status_id\":52,\"source_summary\":\"Reconstructed baseline from 2026-08-07 meeting with Ximena\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-23 20:13:05.000000', '2026-09-23 20:13:05.000000'),
+(232, 'follow_up', 44, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"Pending solve fix - Ricardo Haro\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-23 20:13:35.000000', '2026-09-23 20:13:35.000000'),
+(233, 'release_item', 1, 'environment_state_changed', '{\"project_environment_id\":\"1\",\"old_status_id\":52,\"new_status_id\":52,\"source_summary\":\"Reconstructed baseline from 2026-08-07 meeting with Ximena\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-23 20:40:03.000000', '2026-09-23 20:40:03.000000'),
+(234, 'release_item', 1, 'environment_state_changed', '{\"project_environment_id\":\"2\",\"old_status_id\":30,\"new_status_id\":52,\"source_summary\":\"It was confirmed by Ricahr Fumachi\"}', '{\"notes\":\"wasfasdfa\"}', NULL, 'Jhon', '2026-09-23 20:40:47.000000', '2026-09-23 20:40:47.000000'),
+(235, 'release_item', 1, 'environment_state_changed', '{\"project_environment_id\":\"3\",\"old_status_id\":24,\"new_status_id\":29,\"source_summary\":\"asfdsadf\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-23 20:41:15.000000', '2026-09-23 20:41:15.000000'),
+(236, 'follow_up', 27, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":41,\"action\":\"include RPS-298 in next deployment to SITA\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-23 20:42:15.000000', '2026-09-23 20:42:15.000000'),
+(237, 'follow_up', 50, 'follow_up_updated', '{\"old_status_id\":38,\"new_status_id\":38,\"action\":\"New activity\"}', '{\"outcome\":null}', NULL, 'Jhon', '2026-09-23 20:42:37.000000', '2026-09-23 20:42:37.000000'),
+(238, 'client_activation', 3, 'client_activation_changed', '{\"old_status_id\":35,\"new_status_id\":51,\"scope_type\":\"selective\",\"source_summary\":\"2026-08-18 release status review\"}', '{\"notes\":null}', NULL, 'Jhon', '2026-09-23 20:44:44.000000', '2026-09-23 20:44:44.000000');
 
 -- --------------------------------------------------------
 
@@ -411,7 +421,7 @@ CREATE TABLE `client_activations` (
 INSERT INTO `client_activations` (`id`, `release_item_id`, `status_id`, `scope_type`, `scope_description`, `activated_at`, `verified_at`, `confirmed_by_person_id`, `confirmed_by_text`, `source_summary`, `notes`, `created_at`, `updated_at`) VALUES
 (1, 1, 33, 'not_applicable', NULL, NULL, '2026-08-07 10:00:00.000000', 2, NULL, '2026-08-07 release status review', NULL, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000'),
 (2, 2, 49, 'selective', 'Usage in production needs confirmation with Ameet', NULL, '2026-09-10 00:19:09.000000', 3, NULL, '2026-08-17 release status review with Ximena', NULL, '2026-08-15 12:00:00.000000', '2026-09-10 00:19:09.000000'),
-(3, 3, 35, 'selective', 'Usage in production needs confirmation with Ameet', NULL, '2026-08-24 03:35:14.000000', 3, NULL, '2026-08-18 release status review', NULL, '2026-08-15 12:00:00.000000', '2026-08-24 03:35:14.000000'),
+(3, 3, 51, 'selective', 'Usage in production needs confirmation with Ameet', NULL, '2026-09-23 20:44:44.000000', 3, NULL, '2026-08-18 release status review', NULL, '2026-08-15 12:00:00.000000', '2026-09-23 20:44:44.000000'),
 (4, 4, 33, 'not_applicable', NULL, NULL, '2026-08-07 10:00:00.000000', 2, NULL, '2026-08-07 release status review', NULL, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000'),
 (5, 5, 33, 'not_applicable', NULL, NULL, '2026-08-07 10:00:00.000000', 2, NULL, '2026-08-07 release status review', NULL, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000'),
 (6, 6, 33, 'not_applicable', NULL, NULL, '2026-08-07 10:00:00.000000', 2, NULL, '2026-08-07 release status review', NULL, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000'),
@@ -513,7 +523,7 @@ CREATE TABLE `follow_ups` (
 --
 
 INSERT INTO `follow_ups` (`id`, `release_item_id`, `action`, `status_id`, `priority_id`, `owner_person_id`, `contact_person_id`, `due_date`, `is_blocker`, `notes`, `outcome`, `completed_at`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 'Start testing - Ticket RPS-298', 41, 21, 1, 2, '2026-08-21', 0, 'Start testing', NULL, '2026-08-28 23:17:09.000000', '2026-08-15 12:00:00.000000', '2026-08-28 23:17:09.000000', NULL),
+(1, 1, 'Start testing - Ticket RPS-298', 41, 21, 1, 2, '2026-09-25', 0, 'Start testing', NULL, '2026-08-28 23:17:09.000000', '2026-08-15 12:00:00.000000', '2026-09-23 19:40:10.000000', NULL),
 (2, 2, 'Confirm availability date, enabled plans and companies with Ameet', 41, 21, 1, 3, '2026-08-21', 0, 'Action required for baseline advancement', NULL, '2026-08-24 03:36:53.000000', '2026-08-15 12:00:00.000000', '2026-08-24 03:36:53.000000', NULL),
 (3, 3, 'Confirm production version and client availability with Ameet', 41, 21, 1, 3, '2026-08-21', 0, 'Action required for baseline advancement', NULL, '2026-08-24 03:37:52.000000', '2026-08-15 12:00:00.000000', '2026-08-24 03:37:52.000000', NULL),
 (4, 4, 'Confirm with Ameet to deploy on SITA', 41, 21, 1, 7, '2026-08-21', 0, 'Confirm with Ameet to deploy on SITA', NULL, '2026-08-24 04:01:39.000000', '2026-08-15 12:00:00.000000', '2026-08-24 04:01:39.000000', NULL),
@@ -539,7 +549,7 @@ INSERT INTO `follow_ups` (`id`, `release_item_id`, `action`, `status_id`, `prior
 (24, 4, 'AdminAPI endpoint can be deployed on production', 38, 20, 8, NULL, '2026-09-18', 0, NULL, NULL, NULL, '2026-08-24 04:00:43.000000', '2026-09-11 12:23:58.000000', NULL),
 (25, 4, 'Reports can be deployed in production after endpoint', 38, 23, 6, NULL, '2026-10-01', 0, NULL, NULL, NULL, '2026-08-24 04:02:25.000000', '2026-09-11 12:18:11.000000', NULL),
 (26, 4, 'If Reports was tested in TATU it could be releases in PROD. Coordinate with Himani to do it during next release to PROD', 38, 21, 6, NULL, '2026-09-15', 0, NULL, NULL, NULL, '2026-08-24 04:05:54.000000', '2026-09-11 12:18:30.000000', NULL),
-(27, 1, 'include RPS-298 in next deployment to SITA', 38, 21, 4, NULL, '2026-09-15', 0, NULL, NULL, NULL, '2026-08-28 23:19:58.000000', '2026-09-11 12:18:44.000000', NULL),
+(27, 1, 'include RPS-298 in next deployment to SITA', 41, 21, 4, NULL, '2026-09-15', 0, NULL, NULL, '2026-09-23 20:42:15.000000', '2026-08-28 23:19:58.000000', '2026-09-23 20:42:15.000000', NULL),
 (28, 10, 'Third email development', 41, 21, 8, NULL, '2026-08-28', 0, NULL, NULL, '2026-09-09 23:49:04.000000', '2026-08-28 23:32:51.000000', '2026-09-09 23:49:04.000000', NULL),
 (29, 13, 'Add new tickets according feedback received during demo 2026-08-31', 41, 21, 1, NULL, '2026-08-31', 0, NULL, NULL, '2026-09-10 00:00:36.000000', '2026-08-31 20:33:41.000000', '2026-09-10 00:00:36.000000', NULL),
 (30, 14, 'Include this feature during next DEMO', 41, 21, 1, NULL, '2026-08-31', 0, NULL, NULL, '2026-09-10 00:01:38.000000', '2026-08-31 20:35:51.000000', '2026-09-10 00:01:38.000000', NULL),
@@ -556,12 +566,13 @@ INSERT INTO `follow_ups` (`id`, `release_item_id`, `action`, `status_id`, `prior
 (41, 19, 'Sign-off from QA', 38, 21, 8, NULL, '2026-09-15', 0, NULL, NULL, NULL, '2026-09-11 14:05:11.000000', '2026-09-11 14:15:48.000000', NULL),
 (42, 10, 'Finalize Testing', 38, 21, 8, NULL, '2026-09-15', 0, NULL, NULL, NULL, '2026-09-11 14:06:26.000000', '2026-09-11 14:06:26.000000', NULL),
 (43, 6, 'Wait for ADMNAPI-1021 deployment in production', 38, 21, 6, NULL, '2026-09-11', 0, NULL, NULL, NULL, '2026-09-11 14:23:48.000000', '2026-09-11 14:23:48.000000', NULL),
-(44, 2, 'Pending solve fix - Ricardo Haro', 38, 21, 4, NULL, '2026-09-11', 0, NULL, NULL, NULL, '2026-09-11 14:40:49.000000', '2026-09-11 14:40:49.000000', NULL),
+(44, 2, 'Pending solve fix - Ricardo Haro', 38, 21, 4, NULL, '2026-09-25', 0, NULL, NULL, NULL, '2026-09-11 14:40:49.000000', '2026-09-23 20:13:35.000000', NULL),
 (45, 2, 'Pending solve fix - Ricardo Haro', 41, 21, 4, NULL, '2026-09-11', 0, NULL, NULL, '2026-09-11 14:52:41.000000', '2026-09-11 14:41:10.000000', '2026-09-11 14:52:41.000000', NULL),
 (46, 4, 'Evolv should be updated in SITA', 38, 21, 6, NULL, '2026-09-17', 0, NULL, NULL, NULL, '2026-09-11 14:42:13.000000', '2026-09-11 14:42:45.000000', NULL),
 (47, 5, 'Fix issues assigned to Felipe - RPS 347', 38, 21, 12, NULL, '2026-09-11', 0, NULL, NULL, NULL, '2026-09-11 14:44:29.000000', '2026-09-11 14:44:29.000000', NULL),
 (48, 6, 'Fix issues raised by Ricardo Fumachi & Andrea', 42, 21, 6, NULL, '2026-09-16', 0, NULL, NULL, NULL, '2026-09-11 14:47:01.000000', '2026-09-11 14:53:11.000000', NULL),
-(49, 7, 'Fix issues raised by Ricardo Fumachi & Andrea', 38, 21, 2, NULL, '2026-09-16', 0, NULL, NULL, NULL, '2026-09-11 14:48:45.000000', '2026-09-11 14:48:45.000000', NULL);
+(49, 7, 'Fix issues raised by Ricardo Fumachi & Andrea', 38, 21, 2, NULL, '2026-09-16', 0, NULL, NULL, NULL, '2026-09-11 14:48:45.000000', '2026-09-11 14:48:45.000000', NULL),
+(50, 1, 'New activity', 38, 21, 14, NULL, '2026-09-23', 0, 'assaf', NULL, NULL, '2026-09-23 20:42:01.000000', '2026-09-23 20:42:37.000000', NULL);
 
 -- --------------------------------------------------------
 
@@ -894,13 +905,13 @@ CREATE TABLE `release_item_environment_states` (
 --
 
 INSERT INTO `release_item_environment_states` (`id`, `project_id`, `release_item_id`, `project_environment_id`, `status_id`, `status_changed_at`, `verified_at`, `confirmed_by_person_id`, `confirmed_by_text`, `source_summary`, `notes`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1, 52, '2026-08-17 19:54:34.000000', '2026-08-17 19:54:34.000000', 2, NULL, 'Reconstructed baseline from 2026-08-07 meeting with Ximena', NULL, '2026-08-15 12:00:00.000000', '2026-08-17 19:54:34.000000'),
-(2, 1, 1, 2, 30, '2026-08-28 23:15:55.000000', '2026-08-28 23:15:55.000000', 2, NULL, 'Reconstructed baseline from 2026-08-07 meeting with Ximena', NULL, '2026-08-15 12:00:00.000000', '2026-08-28 23:15:55.000000'),
-(3, 1, 1, 3, 24, '2026-08-07 10:00:00.000000', '2026-08-07 10:00:00.000000', 2, NULL, 'Reconstructed baseline from 2026-08-07 meeting with Ximena', NULL, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000'),
+(1, 1, 1, 1, 52, '2026-09-23 20:40:03.000000', '2026-09-23 20:40:03.000000', 2, NULL, 'Reconstructed baseline from 2026-08-07 meeting with Ximena', NULL, '2026-08-15 12:00:00.000000', '2026-09-23 20:40:04.000000'),
+(2, 1, 1, 2, 52, '2026-09-23 20:40:47.000000', '2026-09-23 20:40:47.000000', 5, NULL, 'It was confirmed by Ricahr Fumachi', 'wasfasdfa', '2026-08-15 12:00:00.000000', '2026-09-23 20:40:47.000000'),
+(3, 1, 1, 3, 29, '2026-09-23 20:41:15.000000', '2026-09-23 20:41:15.000000', 1, NULL, 'asfdsadf', NULL, '2026-08-15 12:00:00.000000', '2026-09-23 20:41:15.000000'),
 (4, 1, 1, 4, 24, '2026-08-07 10:00:00.000000', '2026-08-07 10:00:00.000000', 2, NULL, 'Reconstructed baseline from 2026-08-07 meeting with Ximena', NULL, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000'),
 (5, 1, 2, 1, 52, '2026-08-17 19:54:57.000000', '2026-08-17 19:54:57.000000', 2, NULL, 'Reconstructed baseline from 2026-08-07 meeting with Ximena', NULL, '2026-08-15 12:00:00.000000', '2026-08-17 19:54:57.000000'),
 (6, 1, 2, 2, 52, '2026-08-17 19:55:04.000000', '2026-08-17 19:55:04.000000', 2, NULL, 'Reconstructed baseline from 2026-08-07 meeting with Ximena', NULL, '2026-08-15 12:00:00.000000', '2026-08-17 19:55:04.000000'),
-(7, 1, 2, 3, 52, '2026-08-17 19:55:12.000000', '2026-08-17 19:55:12.000000', 2, NULL, 'Reconstructed baseline from 2026-08-07 meeting with Ximena', NULL, '2026-08-15 12:00:00.000000', '2026-08-17 19:55:12.000000'),
+(7, 1, 2, 3, 52, '2026-09-23 20:13:05.000000', '2026-09-23 20:13:05.000000', 2, NULL, 'Reconstructed baseline from 2026-08-07 meeting with Ximena', NULL, '2026-08-15 12:00:00.000000', '2026-09-23 20:13:05.000000'),
 (8, 1, 2, 4, 28, '2026-08-07 10:00:00.000000', '2026-08-07 10:00:00.000000', 2, NULL, 'Reconstructed baseline from 2026-08-07 meeting with Ximena', NULL, '2026-08-15 12:00:00.000000', '2026-08-15 12:00:00.000000'),
 (9, 1, 3, 1, 52, '2026-08-17 19:59:05.000000', '2026-08-17 19:59:05.000000', 2, NULL, 'Reconstructed baseline from 2026-08-07 meeting with Ximena', NULL, '2026-08-15 12:00:00.000000', '2026-08-17 19:59:05.000000'),
 (10, 1, 3, 2, 52, '2026-08-17 19:59:10.000000', '2026-08-17 19:59:10.000000', 2, NULL, 'Reconstructed baseline from 2026-08-07 meeting with Ximena', NULL, '2026-08-15 12:00:00.000000', '2026-08-17 19:59:10.000000'),
@@ -1146,7 +1157,7 @@ ALTER TABLE `release_item_environment_states`
 -- AUTO_INCREMENT de la tabla `audit_events`
 --
 ALTER TABLE `audit_events`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=229;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=239;
 
 --
 -- AUTO_INCREMENT de la tabla `catalog_values`
@@ -1176,7 +1187,7 @@ ALTER TABLE `evidences`
 -- AUTO_INCREMENT de la tabla `follow_ups`
 --
 ALTER TABLE `follow_ups`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT de la tabla `migrations`
